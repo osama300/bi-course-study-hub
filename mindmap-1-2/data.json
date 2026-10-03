@@ -1,0 +1,332 @@
+{
+  "id": "root",
+  "ar": "ذكاء الأعمال والتحليلات",
+  "en": "Business Intelligence & Analytics",
+  "children": [
+    {
+      "id": "fundamentals",
+      "color": "#3B58A6",
+      "ar": "أساسيات BI",
+      "en": "BI Fundamentals",
+      "children": [
+        {
+          "ar": "التعريف",
+          "en": "Definition",
+          "children": [
+            { "ar": "مصطلح شامل لطرق وتقنيات وتطبيقات", "en": "Umbrella term for methods, processes & tech" },
+            { "ar": "تحويل البيانات الخام إلى معلومات مفيدة", "en": "Transform raw data into useful information" },
+            { "ar": "تمكين القرارات الاستراتيجية والتشغيلية", "en": "Enable strategic & operational decisions" }
+          ]
+        },
+        {
+          "ar": "معنى \"الأعمال\"",
+          "en": "What is \"Business\"",
+          "children": [
+            { "ar": "شركات ربحية", "en": "Commercial (for-profit)" },
+            { "ar": "منظمات غير ربحية", "en": "Non-profit" },
+            { "ar": "جهات حكومية", "en": "Government" },
+            { "ar": "أفراد", "en": "Individuals" }
+          ]
+        },
+        {
+          "ar": "هرم DIKW",
+          "en": "DIKW Hierarchy",
+          "children": [
+            { "ar": "بيانات: حقائق خام", "en": "Data: raw facts" },
+            { "ar": "معلومات: بيانات منظمة بسياق", "en": "Information: organized data with context" },
+            { "ar": "معرفة: رؤية قابلة للتنفيذ", "en": "Knowledge: actionable insight" },
+            { "ar": "حكمة: فهم متكامل للتبعات", "en": "Wisdom: integrated understanding of implications" }
+          ]
+        },
+        {
+          "ar": "OLTP مقابل OLAP",
+          "en": "OLTP vs OLAP",
+          "children": [
+            { "ar": "تشغيلية: مثل تحديث سعر منتج", "en": "Transactional: e.g. update product price" },
+            { "ar": "تحليلية: مثل أفضل 10 منتجات ربحًا", "en": "Analytical: e.g. top 10 profitable products" }
+          ]
+        },
+        {
+          "ar": "الرؤى واتخاذ القرار",
+          "en": "Insights & Decision-Making",
+          "children": [
+            { "ar": "الرؤية فهم عميق، والقرار فعل ملموس", "en": "Insight = deep understanding, Decision = action" },
+            { "ar": "أسس القرار: حقائق، محاكاة، حدس، تفاوض جماعي", "en": "Decision basis: facts, simulation, intuition, negotiation" },
+            { "ar": "مشكلة شائعة: فجوة بين البيانات والمعرفة الفعلية", "en": "Common problem: gap between data and actionable knowledge" },
+            { "ar": "أنظمة دعم القرار (DSS): قرارات مبنية مباشرة على بيانات", "en": "DSS: decisions built directly on data" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-concepts",
+      "color": "#1C7A67",
+      "ar": "البيانات وتحدياتها",
+      "en": "Data Concepts",
+      "children": [
+        {
+          "ar": "أنواع البيانات",
+          "en": "Types of Data",
+          "children": [
+            { "ar": "منظمة مقابل غير منظمة", "en": "Structured vs Unstructured" },
+            { "ar": "رقمية مقابل نصية", "en": "Numeric vs Textual" },
+            { "ar": "داخلية مقابل خارجية", "en": "Internal vs External" },
+            { "ar": "حقائق فعلية مقابل محاكاة/تقديرات", "en": "Raw facts vs simulated/forecast data" }
+          ]
+        },
+        {
+          "ar": "التحديات",
+          "en": "Challenges",
+          "children": [
+            { "ar": "إفراط في المعلومات", "en": "Information overloading" },
+            { "ar": "جزر بيانات متفرقة (Spreadmart)", "en": "Data silos (spreadmart)" },
+            { "ar": "بيانات ضخمة: حجم وسرعة وتنوع ومصداقية", "en": "Big Data: Volume, Velocity, Variety, Veracity" },
+            { "ar": "صعوبة الوصول رغم توفر البيانات", "en": "Difficulty accessing data even when it exists" },
+            { "ar": "نقص البيانات: يحتاج جمعًا إضافيًا مكلفًا", "en": "Lack of data: needs costly extra collection" }
+          ]
+        },
+        {
+          "ar": "جودة البيانات: خام مقابل نظيفة",
+          "en": "Data Quality: Raw vs. Clean",
+          "children": [
+            { "ar": "خام: قيم أصلية غير معالجة مباشرة من المصدر", "en": "Raw: original, unprocessed values straight from the source" },
+            { "ar": "معالجة/نظيفة: محوّلة ومتحقق منها وجاهزة للتحليل", "en": "Processed/clean: transformed, validated & ready for analysis" },
+            { "ar": "البيانات غير النظيفة تُضعف دقة القرار (مدخلات خاطئة = مخرجات خاطئة)", "en": "Dirty data undermines decision accuracy (garbage in, garbage out)" },
+            { "ar": "المحللون يقضون أغلب وقتهم بتنظيف البيانات قبل استخدامها", "en": "Analysts spend most of their time cleaning data before it's usable" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bi-vs-analytics",
+      "color": "#A85A22",
+      "ar": "BI مقابل Analytics",
+      "en": "BI vs Analytics",
+      "children": [
+        {
+          "ar": "Business Intelligence",
+          "en": "Business Intelligence",
+          "children": [
+            { "ar": "وصفي: ماذا حدث؟", "en": "Descriptive: what happened?" },
+            { "ar": "استرجاعي: الماضي والحاضر", "en": "Retrospective: past & present" },
+            { "ar": "أدوات: Dashboards وتقارير", "en": "Tools: dashboards & reports" },
+            { "ar": "المستخدمون: مدراء وتنفيذيون", "en": "Users: managers & executives" }
+          ]
+        },
+        {
+          "ar": "Analytics",
+          "en": "Analytics",
+          "children": [
+            { "ar": "تنبؤي: ماذا سيحدث؟", "en": "Predictive: what will happen?" },
+            { "ar": "استشرافي: نتائج مستقبلية", "en": "Prospective: future outcomes" },
+            { "ar": "طرق: تعلم آلي، ذكاء اصطناعي، إحصاء", "en": "Methods: ML, AI, statistics" },
+            { "ar": "المستخدمون: علماء بيانات ومحللون", "en": "Users: data scientists & analysts" }
+          ]
+        },
+        {
+          "ar": "مجالات ذات علاقة",
+          "en": "Related Disciplines",
+          "children": [
+            { "ar": "تحليلات الأعمال: استكشاف منهجي متكرر بالإحصاء", "en": "Business analytics: iterative statistical exploration" },
+            { "ar": "بيانات ضخمة: وصف للحجم وليست نظامًا بحد ذاته", "en": "Big data: a scale descriptor, not a system" },
+            { "ar": "علم البيانات: استخلاص متعدد التخصصات", "en": "Data science: interdisciplinary extraction" },
+            { "ar": "إدارة المعرفة: خبرة ومعرفة ضمنية من البشر", "en": "Knowledge management: tacit human experience" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "color": "#7A4A93",
+      "ar": "الأداء والتطبيقات",
+      "en": "Performance & Applications",
+      "children": [
+        {
+          "ar": "مقدمة KPI",
+          "en": "KPI Intro",
+          "children": [
+            { "ar": "مقاييس تتبع تحقيق الأهداف عبر أنظمة BI", "en": "Metrics tracking goal achievement via BI systems" }
+          ]
+        },
+        {
+          "ar": "أنواع الأداء",
+          "en": "Types of Performance",
+          "children": [
+            { "ar": "مالي", "en": "Financial" },
+            { "ar": "أكاديمي", "en": "Academic" },
+            { "ar": "خدمة عامة", "en": "Public service" },
+            { "ar": "فردي ورياضي", "en": "Individual & sports" }
+          ]
+        },
+        {
+          "ar": "تطبيقات نموذجية",
+          "en": "Sample Applications",
+          "children": [
+            { "ar": "إدارة الأعمال والتسويق", "en": "Business mgmt & marketing" },
+            { "ar": "الموارد البشرية", "en": "HR" },
+            { "ar": "سلاسل الإمداد", "en": "Supply chain" },
+            { "ar": "التعليم والصحة", "en": "Education & healthcare" },
+            { "ar": "القطاع المالي والتأمين", "en": "Finance & insurance" },
+            { "ar": "تقنية المعلومات وأمن الشبكات", "en": "IT & security management" },
+            { "ar": "إدارية عامة: Benchmarking وCRM وبحوث السوق", "en": "General: benchmarking, CRM, market research" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "color": "#2A6D91",
+      "ar": "بنية أنظمة BI",
+      "en": "BI Architecture",
+      "children": [
+        {
+          "ar": "العملية الأساسية",
+          "en": "Core Process",
+          "children": [
+            { "ar": "١. تحديد الاحتياج", "en": "1. Define needs" },
+            { "ar": "٢. جمع البيانات", "en": "2. Collect data" },
+            { "ar": "٣. تنظيف البيانات", "en": "3. Clean data" },
+            { "ar": "٤. تحليل البيانات", "en": "4. Analyze data" },
+            { "ar": "٥. تفسير النتائج", "en": "5. Interpret results" }
+          ]
+        },
+        {
+          "ar": "مصادر البيانات ونقلها",
+          "en": "Data Sources & Integration",
+          "children": [
+            { "ar": "المصادر: قواعد بيانات، ERP، CRM، IoT", "en": "Sources: DBs, ERP, CRM, IoT" },
+            { "ar": "الاستخراج (Extract): سحب البيانات من المصادر", "en": "Extract: pull data from sources" },
+            { "ar": "التحويل (Transform): تنظيف وتوحيد الصيغة", "en": "Transform: clean & standardize format" },
+            { "ar": "التحميل (Load): نقلها إلى المستودع المركزي", "en": "Load: move into the central warehouse" }
+          ]
+        },
+        {
+          "ar": "التخزين والمعالجة",
+          "en": "Storage & Processing",
+          "children": [
+            { "ar": "مستودع (Warehouse)، متاجر (Marts)، بحيرة (Lake)", "en": "Warehouse, Marts, Lake" },
+            { "ar": "لماذا مستودع خاص؟ القواعد التشغيلية بطيئة وغير موحدة", "en": "Why a special store? Operational DBs are slow & inconsistent" },
+            { "ar": "المعالجة التحليلية: OLAP والمعالجة في الذاكرة", "en": "Analytical processing: OLAP & in-memory" }
+          ]
+        },
+        {
+          "ar": "العرض والتوزيع",
+          "en": "Presentation & Delivery",
+          "children": [
+            { "ar": "لوحات ومؤشرات وتنبيهات فورية", "en": "Dashboards, KPIs & real-time alerts" },
+            { "ar": "أشكال العرض: نصي، جدولي، رسومي", "en": "Forms: textual, tabular, graphical" }
+          ]
+        },
+        {
+          "ar": "حوكمة البيانات وجودتها",
+          "en": "Data Governance & Quality",
+          "children": [
+            { "ar": "الحوكمة: سياسات ملكية البيانات وأمنها", "en": "Governance: data ownership & security policy" },
+            { "ar": "الجودة، البيانات الوصفية (Metadata)، والرئيسية (Master Data)", "en": "Quality, Metadata & Master Data" }
+          ]
+        },
+        {
+          "ar": "المستخدمون",
+          "en": "Users",
+          "children": [
+            { "ar": "مستخدمون متقدمون (Power Users)", "en": "Power users" },
+            { "ar": "مستخدمون عاديون (Casual Users)", "en": "Casual users" },
+            { "ar": "محللون ومطورون", "en": "Analysts & developers" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "levels",
+      "color": "#3D7A40",
+      "ar": "مستويات وتقنيات التحليل",
+      "en": "Analysis Levels & Techniques",
+      "children": [
+        { "ar": "وصفي", "en": "Descriptive", "children": [{ "ar": "ماذا حدث؟", "en": "What happened?" }] },
+        { "ar": "تشخيصي", "en": "Diagnostic", "children": [{ "ar": "لماذا حدث؟", "en": "Why did it happen?" }] },
+        { "ar": "تنبؤي", "en": "Predictive", "children": [{ "ar": "ماذا سيحدث؟", "en": "What will happen?" }] },
+        { "ar": "توصوي", "en": "Prescriptive", "children": [{ "ar": "ما الإجراء المطلوب؟", "en": "What action to take?" }] },
+        {
+          "ar": "التحليلات المتقدمة",
+          "en": "Advanced Analytics",
+          "children": [
+            { "ar": "فحص شبه مستقل للبيانات بتقنيات متقدمة", "en": "Semi-autonomous examination via sophisticated techniques" },
+            { "ar": "تعلّم آلي، وتنقيب بيانات ونصوص", "en": "Machine learning, data/text mining" },
+            { "ar": "تنبؤ، تحليل مشاعر، شبكات عصبية، محاكاة", "en": "Forecasting, sentiment analysis, neural nets, simulation" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practical-example",
+      "color": "#52607A",
+      "ar": "مثال تطبيقي",
+      "en": "Practical Example",
+      "children": [
+        {
+          "ar": "الهدف: شركة تجارة إلكترونية",
+          "en": "Goal: E-commerce company",
+          "children": [
+            { "ar": "تتبع المبيعات اليومية وسلوك العملاء وأداء المنتج", "en": "Track daily sales, customer behavior & product performance" }
+          ]
+        },
+        {
+          "ar": "مصادر البيانات",
+          "en": "Data Sources",
+          "children": [
+            { "ar": "قاعدة بيانات المبيعات وسجلات الموقع", "en": "Sales DB & website logs/APIs" },
+            { "ar": "CRM وجداول إكسل وGoogle Analytics", "en": "CRM, Excel sheets & Google Analytics" }
+          ]
+        },
+        {
+          "ar": "ETL ومستودع البيانات",
+          "en": "ETL + Warehouse",
+          "children": [
+            { "ar": "أدوات: Power Query، Talend، بايثون", "en": "Tools: Power Query, Talend, Python" },
+            { "ar": "تنظيم المستودع حسب: الوقت، المنتج، العميل، المنطقة", "en": "Organized by: time, product, customer, region" }
+          ]
+        },
+        {
+          "ar": "التصور والتقارير",
+          "en": "Visualization & Reports",
+          "children": [
+            { "ar": "لوحات Power BI وTableau وQlik", "en": "Power BI, Tableau & Qlik dashboards" },
+            { "ar": "أفضل المنتجات ومعدل تسرب العملاء", "en": "Top products & customer churn rate" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "microsoft-stack",
+      "color": "#9C3A5C",
+      "ar": "منظومة Microsoft BI",
+      "en": "Microsoft BI Stack",
+      "children": [
+        {
+          "ar": "منصة SQL Server",
+          "en": "SQL Server Platform",
+          "children": [
+            { "ar": "SSDE: تخزين", "en": "SSDE: storage" },
+            { "ar": "SSAS: تحليل وOLAP", "en": "SSAS: analysis & OLAP" },
+            { "ar": "SSIS: عمليات ETL", "en": "SSIS: ETL processes" },
+            { "ar": "SSRS: تقارير", "en": "SSRS: reporting" }
+          ]
+        },
+        {
+          "ar": "Power BI",
+          "en": "Power BI",
+          "children": [
+            { "ar": "Desktop: بناء التقارير", "en": "Desktop: build reports" },
+            { "ar": "Service: مشاركة سحابية", "en": "Service: cloud sharing" },
+            { "ar": "Report Server: محليًا", "en": "Report Server: on-premises" }
+          ]
+        },
+        {
+          "ar": "Excel BI",
+          "en": "Excel BI",
+          "children": [{ "ar": "PivotTable ودوال Cube", "en": "PivotTable & Cube functions" }]
+        }
+      ]
+    }
+  ]
+}

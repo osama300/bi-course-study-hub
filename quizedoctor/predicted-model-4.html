@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 4</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#2A6D91; --accent-soft: rgba(42,109,145,.10); --ar-bg: rgba(42,109,145,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#6FB6E0; --accent-soft: rgba(111,182,224,.10); --ar-bg: rgba(111,182,224,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 12px; }
+  .gapnote{ font-size:13px; color:var(--ink-soft); border:1px dashed var(--line-strong); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+  .gapnote strong{ color:var(--ink); }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  /* ---- Multiple Choice ---- */
+  .mc-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .mc-top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:12px; }
+  .mc-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .mc-tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; }
+  .mc-q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; }
+  .mc-q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; direction:rtl; text-align:right; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .opt{ display:flex; align-items:flex-start; gap:10px; padding:9px 12px; border-radius:10px; border:1px solid var(--line); font-size:14px; }
+  .opt .opt-letter{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; width:20px; flex:none; color:var(--ink-soft); }
+  .opt.correct{ border-color: var(--true); background: var(--true-bg); }
+  .opt.correct .opt-letter{ color: var(--true); }
+  .opt.correct::after{ content:"✓"; margin-inline-start:auto; color:var(--true); font-weight:700; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  /* ---- True/False ---- */
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; direction:rtl; text-align:right; }
+
+  /* ---- Short Answer ---- */
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(17px,2.4vw,20px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); margin:0 0 18px; direction:rtl; text-align:right; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 10px; font-size:15px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 10px; font-size:15px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card, .mc-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">Predicted 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted 3</a> &middot;
+    <span>Predicted Model 4</span> &middot;
+    <a href="predicted-model-5.html">Predicted 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted 6 &rarr;</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Predicted Practice Exam &middot; Gap-Fill 2 (Lectures 6&ndash;10)</p>
+    <h1>Predicted Exam — Model 4</h1>
+    <p dir="rtl">نموذج توقعي 4 — سد فجوات المحاضرات 6 إلى 10</p>
+    <p class="desc">Built after reading three real archived exams from last year (two sections: Information Systems &amp; Data Science) and comparing them against every lecture we have. Format matches the real final exam's actual mix &mdash; mostly multiple choice, some true/false, and brief short-answer items &mdash; instead of long essays.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: أسئلة <strong>متوقعة</strong> مبنية على تحليل فجوات فعلي — مو أسئلة من الدكتورة. الصيغة مطابقة لنمط الاختبار النهائي الحقيقي (اختيارات + صح/خطأ + إجابات قصيرة).</p>
+    <p class="gapnote" dir="rtl">
+      <strong>الفجوات اللي يسدها هذا النموذج:</strong> هرم DIKW (موجود بخريطة 1-2 لكن لم يُختبر بأي ملف quizedoctor سابق، وظهر مرتين بأرشيف العام الماضي) + تفاصيل دقيقة من المحاضرات 6-9/10 الجديدة: مستويات نموذج البيانات الثلاثة، أنواع القياسات (جامعة/شبه جامعة/غير جامعة)، Star مقابل Snowflake، خطوات بناء النموذج البُعدي، OLTP مقابل التحليلية، خصائص Inmon الأربع لمستودع البيانات، عمليات OLAP (Pivot/Slice/Dice)، Data Mart، Data Lake، أشكال عرض البيانات، معادلة Dashboard، ومستويات اللوحات.
+    </p>
+  </header>
+
+  <div class="part-title">Part A &mdash; Multiple Choice <span class="ar">اختيار من متعدد</span></div>
+  <div class="stat-row"><span class="stat font-mono">15 questions &middot; 4 options each</span></div>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 01</span><span class="mc-tag">DIKW</span></div>
+    <p class="mc-q-en">In the DIKW hierarchy, which level represents an integrated understanding of the implications of information, used to take effective action?</p>
+    <p class="mc-q-ar">في هرم DIKW، أي مستوى يمثل فهمًا متكاملًا لتبعات المعلومة، يُستخدم لاتخاذ إجراء فعّال؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Data</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Information</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Knowledge</span></div>
+      <div class="opt correct"><span class="opt-letter">D</span><span>Wisdom</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Wisdom is the top of the DIKW hierarchy: an integrated understanding of implications, used to decide and act &mdash; beyond Knowledge, which is simply an actionable insight.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الحكمة هي قمة هرم DIKW: فهم متكامل للتبعات يُستخدم لاتخاذ القرار والفعل — أعلى من المعرفة، التي هي مجرد رؤية قابلة للتنفيذ.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 02</span><span class="mc-tag">L6 &middot; Data Model</span></div>
+    <p class="mc-q-en">Who is the primary audience for a conceptual-level data model?</p>
+    <p class="mc-q-ar">من هو الجمهور الأساسي لنموذج البيانات على المستوى المفاهيمي؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>DBAs and data engineers</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Business stakeholders and executives</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Network administrators</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>End-user customers</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The conceptual level (ER/EER models) shows what the system contains from a high-level business view, aimed at business stakeholders and executives. Logical targets BI developers; physical targets DBAs/engineers.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>المستوى المفاهيمي (نماذج ER/EER) يوضح محتوى النظام من منظور عمل عالي المستوى، موجّه لأصحاب المصلحة والتنفيذيين. المنطقي يخص مطوري BI، والفيزيائي يخص مدراء قواعد البيانات.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 03</span><span class="mc-tag">L6 &middot; Data Model</span></div>
+    <p class="mc-q-en">Which of the following is an example of physical-level data model detail?</p>
+    <p class="mc-q-ar">أي من التالي مثال على تفصيل من المستوى الفيزيائي لنموذج البيانات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>A high-level ER diagram of business entities</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Customer has a 1:N relationship with Sales_Fact</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>A column defined as VARCHAR(100) with an index</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>A list of business stakeholders</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Exact data types (VARCHAR(100), INT), constraints, partitioning and indexes are physical-level details &mdash; the audience is DBAs and data engineers.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الأنواع الدقيقة (VARCHAR(100)، INT) والقيود والتقسيم والفهارس تفاصيل من المستوى الفيزيائي — جمهورها مدراء قواعد البيانات ومهندسو البيانات.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 04</span><span class="mc-tag">L6 &middot; Measures</span></div>
+    <p class="mc-q-en">Which measure type can be summed across most dimensions but NOT across time, such as Account_Balance?</p>
+    <p class="mc-q-ar">أي نوع قياس يمكن جمعه عبر أغلب الأبعاد لكن لا عبر الزمن، كمثال Account_Balance؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Additive</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Semi-Additive</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Non-Additive</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Derived</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Semi-additive measures (e.g. Account_Balance) can be summed across some dimensions but not time &mdash; summing a balance across months gives a meaningless number. Additive (Sales_Amount) sums across all dimensions; non-additive (Profit_Margin_Percentage) needs averages/ratios instead.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>القياسات شبه الجامعة (مثل Account_Balance) تُجمع عبر بعض الأبعاد ما عدا الزمن — جمع الرصيد عبر عدة أشهر رقم بلا معنى. الجامعة (Sales_Amount) تُجمع بكل الأبعاد؛ وغير الجامعة (Profit_Margin_Percentage) تحتاج متوسطات أو نسب.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 05</span><span class="mc-tag">L6 &middot; Schemas</span></div>
+    <p class="mc-q-en">A company with dealers spread across many countries and regions, needing richer normalized detail about each dimension, would most likely use:</p>
+    <p class="mc-q-ar">شركة لها موزعون بدول ومناطق مختلفة، وتحتاج تفصيلًا مُطبَّعًا أكبر عن كل بُعد، ستستخدم غالبًا:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Star Schema</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Snowflake Schema</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>A flat file</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>An OLTP schema</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Snowflake Schema provides more detail about dimensions and their attributes by normalizing them further &mdash; the lecture's own example is a company with dealers across different countries and regions.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>مخطط الثلج يوفر تفصيلًا أكبر عن الأبعاد وسماتها بتطبيعها أكثر — ومثال المحاضرة نفسه شركة لها موزعون بدول ومناطق مختلفة.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 06</span><span class="mc-tag">L6 &middot; Steps</span></div>
+    <p class="mc-q-en">Right after identifying the business process, what is the next step in building a dimensional model?</p>
+    <p class="mc-q-ar">بعد تحديد العملية التجارية مباشرة، ما الخطوة التالية في بناء النموذج البُعدي؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Build the schema</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Determine the grain</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Identify dimensions</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Identify facts</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The five-step order is: (1) Identify Business Process, (2) Determine Grain, (3) Identify Facts, (4) Identify Dimensions, (5) Build Schema.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الترتيب الصحيح: (١) تحديد العملية التجارية، (٢) تحديد الدقة التفصيلية، (٣) تحديد الحقائق، (٤) تحديد الأبعاد، (٥) بناء المخطط.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 07</span><span class="mc-tag">L7 &middot; OLTP</span></div>
+    <p class="mc-q-en">Why are OLTP databases generally unsuitable for direct analytical reporting?</p>
+    <p class="mc-q-ar">لماذا تُعد قواعد بيانات OLTP غير مناسبة عادة للتقارير التحليلية المباشرة؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>They cannot store numeric data</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>They're optimized for change, not analysis, with short data retention</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>They cannot be queried with SQL</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>They store only multimedia files</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>OLTP's key limitations for analysis are performance (optimized for change/transactions, not analysis) and short data retention, plus heterogeneity across systems &mdash; not a lack of numeric data or SQL support.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>قيود OLTP الرئيسية للتحليل هي الأداء (محسّنة للتغيير لا للتحليل) والاحتفاظ القصير بالبيانات، إضافة للتباين بين الأنظمة — لا نقص البيانات الرقمية أو عدم دعم SQL.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 08</span><span class="mc-tag">L7 &middot; Warehouse</span></div>
+    <p class="mc-q-en">A data warehouse described as "non-volatile" (per Inmon) means:</p>
+    <p class="mc-q-ar">مستودع بيانات يوصف بأنه "غير متطاير" (وفق إنمون) يعني:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>It is updated in real time</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>It is never backed up</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>It is not updated in real time, but refreshed periodically</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Data disappears after every query</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Non-volatile is one of Inmon's four defining properties: the warehouse isn't updated in real time; it's refreshed in periodic batches, unlike an OLTP system.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>غير متطاير هي إحدى خصائص إنمون الأربع: المستودع لا يُحدَّث لحظيًا، بل يُحدَّث دوريًا بدفعات، بعكس نظام OLTP.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 09</span><span class="mc-tag">L7 &middot; OLAP</span></div>
+    <p class="mc-q-en">Selecting a subset of the data cube using conditions on two or more dimensions at once (e.g. Region = "Riyadh" AND Product = "Laptop") is called:</p>
+    <p class="mc-q-ar">اختيار جزء من مكعب البيانات بشروط على بُعدين أو أكثر معًا (مثل المنطقة = "الرياض" والمنتج = "لابتوب") يُسمى:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Pivoting</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Slice</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Dice</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Drill-down</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Dice selects a subset using multiple dimensions at once. Slice selects just one value from one dimension; Pivoting only changes the view/orientation, not the data.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التكعيب (Dice) يختار جزءًا باستخدام عدة أبعاد معًا. التقطيع (Slice) يختار قيمة واحدة من بُعد واحد؛ والتدوير (Pivoting) يغيّر العرض فقط لا البيانات.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 10</span><span class="mc-tag">L7 &middot; Data Mart</span></div>
+    <p class="mc-q-en">What primarily distinguishes a Data Mart from an enterprise Data Warehouse?</p>
+    <p class="mc-q-ar">ما الذي يميز متجر البيانات أساسًا عن مستودع البيانات المؤسسي؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>A mart serves one department's scope and is typically much smaller (&lt;100GB)</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>A mart has no schema at all</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>A mart only stores unstructured data</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>A mart is always larger than a warehouse</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>A Data Mart is a localized data warehouse storing only data relevant to one department &mdash; department scope, typically under 100GB, versus 100GB&ndash;1TB+ for an enterprise warehouse.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>متجر البيانات مستودع محلي يخزّن فقط بيانات قسم واحد — نطاق قسم، وحجمه غالبًا أقل من 100GB، مقابل 100GB-1TB+ للمستودع المؤسسي.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 11</span><span class="mc-tag">L7 &middot; Data Lake</span></div>
+    <p class="mc-q-en">Which of the following is a defining objective of a Data Lake?</p>
+    <p class="mc-q-ar">أي من التالي هدف أساسي لبحيرة البيانات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Requiring a strict schema before any data is loaded</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>No schema required upfront, enabling fast data acquisition</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Accepting only relational data</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Fully replacing the need for any data warehouse</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Data Lake objectives: no schema required upfront, fast data acquisition, and storing multi-structured data natively. A Data Lake and Data Warehouse can co-exist &mdash; it doesn't replace it.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>أهداف بحيرة البيانات: لا تتطلب مخططًا مسبقًا، اكتساب سريع للبيانات، وتخزين بيانات متعددة الهياكل بصيغتها الأصلية. وتتعايش بحيرة البيانات مع المستودع — لا تستبدله.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 12</span><span class="mc-tag">L8 &middot; Presentation</span></div>
+    <p class="mc-q-en">Which of the following is NOT one of the three basic forms of data presentation?</p>
+    <p class="mc-q-ar">أي من التالي لا يُعد من الأشكال الثلاثة الأساسية لعرض البيانات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Text</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Tables</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Graphs</span></div>
+      <div class="opt correct"><span class="opt-letter">D</span><span>Audio</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Data presentation takes three forms: text, tables, and/or graphs. Audio is not one of them.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>عرض البيانات يأخذ ثلاثة أشكال: نص، جداول، و/أو رسوم بيانية. الصوت ليس منها.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 13</span><span class="mc-tag">L8 &middot; Visual Forms</span></div>
+    <p class="mc-q-en">A conditional-formatted cell or an inline sparkline shown directly inside a table is an example of:</p>
+    <p class="mc-q-ar">خلية بتنسيق شرطي أو خط صغير (sparkline) مضمّن مباشرة داخل جدول هو مثال على:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Block Visual</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Embedded Visual</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Visual App</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Structured Layout</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Embedded Visual sits inside text/tables &mdash; conditional formatting and inline sparklines are the lecture's own examples. Block Visual is an independent unit (chart, map); Visual App is a standalone application (dashboard, infographic).</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التصور المدمج يكون ضمن النص/الجداول — والتنسيق الشرطي والخط الصغير المضمن مثالا المحاضرة نفسها. التصور الكتلي وحدة مستقلة (رسم، خريطة)؛ والتطبيق البصري تطبيق مستقل (لوحة، إنفوغرافيك).</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 14</span><span class="mc-tag">L9-10 &middot; Dashboard</span></div>
+    <p class="mc-q-en">According to the "dashboard formula," which three components together make up a dashboard?</p>
+    <p class="mc-q-ar">وفق "معادلة اللوحة"، ما المكونات الثلاثة التي تُشكّل اللوحة معًا؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Data/Information + Visual + User Interface</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Data + Report + Chart</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>KPI + Table + Chart</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Visual + Export + Print</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Dashboard = Data/Information + Visual + User Interface. Data/Information is the most important element; Visual gives an at-a-glance view; UI unifies everything cleanly.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>اللوحة = البيانات/المعلومات + التصور البصري + واجهة المستخدم. البيانات/المعلومات العنصر الأهم؛ والتصور يعطي نظرة سريعة؛ وواجهة المستخدم توحّد كل شيء بشكل نظيف.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 15</span><span class="mc-tag">L9-10 &middot; Dashboard Levels</span></div>
+    <p class="mc-q-en">A dashboard with a UI optimized for seeking and navigating data to support ongoing analysis belongs to which level?</p>
+    <p class="mc-q-ar">لوحة بواجهة مُحسَّنة للبحث والتنقل بالبيانات لدعم التحليل المستمر تنتمي لأي مستوى؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Operational</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Tactical</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Strategic</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Transactional</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Tactical &mdash; Analysis/Exploration dashboards have a UI optimized for seeking and navigating data to support analysis. Operational is real-time monitoring; Strategic is a high-level executive summary.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التكتيكية — تحليل/استكشاف لها واجهة مُحسَّنة للبحث والتنقل بالبيانات لدعم التحليل. التشغيلية مراقبة آنية؛ والاستراتيجية ملخص تنفيذي عالي المستوى.</p></div>
+  </section>
+
+  <div class="part-title">Part B &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">8 statements</span>
+    <span class="stat true">4 True</span>
+    <span class="stat false">4 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The logical level of a data model is independent of any specific DBMS and is aimed primarily at computer specialists and BI developers."</p>
+    <p class="statement-ar" dir="rtl">"المستوى المنطقي لنموذج البيانات مستقل عن أي نظام إدارة قواعد بيانات محدد، وموجّه أساسًا لمتخصصي الحاسب ومطوري BI."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the Logical level's purpose and audience.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع غرض وجمهور المستوى المنطقي.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"A non-additive measure such as Profit_Margin_Percentage can be meaningfully summed across all dimensions."</p>
+    <p class="statement-ar" dir="rtl">"القياس غير الجامع كمثال Profit_Margin_Percentage يمكن جمعه بمعنى صحيح عبر كل الأبعاد."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The opposite: non-additive measures cannot be summed at all &mdash; they require averages or ratios instead.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>العكس صحيح: القياسات غير الجامعة لا يمكن جمعها أبدًا — تحتاج متوسطات أو نسب بدلًا من ذلك.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Analytical databases combine heterogeneous data sources into one homogeneous structure and are typically updated periodically rather than in real time."</p>
+    <p class="statement-ar" dir="rtl">"قواعد البيانات التحليلية تدمج مصادر متباينة ضمن هيكل متجانس واحد، وتُحدَّث غالبًا دوريًا لا لحظيًا."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the Analytical Databases' key capabilities exactly.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق قدرات قواعد البيانات التحليلية الرئيسية تمامًا.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"According to Inmon, a data warehouse is primarily designed to support fast, high-concurrency transactional updates."</p>
+    <p class="statement-ar" dir="rtl">"وفق إنمون، مستودع البيانات مصمم أساسًا لدعم تحديثات معاملاتية سريعة وعالية التزامن."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed &mdash; that describes OLTP. Inmon's data warehouse is subject-oriented, integrated, time-variant and non-volatile, built for decision-making, not transactional updates.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة — هذا وصف OLTP. مستودع إنمون موجه بالموضوع ومتكامل ومتغير بالزمن وغير متطاير، مصمم لدعم القرار لا التحديثات المعاملاتية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Pivoting in OLAP changes the view or orientation of the data cube without changing the underlying data itself."</p>
+    <p class="statement-ar" dir="rtl">"التدوير (Pivoting) في OLAP يغيّر العرض أو الاتجاه لمكعب البيانات دون تغيير البيانات نفسها."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's definition of pivoting as an OLAP operation.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع تعريف المحاضرة لعملية التدوير ضمن OLAP.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">06</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"A Data Lake requires a predefined schema before any data can be stored in it."</p>
+    <p class="statement-ar" dir="rtl">"بحيرة البيانات تتطلب مخططًا محددًا مسبقًا قبل تخزين أي بيانات فيها."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The opposite is one of its defining objectives: no schema required upfront, enabling fast acquisition of multi-structured data in its native format.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>العكس هو أحد أهدافها الأساسية: لا تتطلب مخططًا مسبقًا، مما يتيح اكتسابًا سريعًا لبيانات متعددة الهياكل بصيغتها الأصلية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">07</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A Grid layout in structured data presentation uses multiple columns and rows of tiles, and suits ultra-wide screens."</p>
+    <p class="statement-ar" dir="rtl">"تخطيط الشبكة (Grid) بعرض البيانات المهيكل يستخدم أعمدة وصفوف متعددة من البلاطات، ويناسب الشاشات العريضة جدًا."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the Grid definition under Structured Layout Presentation.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع تعريف الشبكة ضمن عرض التخطيط المهيكل.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">08</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Strategic (executive) dashboards are typically built for real-time, minute-by-minute operational monitoring rather than high-level KPI tracking."</p>
+    <p class="statement-ar" dir="rtl">"اللوحات الاستراتيجية (التنفيذية) تُبنى غالبًا للمراقبة التشغيلية اللحظية لا لتتبع المؤشرات عالي المستوى."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed &mdash; that describes Operational dashboards. Strategic dashboards give a high-level summary of performance via KPIs, commonly built around a Balanced Scorecard or Strategy Map, using bullet charts, gauges and traffic lights.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة — هذا وصف اللوحات التشغيلية. الاستراتيجية تقدّم ملخصًا عالي المستوى للأداء عبر المؤشرات، تُبنى غالبًا حول BSC أو خريطة استراتيجية، وتستخدم رسم الرصاصة والمقياس وإشارات المرور.</p></div>
+  </section>
+
+  <div class="part-title">Part C &mdash; Short Answer <span class="ar">إجابات قصيرة</span></div>
+  <div class="stat-row"><span class="stat font-mono">5 questions &middot; concise, auto-gradable style</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">SA 01</span>
+    <h2 class="q-en">Explain the DIKW hierarchy, giving a brief business example of each of its four levels.</h2>
+    <p class="q-ar" dir="rtl">اشرح هرم DIKW مع مثال عملي قصير لكل من مستوياته الأربعة.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Data</strong>: raw facts with no context, e.g. the number "120". <strong>Information</strong>: organized data with context, e.g. "120 units sold in October." <strong>Knowledge</strong>: an actionable insight drawn from information, e.g. "sales rise every Q4 due to holiday demand." <strong>Wisdom</strong>: an integrated understanding of the implications, used to act, e.g. "increase October inventory by 20% ahead of the holiday surge."</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>البيانات</strong>: حقائق خام بلا سياق، مثل الرقم "120". <strong>المعلومات</strong>: بيانات منظمة بسياق، مثل "بيع 120 وحدة بشهر أكتوبر." <strong>المعرفة</strong>: رؤية قابلة للتنفيذ من المعلومات، مثل "المبيعات ترتفع كل ربع رابع بسبب طلب الأعياد." <strong>الحكمة</strong>: فهم متكامل للتبعات يُستخدم للفعل، مثل "زيادة مخزون أكتوبر 20% تحسبًا لموسم الأعياد."</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 02</span>
+    <h2 class="q-en">Briefly explain Inmon's four defining properties of a data warehouse.</h2>
+    <p class="q-ar" dir="rtl">اشرح باختصار الخصائص الأربع المحددة لمستودع البيانات وفق إنمون.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Subject-oriented</strong>: organized around business facts/measures (e.g. sales by product). <strong>Integrated</strong>: one unified view with common definitions across business units. <strong>Time-variant</strong>: recorded historically with a time dimension for comparisons. <strong>Non-volatile</strong>: not updated in real time &mdash; refreshed periodically instead.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>موجهة بالموضوع</strong>: منظمة حول حقائق/مقاييس الأعمال (كالمبيعات حسب المنتج). <strong>متكاملة</strong>: رؤية موحدة بتعريفات مشتركة عبر الوحدات. <strong>متغيرة بالزمن</strong>: مسجلة تاريخيًا ببُعد زمني للمقارنات. <strong>غير متطايرة</strong>: لا تُحدَّث لحظيًا — بل تُحدَّث دوريًا.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 03</span>
+    <h2 class="q-en">What is the difference between the Slice and Dice operations in OLAP?</h2>
+    <p class="q-ar" dir="rtl">ما الفرق بين عمليتي Slice و Dice في OLAP؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Slice</strong> selects one fixed value from a single dimension (e.g. Region = "Riyadh"), producing a lower-dimensional cross-section of the cube. <strong>Dice</strong> selects a smaller sub-cube by applying conditions on two or more dimensions at once (e.g. Region = "Riyadh" AND Product = "Laptop"). Slice reduces by one dimension; Dice filters across multiple dimensions simultaneously.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>التقطيع (Slice)</strong> يختار قيمة ثابتة واحدة من بُعد واحد (مثل المنطقة = "الرياض")، فينتج قطعًا أقل بُعدًا من المكعب. <strong>التكعيب (Dice)</strong> يختار جزءًا أصغر بتطبيق شروط على بُعدين أو أكثر معًا (مثل المنطقة = "الرياض" والمنتج = "لابتوب"). التقطيع يُقلل بُعدًا واحدًا؛ والتكعيب يُصفّي عبر عدة أبعاد معًا.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 04</span>
+    <h2 class="q-en">List the five steps used to build a dimensional model, in order.</h2>
+    <p class="q-ar" dir="rtl">اذكر الخطوات الخمس لبناء النموذج البُعدي بالترتيب.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>(1) Identify the Business Process &mdash; define scope &amp; KPIs. (2) Determine the Grain &mdash; decide the lowest level of detail. (3) Identify Facts &mdash; select measurable metrics tied to that grain. (4) Identify Dimensions &mdash; define descriptive entities &amp; attributes. (5) Build the Schema &mdash; Star (simpler, faster queries) or Snowflake (normalized, storage-efficient).</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>(١) تحديد العملية التجارية — النطاق والمؤشرات. (٢) تحديد الدقة التفصيلية — أدنى مستوى تفصيل. (٣) تحديد الحقائق — مقاييس قابلة للقياس مرتبطة بتلك الدقة. (٤) تحديد الأبعاد — الكيانات الوصفية وسماتها. (٥) بناء المخطط — نجمة (أبسط وأسرع) أو ثلج (مُطبَّع وأكفأ تخزينيًا).</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 05</span>
+    <h2 class="q-en">According to the "dashboard formula," what are the three components of a dashboard, and what role does each play?</h2>
+    <p class="q-ar" dir="rtl">وفق "معادلة اللوحة"، ما مكونات اللوحة الثلاثة ودور كل واحد منها؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>Dashboard = <strong>Data/Information</strong> + <strong>Visual</strong> + <strong>User Interface</strong>. Data/Information is the most important element &mdash; the actual content being monitored. Visual (charts, etc.) gives a high-level, at-a-glance view of that data. User Interface is the clean design layer that unifies the data and visuals into one coherent, usable whole.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>اللوحة = <strong>البيانات/المعلومات</strong> + <strong>التصور البصري</strong> + <strong>واجهة المستخدم</strong>. البيانات/المعلومات العنصر الأهم — المحتوى الفعلي المُراقَب. التصور (رسوم بيانية وغيرها) يعطي نظرة عامة سريعة لتلك البيانات. واجهة المستخدم طبقة التصميم النظيفة التي توحّد البيانات والتصورات بكيان واحد متناسق وقابل للاستخدام.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 4 &middot; Gap-Fill 2 Edition &middot; 15 MC + 8 True/False + 5 Short Answer &middot; not from the doctor &mdash; targets DIKW + Lectures 6&ndash;10 detail not yet covered by any quizedoctor file or the real archived exams</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

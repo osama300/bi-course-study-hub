@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 6 (High-Frequency)</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#B8452F; --accent-soft: rgba(184,69,47,.10); --ar-bg: rgba(184,69,47,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#E58367; --accent-soft: rgba(229,131,103,.10); --ar-bg: rgba(229,131,103,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 12px; }
+  .gapnote{ font-size:13px; color:var(--ink-soft); border:1px dashed var(--line-strong); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+  .gapnote strong{ color:var(--ink); }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  /* ---- Multiple Choice ---- */
+  .mc-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .mc-top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:12px; }
+  .mc-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .mc-tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; }
+  .mc-q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; }
+  .mc-q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; direction:rtl; text-align:right; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .opt{ display:flex; align-items:flex-start; gap:10px; padding:9px 12px; border-radius:10px; border:1px solid var(--line); font-size:14px; }
+  .opt .opt-letter{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; width:20px; flex:none; color:var(--ink-soft); }
+  .opt.correct{ border-color: var(--true); background: var(--true-bg); }
+  .opt.correct .opt-letter{ color: var(--true); }
+  .opt.correct::after{ content:"✓"; margin-inline-start:auto; color:var(--true); font-weight:700; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+  .freq{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:6px 10px; margin-top:12px; display:block; }
+  .freq .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); display:block; direction:rtl; text-align:right; margin-top:2px; font-size:11.5px; }
+
+  /* ---- True/False ---- */
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; direction:rtl; text-align:right; }
+
+  /* ---- Short Answer ---- */
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(17px,2.4vw,20px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); margin:0 0 18px; direction:rtl; text-align:right; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 10px; font-size:15px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 10px; font-size:15px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card, .mc-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">Predicted 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted 5</a> &middot;
+    <span>Predicted Model 6</span>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; High-Frequency Edition</p>
+    <h1>Predicted Exam — Model 6</h1>
+    <p dir="rtl">نموذج توقعي 6 — الأكثر تكرارًا فقط</p>
+    <p class="desc">Not new predictions &mdash; this model is built <strong>only</strong> from concepts that repeat across multiple real sources: her own two practice models (in Essay Q&amp;A &amp; True/False), and the three archived exams from last year (two practice sets + the actual final exam). Every item below is cross-referenced and tagged with exactly how many times &amp; where it repeated.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: هذي ليست أسئلة جديدة متوقعة، بل هي المفاهيم اللي <strong>تكررت فعليًا</strong> عبر مصادر حقيقية متعددة (نموذجاها + 3 امتحانات مؤرشفة من العام الماضي). كل سؤال مُعلَّم بعدد مرات ومصادر تكراره.</p>
+    <p class="gapnote" dir="rtl">
+      <strong>طريقة البناء:</strong> قارنت 5 مصادر حقيقية — أسئلة الدكتورة (مقالي + صح/خطأ)، BI(2).pdf، BI 2(1).pdf، والاختبار النهائي الحقيقي — ورتبت المفاهيم حسب عدد مرات ظهورها (بصياغات مختلفة لكنها نفس المفهوم)، ثم بنيت سؤالًا جديدًا لكل مفهوم عالي التكرار بدل تكرار نصها الحرفي.
+    </p>
+  </header>
+
+  <div class="part-title">Part A &mdash; Multiple Choice <span class="ar">اختيار من متعدد</span></div>
+  <div class="stat-row"><span class="stat font-mono">10 questions &middot; ranked by repeat frequency</span></div>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 01</span><span class="mc-tag">🔁 TOP HIT</span></div>
+    <p class="mc-q-en">Lagging KPIs are primarily used to:</p>
+    <p class="mc-q-ar">المؤشرات التابعة (Lagging) تُستخدم أساسًا لـ:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Predict or influence future performance</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Determine the results of past performance</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Set ambitious but unattainable targets</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Replace the need for leading indicators entirely</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Lagging KPIs show the result of past performance (e.g. revenue this month). Leading KPIs are the ones that predict/influence the future.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>المؤشرات التابعة تُوضّح نتيجة الأداء السابق (كإيراد هذا الشهر). الاستباقية (Leading) هي التي تتنبأ بالمستقبل أو تؤثر فيه.</p></div>
+    <span class="freq">Repeated 5× across 4 independent sources: her own True/False #4, BI(2).pdf Q2, BI 2(1).pdf Q10 &amp; Q13, and the real final exam Q21.<span class="ar">تكررت 5 مرات بـ4 مصادر مستقلة: صح/خطأ الدكتورة #4، وBI(2) س2، وBI2(1) س10 وس13، والاختبار النهائي س21.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 02</span><span class="mc-tag">🔁 TOP HIT</span></div>
+    <p class="mc-q-en">A dimensional data model primarily organizes data into which two components?</p>
+    <p class="mc-q-ar">النموذج البُعدي ينظم البيانات أساسًا ضمن أي عنصرين؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Rows and columns only</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Facts and Dimensions</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Arrays and linked lists</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Indexes and triggers</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The dimensional model is organized around Facts (measurements/events) and Dimensions (descriptive context) &mdash; the core idea behind Star Schema.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>النموذج البُعدي يُنظَّم حول الحقائق (قياسات/أحداث) والأبعاد (سياق وصفي) — الفكرة الأساسية لمخطط النجمة.</p></div>
+    <span class="freq">Repeated across her own Essay Q2 &amp; Q7 (Star Schema / Dimensional Modeling), BI(2).pdf Q3 &amp; Q20, and the final exam's Q19 (star/snowflake purpose).<span class="ar">تكررت بمقالي الدكتورة س2 وس7، وBI(2) س3 وس20، والاختبار النهائي س19.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 03</span><span class="mc-tag">🔁 TOP HIT</span></div>
+    <p class="mc-q-en">The primary purpose of the Balanced Scorecard is to:</p>
+    <p class="mc-q-ar">الغرض الأساسي من بطاقة الأداء المتوازن هو:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Replace all financial accounting entirely</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Translate strategy into measurable objectives across multiple perspectives</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Automate reporting systems only</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Eliminate the need for KPIs</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>BSC's purpose is to translate strategy into measurable objectives across Financial, Customer, Internal Process &amp; Learning/Growth, aligning activities with strategic goals.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>غرض BSC ترجمة الاستراتيجية لأهداف قابلة للقياس عبر الأبعاد الأربعة، ومواءمة الأنشطة مع الأهداف الاستراتيجية.</p></div>
+    <span class="freq">BSC's purpose was asked 3 separate times just within BI 2(1).pdf &amp; the final exam: Q3 &amp; Q11 (BI 2(1).pdf), and Q11 (final exam).<span class="ar">غرض BSC سُئل 3 مرات مستقلة بين BI2(1) س3 وس11، والاختبار النهائي س11.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 04</span><span class="mc-tag">🔁 repeated</span></div>
+    <p class="mc-q-en">Which sequence correctly represents the DIKW hierarchy, from simplest to most advanced?</p>
+    <p class="mc-q-ar">أي تسلسل يمثل هرم DIKW بشكل صحيح، من الأبسط للأكثر تقدمًا؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Data &rarr; Information &rarr; Knowledge &rarr; Wisdom</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Information &rarr; Data &rarr; Knowledge &rarr; Wisdom</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Data &rarr; Knowledge &rarr; Information &rarr; Wisdom</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Data &rarr; Information &rarr; Wisdom &rarr; Knowledge</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Data (raw facts) &rarr; Information (organized, with context) &rarr; Knowledge (actionable insight) &rarr; Wisdom (integrated understanding used to act).</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>بيانات (خام) ← معلومات (منظمة بسياق) ← معرفة (رؤية قابلة للتنفيذ) ← حكمة (فهم متكامل يُستخدم للفعل).</p></div>
+    <span class="freq">DIKW tested 3 times across 2 sources: BI 2(1).pdf Q7 (Knowledge) &amp; Q15 (Wisdom), and the final exam Q29 (full order).<span class="ar">هرم DIKW سُئل 3 مرات بمصدرين: BI2(1) س7 (المعرفة) وس15 (الحكمة)، والاختبار النهائي س29 (التسلسل الكامل).</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 05</span><span class="mc-tag">🔁 repeated</span></div>
+    <p class="mc-q-en">OLAP is best described as a system for:</p>
+    <p class="mc-q-ar">يُوصف OLAP بأنه نظام مخصص لـ:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Managing daily transactions</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Multi-dimensional analysis and complex queries</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Data entry and updating records</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Storing unstructured multimedia files</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>OLAP = Online Analytical Processing, used for multidimensional data analysis and complex analytical queries &mdash; the opposite of OLTP's daily transaction focus.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>OLAP = معالجة تحليلية آنية، تُستخدم للتحليل متعدد الأبعاد والاستعلامات المعقدة — بعكس تركيز OLTP على المعاملات اليومية.</p></div>
+    <span class="freq">Asked in both BI(2).pdf Q13 and the final exam Q8.<span class="ar">سُئل بكل من BI(2) س13 والاختبار النهائي س8.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 06</span><span class="mc-tag">🔁 repeated (same exam)</span></div>
+    <p class="mc-q-en">A Data Lake can store which of the following?</p>
+    <p class="mc-q-ar">يمكن لبحيرة البيانات أن تخزّن أي من التالي؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Machine-generated data only</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Human-generated data only</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Traditional operational data only</span></div>
+      <div class="opt correct"><span class="opt-letter">D</span><span>All of the above, in native format</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>A Data Lake stores disparate data in its native format: machine-generated (IoT), human-generated (tweets/email), and traditional operational data alike.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>بحيرة البيانات تخزّن بيانات متنوعة بصيغتها الأصلية: بيانات تُنشئها الأجهزة (IoT)، بيانات يُنشئها البشر (تغريدات/بريد)، وبيانات تشغيلية تقليدية.</p></div>
+    <span class="freq">The real final exam tested Data Lake twice back-to-back: Q25 (definition) &amp; Q26 (data types) &mdash; a strong signal she tests a topic from multiple angles in the same sitting.<span class="ar">الاختبار النهائي اختبر بحيرة البيانات مرتين متتاليتين: س25 وس26 — إشارة قوية إنها تختبر نفس الموضوع من زوايا متعددة بنفس الجلسة.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 07</span><span class="mc-tag">🔁 repeated (same exam)</span></div>
+    <p class="mc-q-en">The main difference between a Report and a Dashboard in detailed reporting is:</p>
+    <p class="mc-q-ar">الفرق الأساسي بين التقرير واللوحة بالتقارير التفصيلية هو:</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Reports focus on detailed data using tables; dashboards focus on KPIs and summarized metrics</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Both primarily present raw, unfiltered data</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Both avoid tabular data presentation entirely</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Dashboards are only used for printing</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reports are data-intensive and table-driven for people who need the data itself; dashboards consolidate key measures/KPIs for a quick glance.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التقارير كثيفة بالبيانات وجدولية لمن يحتاج البيانات نفسها؛ اللوحات تُجمّع المقاييس/المؤشرات الرئيسية لنظرة سريعة.</p></div>
+    <span class="freq">The dashboard/report theme was the single most oversampled cluster in the real final exam &mdash; about 9 of its 29 questions touch reports, dashboards or data presentation (Q1, 4, 5, 6, 12, 16, 20, 25&ndash;27).<span class="ar">موضوع التقارير/اللوحات هو الأكثر تركيزًا بالاختبار النهائي الحقيقي — حوالي 9 من 29 سؤالًا تخصه.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 08</span><span class="mc-tag">🔁 repeated (same exam)</span></div>
+    <p class="mc-q-en">In an effective analytical dashboard, which is the correct hierarchy of key components?</p>
+    <p class="mc-q-ar">بلوحة تحليلية فعالة، ما التسلسل الصحيح للمكونات الأساسية؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Data/Information + Visual + User Interface</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>User Interface + Visual + Data/Information</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Visual + Data/Information + User Interface</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>User Interface + Data/Information + Visual</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The dashboard formula: Data/Information (most important) + Visual (at-a-glance view) + User Interface (unifies everything cleanly) &mdash; in that priority order.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معادلة اللوحة: البيانات/المعلومات (الأهم) + التصور (نظرة سريعة) + واجهة المستخدم (توحّد الكل) — بهذا ترتيب الأولوية.</p></div>
+    <span class="freq">Part of the same dashboard cluster &mdash; the final exam's own Q27 asks this exact hierarchy as a distractor-heavy permutation question.<span class="ar">جزء من نفس مجموعة اللوحات — سؤال الاختبار النهائي س27 يسأل نفس هذا التسلسل بخيارات مموّهة.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 09</span><span class="mc-tag">🔁 repeated</span></div>
+    <p class="mc-q-en">What mainly distinguishes a pivot table from a raw transactional data table?</p>
+    <p class="mc-q-ar">ما الذي يميّز الجدول المحوري أساسًا عن جدول البيانات التشغيلي الخام؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Pivot tables present data aggregated by dimensions; transactional tables hold raw, line-by-line data</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Pivot tables are only used for multidimensional analysis</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Transactional tables are always part of a dashboard</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>There is no meaningful difference</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>A pivot table aggregates data by dimensions for summary viewing; a transactional table stores raw, unaggregated line-by-line records.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الجدول المحوري يُجمّع البيانات حسب الأبعاد لعرض ملخص؛ الجدول التشغيلي يخزّن سجلات خام غير مجمّعة سطرًا بسطر.</p></div>
+    <span class="freq">Directly from the final exam Q16, and conceptually reinforced by Power BI's Pivot/Matrix definitions used elsewhere in her slides.<span class="ar">مباشرة من الاختبار النهائي س16، ومُعزّز مفاهيميًا بتعريفات Pivot/Matrix بسلايداتها.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 10</span><span class="mc-tag">🔁 repeated</span></div>
+    <p class="mc-q-en">Business Intelligence focuses mainly on which type(s) of analytics?</p>
+    <p class="mc-q-ar">يركّز ذكاء الأعمال أساسًا على أي نوع من التحليلات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Prescriptive analytics only</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Predictive analytics only</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Descriptive and diagnostic analytics</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Machine learning model creation only</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>BI focuses on descriptive (what happened) and diagnostic (why it happened) analytics &mdash; looking at past &amp; present. Analytics (especially advanced) handles the predictive/prescriptive side.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>BI يركّز على التحليل الوصفي (ماذا حدث) والتشخيصي (لماذا حدث) — الماضي والحاضر. Analytics (المتقدمة خاصة) تتولى الجانب التنبؤي والتوصوي.</p></div>
+    <span class="freq">Identical question in BI(2).pdf Q8 and BI 2(1).pdf Q9, and the same BI-vs-Analytics distinction is her own real Essay Q1 and the final exam's Q7.<span class="ar">سؤال متطابق بـBI(2) س8 وBI2(1) س9، ونفس التفريق هو مقالي الدكتورة الحقيقي س1 وسؤال الاختبار النهائي س7.</span></span>
+  </section>
+
+  <div class="part-title">Part B &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">5 statements</span>
+    <span class="stat true">2 True</span>
+    <span class="stat false">3 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A poor or badly designed data model leads to inconsistent data, inaccurate query results, and slow analytical performance."</p>
+    <p class="statement-ar" dir="rtl">"النموذج السيئ أو ضعيف التصميم للبيانات يؤدي إلى بيانات غير متسقة ونتائج استعلام غير دقيقة وأداء تحليلي بطيء."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This is, by far, the single most repeated concept across every real source checked.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا أكثر مفهوم تكرر على الإطلاق بين كل المصادر الحقيقية المفحوصة.</p></div>
+    <span class="freq">Repeated 4× across 3 independent sources: her own True/False #5, BI(2).pdf Q9 &amp; Q10 (asked twice in the same file), and BI 2(1).pdf Q4.<span class="ar">تكرر 4 مرات بـ3 مصادر مستقلة: صح/خطأ الدكتورة #5، وBI(2) س9 وس10 (مرتين بنفس الملف)، وBI2(1) س4.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"A Lagging KPI is used to predict and influence future performance before it happens."</p>
+    <p class="statement-ar" dir="rtl">"المؤشر التابع (Lagging) يُستخدم للتنبؤ بالأداء المستقبلي والتأثير فيه قبل حدوثه."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed &mdash; that's a Leading KPI. Lagging KPIs show the result of past performance, after the fact.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة — هذا وصف المؤشر الاستباقي (Leading). التابع يُظهر نتيجة الأداء السابق بعد حدوثه.</p></div>
+    <span class="freq">Her own True/False #4 tests this exact reversal almost word-for-word &mdash; also echoed by BI(2).pdf Q2 and the final exam Q21.<span class="ar">صح/خطأ الدكتورة #4 يسأل نفس هذا العكس تقريبًا حرفيًا — ويتكرر بـBI(2) س2 والاختبار النهائي س21.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A data warehouse being 'subject-oriented' means it's organized around key business subjects like customers, sales, and products &mdash; not around individual source applications."</p>
+    <p class="statement-ar" dir="rtl">"كون مستودع البيانات 'موجهًا بالموضوع' يعني أنه منظم حول مواضيع عمل رئيسية كالعملاء والمبيعات والمنتجات — لا حول تطبيقات المصدر الفردية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with Inmon's subject-oriented property.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع خاصية إنمون "موجهة بالموضوع".</p></div>
+    <span class="freq">Asked directly in the final exam Q23.<span class="ar">سُئلت مباشرة بالاختبار النهائي س23.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The time dimension in a data warehouse facilitates historical analysis and comparison across different periods."</p>
+    <p class="statement-ar" dir="rtl">"البُعد الزمني بمستودع البيانات يسهّل التحليل التاريخي والمقارنة بين فترات مختلفة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with Inmon's time-variant property &mdash; and is the exact phrasing used in the real final exam's own answer key.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع خاصية إنمون "متغيرة بالزمن" — وهي نفس صياغة مفتاح الإجابة بالاختبار النهائي الحقيقي.</p></div>
+    <span class="freq">Asked directly in the final exam Q18. Paired with MC03's subject-oriented question, she clearly tests Inmon's properties individually, not just as a list.<span class="ar">سُئلت مباشرة بالاختبار النهائي س18 — إشارة إنها تختبر خصائص إنمون فرادى لا كقائمة فقط.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Business Intelligence primarily relies on predictive and prescriptive analytics to forecast future outcomes."</p>
+    <p class="statement-ar" dir="rtl">"ذكاء الأعمال يعتمد أساسًا على التحليل التنبؤي والتوصوي للتنبؤ بالنتائج المستقبلية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed &mdash; that's Analytics. BI relies on descriptive &amp; diagnostic analytics looking at past &amp; present data.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة — هذا وصف Analytics. BI يعتمد على التحليل الوصفي والتشخيصي للماضي والحاضر.</p></div>
+    <span class="freq">Same BI-vs-Analytics theme as MC10 &mdash; tested as a T/F trap here instead, since she reuses the same concept across both question formats.<span class="ar">نفس موضوع BI مقابل Analytics بسؤال MC10 — هنا بصيغة صح/خطأ، لأنها تعيد استخدام نفس المفهوم بصيغ مختلفة.</span></span>
+  </section>
+
+  <div class="part-title">Part C &mdash; Short Answer <span class="ar">إجابات قصيرة</span></div>
+  <div class="stat-row"><span class="stat font-mono">4 questions &middot; concise, auto-gradable style</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">SA 01</span>
+    <h2 class="q-en">Define the Strategy Map and explain its relationship to the Balanced Scorecard's four perspectives.</h2>
+    <p class="q-ar" dir="rtl">عرّف خريطة الاستراتيجية واشرح علاقتها بأبعاد بطاقة الأداء المتوازن الأربعة.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>A Strategy Map is a visual representation showing the cause-and-effect relationships between strategic objectives across all four BSC perspectives. It typically flows bottom-up: improvements in Learning &amp; Growth drive better Internal Processes, which drive Customer Satisfaction, which ultimately drives Financial Results &mdash; making the links between day-to-day work and overall strategy explicit and visible.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>خريطة الاستراتيجية تمثيل مرئي يوضح علاقات السبب والنتيجة بين الأهداف الاستراتيجية عبر الأبعاد الأربعة لـ BSC. تسير غالبًا من الأسفل للأعلى: تحسّن التعلم والنمو يقود لعمليات داخلية أفضل، تقود لرضا العملاء، ليقود أخيرًا للنتائج المالية — مما يجعل الربط بين العمل اليومي والاستراتيجية الشاملة واضحًا ومرئيًا.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 02</span>
+    <h2 class="q-en">What is the purpose of the Balanced Scorecard?</h2>
+    <p class="q-ar" dir="rtl">ما الغرض من بطاقة الأداء المتوازن؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>To translate strategy into measurable objectives across multiple perspectives (Financial, Customer, Internal Processes, Learning &amp; Growth), and align daily organizational activities with strategic goals.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>ترجمة الاستراتيجية لأهداف قابلة للقياس عبر أبعاد متعددة (المالي، العملاء، العمليات الداخلية، التعلم والنمو)، ومواءمة الأنشطة اليومية للمنظمة مع الأهداف الاستراتيجية.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 03</span>
+    <h2 class="q-en">Define Managed Reporting.</h2>
+    <p class="q-ar" dir="rtl">عرّف التقارير المُدارة (Managed Reporting).</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>A reporting approach where a technical developer prepares the data and builds the desired output for non-technical users &mdash; it is not generated fully automatically and is not focused on real-time streaming or alerts.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>أسلوب تقارير يحضّر فيه مطوّر تقني البيانات ويبني المخرج المطلوب لمستخدمين غير تقنيين — ليست مولّدة آليًا بالكامل، ولا تركز على البث اللحظي أو التنبيهات.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 04</span>
+    <h2 class="q-en">What is the difference between BI and Analytics?</h2>
+    <p class="q-ar" dir="rtl">ما الفرق بين BI وAnalytics؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>BI focuses on descriptive and diagnostic analysis of past and current data to support decision-making, while Analytics (especially advanced analytics) focuses on predictive and prescriptive analysis to forecast future outcomes and optimize decisions.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>BI يركّز على التحليل الوصفي والتشخيصي للبيانات الماضية والحالية لدعم القرار، بينما Analytics (المتقدمة خاصة) يركّز على التحليل التنبؤي والتوصوي للتنبؤ بالنتائج المستقبلية وتحسين القرارات.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 6 &middot; High-Frequency Edition &middot; 10 MC + 5 True/False + 4 Short Answer &middot; every item cross-referenced against 5 real sources, not freshly invented</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

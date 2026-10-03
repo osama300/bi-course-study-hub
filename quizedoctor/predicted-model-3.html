@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 3</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A; --accent-soft: rgba(184,132,42,.10); --ar-bg: rgba(184,132,42,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563; --accent-soft: rgba(231,181,99,.10); --ar-bg: rgba(231,181,99,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 12px; }
+  .gapnote{ font-size:13px; color:var(--ink-soft); border:1px dashed var(--line-strong); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+  .gapnote strong{ color:var(--ink); }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(18px,2.6vw,22px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:17px; color:var(--ink-soft); margin:0 0 18px; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 14px; font-size:15.5px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 14px; font-size:15.5px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">Predicted 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted 2</a> &middot;
+    <span>Predicted Model 3</span> &middot;
+    <a href="predicted-model-4.html">Predicted 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted 6 &rarr;</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Predicted Practice Exam &middot; Gap-Fill Edition</p>
+    <h1>Predicted Exam — Model 3</h1>
+    <p dir="rtl">نموذج توقعي 3 — سد الفجوات المتبقية</p>
+    <p class="desc">Built after auditing every existing file against the full five-lecture content. These 17 questions target the specific topics that Models 1 &amp; 2 and the real doctor's questions had <strong>not</strong> touched yet.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: أسئلة <strong>متوقعة</strong> مبنية على تحليل فجوات فعلي — مو أسئلة من الدكتورة.</p>
+    <p class="gapnote" dir="rtl">
+      <strong>الفجوات اللي سدّها هذا النموذج:</strong> الخصائص السبع والفوائد الرئيسية للمؤشرات، أدوات تتبع المؤشرات، دراسة حالة FCIT كاملة كسؤال مقالي، معنى "الأعمال" الواسع، تطبيقات BI النموذجية، الفرق بين Data Structure وData Architecture، العناصر الأساسية لنموذج البيانات (Entity/Relationship/Attribute)، النموذج العلائقي والهجين، ولماذا نشأت بطاقة الأداء المتوازن، ومثال درجات الطلاب التطبيقي.
+    </p>
+  </header>
+
+  <div class="part-title">Part A &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">12 statements</span>
+    <span class="stat true">6 True</span>
+    <span class="stat false">6 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Performance Management is a systematic process that helps organizations align resources, employees, and activities with strategic objectives."</p>
+    <p class="statement-ar" dir="rtl">"إدارة الأداء عملية منهجية تساعد المنظمات على مواءمة الموارد والموظفين والأنشطة مع الأهداف الاستراتيجية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This is the lecture's opening definition of Performance Management, word for word in substance.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا هو تعريف المحاضرة الافتتاحي لإدارة الأداء، بنفس المضمون تقريبًا.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"According to its seven characteristics, an effective KPI should be expressed in financial terms such as dollars or euros."</p>
+    <p class="statement-ar" dir="rtl">"وفق خصائصه السبع، يجب أن يُعبَّر عن المؤشر الفعّال بمصطلحات مالية كالدولار أو اليورو."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The opposite: effective KPIs are explicitly <strong>nonfinancial measures</strong> &mdash; not expressed in dollars, yen, pounds, euros, etc.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>العكس هو الصحيح: المؤشرات الفعالة هي <strong>مقاييس غير مالية</strong> صراحة — لا تُقاس بالدولار أو الين أو الجنيه أو اليورو.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"One of the main benefits of tracking KPIs is that it fosters a culture of accountability, encouraging learning and innovation."</p>
+    <p class="statement-ar" dir="rtl">"من فوائد تتبع المؤشرات الرئيسية أنها تعزز ثقافة المساءلة، وتشجع التعلم والابتكار."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Directly matches the "Main Benefits of Tracking KPIs" material: they foster accountability, which encourages a culture of learning and innovation.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق مباشرة محتوى "الفوائد الرئيسية لتتبع المؤشرات": تعزز المساءلة، مما يشجع ثقافة التعلم والابتكار.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"The Balanced Scorecard Framework is classified as a spreadsheet-based tool for KPI tracking."</p>
+    <p class="statement-ar" dir="rtl">"يُصنَّف إطار بطاقة الأداء المتوازن كأداة قائمة على جداول البيانات لتتبع المؤشرات."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture lists three separate tool categories: Dashboards (Power BI, Tableau), <strong>Scorecards</strong> (Balanced Scorecard Framework), and Spreadsheets &amp; BI Reports (Excel, SQL). BSC belongs to the Scorecards category, not Spreadsheets.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تذكر المحاضرة ثلاث فئات أدوات منفصلة: لوحات المعلومات (Power BI، Tableau)، <strong>بطاقات الأداء</strong> (إطار BSC)، وجداول البيانات وتقارير BI (Excel، SQL). BSC تنتمي لفئة بطاقات الأداء، لا جداول البيانات.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The term 'business' in a BI context can refer to non-profit organizations, government entities, and even individuals, not just for-profit companies."</p>
+    <p class="statement-ar" dir="rtl">"مصطلح 'الأعمال' ضمن سياق BI يمكن أن يشير لمنظمات غير ربحية وجهات حكومية وحتى أفراد، لا شركات ربحية فقط."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the lecture's broad definition of "business": commercial (for-profit), non-profit, government, and individuals are all listed explicitly.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق تعريف المحاضرة الواسع لـ"الأعمال": الربحية وغير الربحية والحكومية والأفراد كلها مذكورة صراحة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">06</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Sample BI/Analytics applications span many domains, including HR analytics, learning analytics, and location intelligence."</p>
+    <p class="statement-ar" dir="rtl">"تطبيقات BI/التحليلات النموذجية تشمل مجالات كثيرة، منها تحليلات الموارد البشرية وتحليلات التعلم والذكاء المكاني."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>All three are named directly in the lecture's list of sample applications, across the "Human resource/capital," "Data type specific," and "Education" categories.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الثلاثة مذكورة مباشرة بقائمة المحاضرة للتطبيقات النموذجية، ضمن فئات "الموارد البشرية" و"بيانات نوعية محددة" و"التعليم".</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">07</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Data Architecture describes how data is represented internally, while Data Structure defines the organization-wide blueprint for managing data assets."</p>
+    <p class="statement-ar" dir="rtl">"معمارية البيانات تصف كيف تُمثَّل البيانات داخليًا، بينما هيكل البيانات يحدد المخطط الشامل لإدارة أصول البيانات على مستوى المنظمة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed. <strong>Data Structure</strong> is the technical, internal organization of data (arrays, dictionaries). <strong>Data Architecture</strong> is the org-wide blueprint for managing data assets aligned with business strategy.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة. <strong>هيكل البيانات</strong> هو التنظيم التقني الداخلي للبيانات (مصفوفات، قواميس). <strong>معمارية البيانات</strong> هي المخطط الشامل لإدارة أصول البيانات بما يتوافق مع استراتيجية الأعمال.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">08</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"The Relational Model is a conceptual-level model, primarily used for communicating business rules to non-technical stakeholders."</p>
+    <p class="statement-ar" dir="rtl">"النموذج العلائقي نموذج مفاهيمي، يُستخدم أساسًا لتوصيل قواعد العمل لغير المختصين."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The Relational Model is a <strong>logical</strong>-level model &mdash; a 2D table of rows/columns based on mathematical relation theory. The <strong>ER model</strong> is the conceptual-level one aimed at business stakeholders.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>النموذج العلائقي نموذج من المستوى <strong>المنطقي</strong> — جدول ثنائي الأبعاد مبني على نظرية العلاقات الرياضية. أما نموذج <strong>ER</strong> فهو المفاهيمي الموجّه لأصحاب المصلحة بالأعمال.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">09</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A Hybrid data model combines two or more model types within the same dataset, such as MariaDB combining JSON (hierarchical) with relational structures."</p>
+    <p class="statement-ar" dir="rtl">"النموذج الهجين يجمع بين نوعين أو أكثر من النماذج ضمن نفس مجموعة البيانات، كدمج MariaDB بين JSON (شجري) والبنية العلائقية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's Hybrid Model example.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع مثال النموذج الهجين بالمحاضرة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">10</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"In a data model, an Attribute defines how two entities are associated with each other."</p>
+    <p class="statement-ar" dir="rtl">"ضمن نموذج البيانات، تحدد السمة (Attribute) كيف يرتبط كيانان ببعضهما."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>That is the definition of a <strong>Relationship</strong>. An <strong>Attribute</strong> is data that describes an entity or a relationship (e.g. a customer's name), not the association itself.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا تعريف <strong>العلاقة (Relationship)</strong>. أما <strong>السمة (Attribute)</strong> فهي بيانات تصف الكيان أو العلاقة (مثل اسم العميل)، لا الارتباط نفسه.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">11</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"One reason the Balanced Scorecard was developed is that traditional financial metrics alone don't capture the value of intangible assets like employee capability and customer relationships."</p>
+    <p class="statement-ar" dir="rtl">"من أسباب تطوير بطاقة الأداء المتوازن أن المقاييس المالية التقليدية وحدها لا تعكس قيمة الأصول غير الملموسة كقدرات الموظفين وعلاقات العملاء."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the BSC rationale directly: financial metrics are backward-looking and miss the value of intangible assets such as relationships, capability, and knowledge.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق مباشرة أسباب نشأة BSC: المقاييس المالية تنظر للماضي وتغفل قيمة الأصول غير الملموسة كالعلاقات والكفاءات والمعرفة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">12</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The phrase 'what gets measured gets managed' explains why selecting the right KPIs matters within the BSC framework."</p>
+    <p class="statement-ar" dir="rtl">"عبارة 'ما يُقاس يُدار' توضح لماذا يهم اختيار المؤشرات الصحيحة ضمن إطار BSC."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct quote from the "Why the Right KPIs Matter" material within the BSC/KPI context.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>اقتباس مباشر من محتوى "أهمية اختيار المؤشرات الصحيحة" ضمن سياق BSC/المؤشرات.</p></div>
+  </section>
+
+  <div class="part-title">Part B &mdash; Essay Questions <span class="ar">أسئلة مقالية</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">E1</span>
+    <h2 class="q-en">Explain the seven characteristics of an effective KPI, and discuss two of the main benefits an organization gains from tracking KPIs.</h2>
+    <p class="q-ar" dir="rtl">اشرح خصائص المؤشر الفعّال السبع، وناقش فائدتين رئيسيتين تكتسبهما المنظمة من تتبع المؤشرات.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>Effective KPIs share seven characteristics. They are <strong>(1) nonfinancial measures</strong> &mdash; not expressed in currency; <strong>(2) measured frequently</strong> &mdash; 24/7, daily, or weekly; <strong>(3) acted on directly by the CEO and senior management</strong>; <strong>(4) clear about the action required</strong> &mdash; staff understand the measure and know what to fix; <strong>(5) high impact</strong> &mdash; affecting critical success factors and more than one BSC perspective; and <strong>(6) they encourage appropriate action</strong> across the organization.</p>
+      <p>Tracking KPIs delivers several benefits. Two of the most important: <strong>clarity and focus</strong> &mdash; KPIs communicate an organization's vision, mission, and objectives, aligning every team's daily activity with the overall strategy; and <strong>fostering a culture of accountability</strong> &mdash; because KPIs typically have an owner and are reviewed regularly, they create ownership that encourages learning and innovation.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>تشترك المؤشرات الفعالة بسبع خصائص: <strong>(١) مقاييس غير مالية</strong> — لا تُقاس بعملة؛ <strong>(٢) تُقاس بتكرار عالٍ</strong> — على مدار الساعة، يوميًا، أو أسبوعيًا؛ <strong>(٣) يتخذ الرئيس التنفيذي والإدارة العليا إجراءً مباشرًا بشأنها</strong>؛ <strong>(٤) واضحة بالإجراء المطلوب</strong> — يفهم الموظفون المقياس ويعرفون ما يجب إصلاحه؛ <strong>(٥) ذات تأثير كبير</strong> — تؤثر على عوامل النجاح الحرجة وأكثر من بُعد؛ <strong>(٦) تشجع على الإجراء المناسب</strong> داخل المنظمة.</p>
+      <p>تتبع المؤشرات يحقق فوائد عديدة. أهمها: <strong>الوضوح والتركيز</strong> — توصّل المؤشرات رؤية المنظمة ورسالتها وأهدافها، وتُنسّق نشاط كل فريق مع الاستراتيجية العامة؛ و<strong>تعزيز ثقافة المساءلة</strong> — بما أن للمؤشرات عادة مالكًا وتُراجَع بانتظام، تخلق شعورًا بالملكية يشجع التعلم والابتكار.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E2</span>
+    <h2 class="q-en">Using the FCIT case study, walk through how the organization applied the 6-step KPI design process — from mission to a monitored dashboard.</h2>
+    <p class="q-ar" dir="rtl">باستخدام دراسة حالة FCIT، اشرح كيف طبّقت المنظمة عملية تصميم المؤشرات ذات الست خطوات — من الرسالة إلى لوحة معلومات مُتابَعة.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>FCIT started by defining its <strong>Mission</strong> (distinguished academic programs and a stimulating research environment in computing and technology, per quality and accreditation standards) and <strong>Vision</strong> (academic and research leadership nationally and regionally). From that mission, it identified three <strong>Strategic Objectives</strong>: improve student satisfaction with support services, increase on-time program completion, and reduce dropout rates.</p>
+      <p>It then outlined <strong>Criteria for Success</strong>: 90% of students satisfied with support services, at least 85% graduating within the expected time, and a dropout rate not exceeding 5% annually. It <strong>built the KPI formula</strong> for each: Satisfaction % = satisfied responses &divide; total responses &times; 100; On-time Graduation % = on-time graduates &divide; total students &times; 100; Dropout Rate % = dropouts &divide; total enrolled &times; 100.</p>
+      <p>Finally, it <strong>presented the KPIs</strong> in a monthly dashboard shared with university leadership, using color-coded visuals (green for target met, red for underperformance), and discussed results in quarterly performance review meetings &mdash; completing the chain from an abstract mission to a number leadership actually monitors and acts on.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>بدأت FCIT بتحديد <strong>الرسالة</strong> (برامج أكاديمية متميزة وبيئة بحثية محفزة بالحوسبة والتقنية، وفق معايير الجودة والاعتماد) و<strong>الرؤية</strong> (الريادة الأكاديمية والبحثية وطنيًا وإقليميًا). من هذه الرسالة، حددت ثلاثة <strong>أهداف استراتيجية</strong>: تحسين رضا الطلاب عن خدمات الدعم، زيادة إتمام البرامج بالوقت المحدد، وتقليل معدلات التسرب.</p>
+      <p>ثم حددت <strong>معايير النجاح</strong>: رضا 90% من الطلاب، تخرج 85% على الأقل بالوقت المتوقع، ومعدل تسرب لا يتجاوز 5% سنويًا. و<strong>بنت معادلة كل مؤشر</strong>: معدل الرضا % = الردود الراضية ÷ إجمالي الردود × 100؛ معدل التخرج بالوقت % = المتخرجون بالوقت ÷ إجمالي الطلاب × 100؛ معدل التسرب % = المتسربون ÷ إجمالي المسجلين × 100.</p>
+      <p>أخيرًا، <strong>عرضت المؤشرات</strong> بلوحة شهرية تُشارك مع قيادة الجامعة، بترميز لوني (أخضر لتحقيق الهدف، أحمر لضعف الأداء)، ونوقشت النتائج باجتماعات مراجعة فصلية — مكمّلةً السلسلة من رسالة مجردة إلى رقم تراقبه القيادة فعليًا وتتصرف بناءً عليه.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E3</span>
+    <h2 class="q-en">Define the basic elements of a data model — Entity, Relationship, and Attribute — with an example of each. Then distinguish Data Structure from Data Architecture.</h2>
+    <p class="q-ar" dir="rtl">عرّف العناصر الأساسية لنموذج البيانات — الكيان والعلاقة والسمة — مع مثال لكل واحد. ثم فرّق بين هيكل البيانات ومعمارية البيانات.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>An <strong>Entity</strong> is an object, thing, activity, or event &mdash; e.g. "Customer" or "Order." A <strong>Relationship</strong> describes how entities are associated &mdash; e.g. a Customer "places" an Order. An <strong>Attribute</strong> is data that describes an entity or relationship &mdash; e.g. a Customer's name/email, or an Order's date/total.</p>
+      <p><strong>Data Structure</strong> is a technical, computer-facing organization of data &mdash; a collection of values, their relationships, and applicable operations, such as an array, dictionary, or class. It's implementation-focused; even unstructured data has some inherent structure. <strong>Data Architecture</strong>, by contrast, is the organization-wide blueprint for managing data assets aligned with business strategy &mdash; covering business processes, infrastructure, systems, application data flows, and security. In short: Data Structure organizes one piece of data internally; Data Architecture plans and governs an entire organization's data.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>الكيان</strong> شيء أو غرض أو نشاط أو حدث — مثل "العميل" أو "الطلب". <strong>العلاقة</strong> تصف كيف ترتبط الكيانات — مثل العميل "يُنشئ" طلبًا. <strong>السمة</strong> بيانات تصف الكيان أو العلاقة — مثل اسم/بريد العميل، أو تاريخ/مبلغ الطلب.</p>
+      <p><strong>هيكل البيانات</strong> تنظيم تقني موجّه للحاسوب — مجموعة قيم وعلاقاتها والعمليات القابلة للتطبيق، مثل المصفوفة أو القاموس أو الصنف. مركّز على التنفيذ؛ حتى البيانات غير المنظمة لها هيكل كامن. أما <strong>معمارية البيانات</strong>، فهي المخطط الشامل لإدارة أصول البيانات بما يتوافق مع استراتيجية الأعمال — تغطي العمليات والبنية التحتية والأنظمة وتدفقات بيانات التطبيقات والأمن. باختصار: هيكل البيانات ينظم قطعة بيانات واحدة داخليًا؛ ومعمارية البيانات تخطط وتحوكم بيانات المنظمة كاملة.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E4</span>
+    <h2 class="q-en">Using the Student Scores example, compare the column-based and key-value paired formats, and explain how each affects a simple calculation like an average score.</h2>
+    <p class="q-ar" dir="rtl">باستخدام مثال درجات الطلاب، قارن بين التنسيق العمودي وتنسيق أزواج المفتاح-القيمة، واشرح كيف يؤثر كل واحد على حساب بسيط كمتوسط الدرجات.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>The <strong>column-based</strong> format uses one row per student, with a separate column per score (Name, Score1, Score2, Score3) &mdash; a "wide" layout. The <strong>key-value paired</strong> format uses one row per student-score combination (Student, ScoreItem, Score) &mdash; a "long" layout, where the same student appears across multiple rows.</p>
+      <p>This affects calculations: in the column-based format, averaging works across a fixed set of named columns for each row; in the key-value format, it works by grouping all rows sharing the same student &mdash; more flexible if the number of scores per student varies. The gap widens with added context, like a per-score weight: column-based needs matching weight columns (Score1Weight...), while key-value can simply join a separate ScoreWeight table by ScoreItem, making it easier to add or change scoring items without restructuring anything.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>التنسيق <strong>العمودي</strong> يستخدم صفًا واحدًا لكل طالب، بعمود منفصل لكل درجة (الاسم، Score1، Score2، Score3) — تخطيط "عريض". تنسيق <strong>أزواج المفتاح-القيمة</strong> يستخدم صفًا واحدًا لكل توليفة طالب-درجة — تخطيط "طويل"، حيث يظهر نفس الطالب بعدة صفوف.</p>
+      <p>هذا يؤثر على الحسابات: بالعمودي، يعمل حساب المتوسط عبر مجموعة أعمدة ثابتة لكل صف؛ وبالمفتاح-القيمة، يعمل بتجميع كل الصفوف المشتركة بنفس الطالب — أكثر مرونة لو تفاوت عدد الدرجات. يتسع الفرق بإضافة سياق كوزن لكل درجة: العمودي يحتاج أعمدة أوزان مطابقة، بينما المفتاح-القيمة يمكنه ربط جدول ScoreWeight منفصل بمفتاح ScoreItem، مما يسهّل إضافة أو تغيير عناصر التقييم دون إعادة هيكلة أي شيء.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E5</span>
+    <h2 class="q-en">Compare the Relational data model and Hybrid data models, giving an example of each.</h2>
+    <p class="q-ar" dir="rtl">قارن بين النموذج العلائقي والنماذج الهجينة، مع إعطاء مثال لكل واحد.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>The <strong>Relational Model</strong> is based on relation theory and mathematical rules; it is essentially a 2D table of rows and columns. It applies one consistent structural approach uniformly across a dataset. Example: a normalized <code>Customers</code> table and a separate <code>Orders</code> table, linked by a customer ID.</p>
+      <p>A <strong>Hybrid Model</strong> combines two or more model types within the same dataset instead of one uniform structure. Example: MariaDB and SQL Server both support a JSON (hierarchical) column alongside ordinary relational columns in the same table &mdash; e.g. a <code>Users</code> table with relational columns like <code>user_id</code> and <code>name</code>, plus one JSON column holding variable, nested data like a list of interests, avoiding a separate linked table for that data.</p>
+      <p>The key difference: Relational applies one consistent structure everywhere; Hybrid deliberately mixes structures to fit different kinds of data (fixed vs. variable/nested) more naturally, trading strict consistency for flexibility.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>النموذج العلائقي</strong> مبني على نظرية العلاقات والقواعد الرياضية؛ هو أساسًا جدول ثنائي الأبعاد من صفوف وأعمدة. يُطبّق نهجًا هيكليًا واحدًا متسقًا على كامل مجموعة البيانات. مثال: جدول <code>Customers</code> مُطبَّع وجدول <code>Orders</code> منفصل، مرتبطان بمعرّف العميل.</p>
+      <p><strong>النموذج الهجين</strong> يجمع بين نوعين أو أكثر من النماذج ضمن نفس مجموعة البيانات بدل هيكل موحد واحد. مثال: تدعم MariaDB وSQL Server عمود JSON (شجري) بجانب أعمدة علائقية عادية بنفس الجدول — مثل جدول <code>Users</code> بأعمدة كـ<code>user_id</code> و<code>name</code>، بالإضافة لعمود JSON واحد يحمل بيانات متغيرة ومتداخلة كقائمة اهتمامات، متجنبًا جدولًا منفصلًا مرتبطًا لتلك البيانات.</p>
+      <p>الفرق الأساسي: العلائقي يُطبّق هيكلًا واحدًا متسقًا بكل مكان؛ والهجين يخلط الهياكل عمدًا ليلائم أنواع بيانات مختلفة (ثابتة مقابل متغيرة/متداخلة) بشكل أكثر طبيعية، مقايضًا الاتساق الصارم بالمرونة.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 3 &middot; Gap-Fill Edition &middot; 12 True/False + 5 Essay &middot; not from the doctor &mdash; targets topics Models 1 &amp; 2 hadn't covered</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

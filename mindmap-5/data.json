@@ -1,0 +1,208 @@
+{
+  "id": "root",
+  "en": "Data Model for Analytics",
+  "ar": "نموذج البيانات في التحليلات",
+  "children": [
+    {
+      "id": "what-is",
+      "color": "#3B58A6",
+      "en": "What Is a Data Model?",
+      "ar": "ما هو نموذج البيانات؟",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "A structured way to represent, describe & explain things", "ar": "طريقة منظمة لتمثيل الأشياء ووصفها وتفسيرها" },
+          { "en": "Represents data with a set of business concepts & rules", "ar": "يمثل البيانات بمجموعة من مفاهيم وقواعد العمل" },
+          { "en": "Standardizes how data elements relate to one another", "ar": "يوحّد طريقة ارتباط عناصر البيانات ببعضها" }
+        ]},
+        { "en": "Data Modeling (the Process)", "ar": "عملية نمذجة البيانات", "children": [
+          { "en": "DMBOK2: discovering, analyzing, representing & communicating data requirements", "ar": "حسب DMBOK2: اكتشاف متطلبات البيانات وتحليلها وتمثيلها وتوصيلها" }
+        ]},
+        { "en": "Where Data Models Are Used", "ar": "أين تُستخدم نماذج البيانات", "children": [
+          { "en": "Database design & development, data management & storage", "ar": "تصميم قواعد البيانات وتطويرها، إدارة البيانات وتخزينها" },
+          { "en": "BI & analytics, analytical storage, data analysis & reporting", "ar": "ذكاء الأعمال والتحليلات، التخزين التحليلي، تحليل البيانات وإعداد التقارير" },
+          { "en": "Software engineering, data governance & data architecture", "ar": "هندسة البرمجيات، حوكمة البيانات، ومعمارية البيانات" }
+        ]}
+      ]
+    },
+    {
+      "id": "elements",
+      "color": "#1C7A67",
+      "en": "Basic Elements of a Data Model",
+      "ar": "العناصر الأساسية لنموذج البيانات",
+      "children": [
+        { "en": "Entity", "ar": "الكيان", "children": [{ "en": "An object, thing, activity, or event", "ar": "شيء أو غرض أو نشاط أو حدث" }] },
+        { "en": "Relationship", "ar": "العلاقة", "children": [{ "en": "How entities are associated with one another", "ar": "كيفية ارتباط الكيانات ببعضها البعض" }] },
+        { "en": "Attribute", "ar": "السمة", "children": [{ "en": "Data that describes an entity or a relationship", "ar": "بيانات تصف الكيان أو العلاقة" }] },
+        { "en": "Naming", "ar": "التسمية", "children": [{ "en": "Consistent names for entities, attributes & relationships", "ar": "أسماء موحدة للكيانات والسمات والعلاقات" }] },
+        { "en": "Other Rules & Metadata", "ar": "قواعد وبيانات وصفية أخرى", "children": [
+          { "en": "Data type (string, number...) & domain — e.g. age from 0 to 120", "ar": "نوع البيانات والنطاق المسموح — مثال: العمر من 0 إلى 120" }
+        ]}
+      ]
+    },
+    {
+      "id": "levels",
+      "color": "#A85A22",
+      "en": "Three Levels of Data Models",
+      "ar": "المستويات الثلاثة لنماذج البيانات",
+      "children": [
+        { "en": "Conceptual", "ar": "المفاهيمي", "children": [
+          { "en": "Audience: business stakeholders", "ar": "الجمهور: أصحاب المصلحة في الأعمال" },
+          { "en": "Purpose: communicate & define business terms and rules", "ar": "الغرض: توصيل وتعريف مصطلحات وقواعد العمل" }
+        ]},
+        { "en": "Logical", "ar": "المنطقي", "children": [
+          { "en": "Audience: data architects & business analysts", "ar": "الجمهور: مهندسو البيانات ومحللو الأعمال" },
+          { "en": "Purpose: clarify business rules in detail, as data structures", "ar": "الغرض: توضيح قواعد العمل بالتفصيل كهياكل بيانات" }
+        ]},
+        { "en": "Physical", "ar": "الفيزيائي", "children": [
+          { "en": "Audience: DBAs & developers", "ar": "الجمهور: مدراء قواعد البيانات والمطورون" },
+          { "en": "Purpose: technical implementation on an actual database", "ar": "الغرض: التنفيذ التقني على قاعدة بيانات فعلية" }
+        ]},
+        { "en": "Complexity Progression", "ar": "تدرج التعقيد", "children": [
+          { "en": "Complexity increases: conceptual → logical → physical", "ar": "التعقيد يزداد: مفاهيمي ← منطقي ← فيزيائي" }
+        ]}
+      ]
+    },
+    {
+      "id": "related-terms",
+      "color": "#7A4A93",
+      "en": "Related Terms — How They Differ",
+      "ar": "مصطلحات ذات علاقة — الفروقات",
+      "children": [
+        { "en": "Data Structure", "ar": "هيكل البيانات", "children": [
+          { "en": "A technical, computer-facing organization of data (e.g. array, dictionary)", "ar": "تنظيم تقني للبيانات موجه للحاسوب (مثل المصفوفة والقاموس)" },
+          { "en": "Even unstructured data still has an inherent data model", "ar": "حتى البيانات غير المنظمة لها نموذج بيانات كامن" }
+        ]},
+        { "en": "Schema", "ar": "المخطط (Schema)", "children": [
+          { "en": "The formal definition & blueprint of a database and its objects", "ar": "التعريف الرسمي والمخطط لقاعدة البيانات وعناصرها" },
+          { "en": "The physical implementation of a data model", "ar": "التطبيق الفيزيائي لنموذج البيانات" }
+        ]},
+        { "en": "Data Architecture", "ar": "معمارية البيانات", "children": [
+          { "en": "The org-wide blueprint for managing data assets, not the data's internal shape", "ar": "المخطط الشامل لإدارة أصول البيانات، لا لتمثيلها الداخلي" },
+          { "en": "Covers business, infrastructure, systems, apps & security", "ar": "يغطي الأعمال والبنية التحتية والأنظمة والتطبيقات والأمن" }
+        ]},
+        { "en": "Semantic Layer", "ar": "الطبقة الدلالية", "children": [
+          { "en": "Maps complex data into familiar business terms for self-service access", "ar": "يحوّل البيانات المعقدة إلى مصطلحات عمل مألوفة للوصول الذاتي" }
+        ]},
+        { "en": "Metadata & Data Dictionary", "ar": "البيانات الوصفية وقاموس البيانات", "children": [
+          { "en": "Metadata: \"data about data\", not the content itself", "ar": "البيانات الوصفية: \"بيانات عن بيانات\"، وليست المحتوى نفسه" },
+          { "en": "Data dictionary: a centralized repository of meaning, origin & format", "ar": "قاموس البيانات: مستودع مركزي للمعنى والمصدر والصيغة" }
+        ]}
+      ]
+    },
+    {
+      "id": "types",
+      "color": "#2A6D91",
+      "en": "Types of Data Models",
+      "ar": "أنواع نماذج البيانات",
+      "children": [
+        { "en": "Entity-Relationship (ER)", "ar": "نموذج الكيان والعلاقة", "children": [
+          { "en": "The most common conceptual-level model", "ar": "النموذج المفاهيمي الأكثر استخدامًا" },
+          { "en": "Good for human understanding, not for computing operations", "ar": "جيد لفهم الإنسان، وليس للعمليات الحاسوبية" }
+        ]},
+        { "en": "Relational Model", "ar": "النموذج العلائقي", "children": [
+          { "en": "A 2D table of rows & columns, based on mathematical relation theory", "ar": "جدول ثنائي الأبعاد من صفوف وأعمدة مبني على نظرية العلاقات" },
+          { "en": "The basis of relational databases & spreadsheets", "ar": "أساس قواعد البيانات العلائقية وجداول البيانات" }
+        ]},
+        { "en": "Dimensional Model", "ar": "النموذج البُعدي", "children": [
+          { "en": "Core Concept", "ar": "الفكرة الأساسية", "children": [
+            { "en": "Built around facts/measures & dimensions", "ar": "مبني حول الحقائق (المقاييس) والأبعاد" },
+            { "en": "The platform for traditional BI & the basis of OLAP", "ar": "منصة ذكاء الأعمال التقليدي وأساس OLAP" }
+          ]},
+          { "en": "Star Schema", "ar": "مخطط النجمة (Star Schema)", "children": [
+            { "en": "One central Fact table surrounded by Dimension tables", "ar": "جدول حقائق مركزي محاط بجداول أبعاد" },
+            { "en": "e.g. FactCost linked to Dim tables: Project, Geo & Year", "ar": "مثال: FactCost مرتبط بجداول أبعاد: المشروع والمنطقة والسنة" }
+          ]},
+          { "en": "Fact Table", "ar": "جدول الحقائق (Fact Table)", "children": [
+            { "en": "Represents a business event or measurement — the numbers", "ar": "يمثل حدثًا أو قياسًا في الأعمال — الأرقام نفسها" }
+          ]},
+          { "en": "Dimension Table", "ar": "جدول الأبعاد (Dimension Table)", "children": [
+            { "en": "Gives descriptive context (who/what/where/when) to filter & group facts", "ar": "يوفر سياقًا وصفيًا (من/ماذا/أين/متى) لتصفية الحقائق وتجميعها" }
+          ]},
+          { "en": "Grain", "ar": "الدقة التفصيلية (Grain)", "children": [
+            { "en": "The level of detail one fact-table row represents", "ar": "مستوى التفصيل الذي يمثله صف واحد بجدول الحقائق" },
+            { "en": "e.g. one row per sale, per product, per store, per day", "ar": "مثال: صف واحد لكل عملية بيع، لكل منتج، لكل متجر، لكل يوم" },
+            { "en": "Every fact-table column must be true to that same grain", "ar": "كل عمود بجدول الحقائق يجب أن يلتزم بنفس مستوى الدقة هذا" }
+          ]},
+          { "en": "Additive, Semi-Additive & Non-Additive Measures", "ar": "أنواع القياسات: جامعة، شبه جامعة، غير جامعة", "children": [
+            { "en": "Additive: can be summed across every dimension, e.g. sales amount", "ar": "جامعة: يمكن جمعها عبر كل الأبعاد، مثل مبلغ المبيعات" },
+            { "en": "Semi-additive: summable across all dimensions EXCEPT time, e.g. account balance", "ar": "شبه جامعة: تُجمع عبر كل الأبعاد ما عدا الوقت، مثل رصيد الحساب" },
+            { "en": "Non-additive: cannot be summed at all, e.g. a ratio or percentage", "ar": "غير جامعة: لا يمكن جمعها إطلاقًا، مثل النسبة المئوية" }
+          ]}
+        ]},
+        { "en": "Hierarchical Model", "ar": "النموذج الشجري (الهرمي)", "children": [
+          { "en": "Data organized in a tree-like structure; records linked together", "ar": "بيانات منظمة بشكل شجري؛ سجلات مرتبطة ببعضها" },
+          { "en": "Used in systems like IBM IMS, and in XML/JSON files", "ar": "تُستخدم في أنظمة مثل IBM IMS وملفات XML/JSON" }
+        ]},
+        { "en": "Hybrid Models", "ar": "النماذج الهجينة", "children": [
+          { "en": "Combine two or more model types in the same dataset", "ar": "تجمع بين نوعين أو أكثر من النماذج ضمن نفس مجموعة البيانات" },
+          { "en": "e.g. MariaDB & SQL Server: JSON (hierarchical) + relational", "ar": "مثال: MariaDB وSQL Server: JSON (شجري) + علائقي" }
+        ]}
+      ]
+    },
+    {
+      "id": "why-matters-analytics",
+      "color": "#3D7A40",
+      "en": "Why Data Models Matter in Analytics",
+      "ar": "أهمية نموذج البيانات في التحليلات",
+      "children": [
+        { "en": "The \"Intelligence\" Behind BI", "ar": "\"الذكاء\" الكامن خلف BI", "children": [
+          { "en": "Creates business meaning & context for raw data", "ar": "يمنح البيانات الخام معنى وسياقًا للأعمال" },
+          { "en": "Aligns data structures so queries match reports", "ar": "ينظم هياكل البيانات لتتوافق الاستعلامات مع التقارير" }
+        ]},
+        { "en": "Traditional vs. Self-Service Analytics", "ar": "التحليلات التقليدية مقابل الذاتية", "children": [
+          { "en": "Traditional BI: models predefined before any analysis", "ar": "BI التقليدي: النماذج مُعدة مسبقًا قبل التحليل" },
+          { "en": "Self-service: models may be auto-created at analysis time", "ar": "التحليل الذاتي: قد تُنشأ النماذج تلقائيًا وقت التحليل" }
+        ]},
+        { "en": "Finding the Right Balance", "ar": "إيجاد التوازن الصحيح", "children": [
+          { "en": "Balance trusted, managed data with users' freedom to explore", "ar": "التوازن بين بيانات موثوقة ومُدارة وحرية المستخدم في الاستكشاف" }
+        ]},
+        { "en": "The Cost of Poor Raw Data", "ar": "تكلفة البيانات الخام الرديئة", "children": [
+          { "en": "Analysts often spend 50–90% of their time cleaning & reformatting data", "ar": "يقضي المحللون غالبًا 50–90% من وقتهم بتنظيف البيانات وإعادة تنسيقها" }
+        ]}
+      ]
+    },
+    {
+      "id": "why-good-matters",
+      "color": "#52607A",
+      "en": "Why a GOOD Data Model Matters",
+      "ar": "أهمية النموذج الجيد للبيانات",
+      "children": [
+        { "en": "Affects Calculation Methods", "ar": "يؤثر على طرق الحساب", "children": [
+          { "en": "A poor model can force complex, hacky, hard-to-maintain calculations", "ar": "النموذج الضعيف قد يفرض حسابات معقدة يصعب صيانتها" }
+        ]},
+        { "en": "Affects Analysis & Query Results", "ar": "يؤثر على نتائج التحليل والاستعلام", "children": [
+          { "en": "e.g. a year column typed as integer gets wrongly summed instead of listed", "ar": "مثال: عمود السنة كرقم صحيح يُجمع خطأ بدل تعداده" }
+        ]},
+        { "en": "Auto-Modeling Isn't Always Accurate", "ar": "النمذجة التلقائية ليست دائمًا دقيقة", "children": [
+          { "en": "Missing or incorrect relationships between tables", "ar": "علاقات ناقصة أو غير صحيحة بين الجداول" },
+          { "en": "Filters that fail to apply correctly to a table", "ar": "مرشحات (فلاتر) لا تنطبق بشكل صحيح على الجدول" }
+        ]},
+        { "en": "Impacts Readability & Manageability", "ar": "يؤثر على الوضوح وسهولة الإدارة", "children": [
+          { "en": "Messy or redundant tables that could be merged", "ar": "جداول فوضوية أو مكررة كان يمكن دمجها" },
+          { "en": "Too many columns that should really be rows", "ar": "أعمدة كثيرة كان يجب أن تكون صفوفًا" }
+        ]}
+      ]
+    },
+    {
+      "id": "example",
+      "color": "#9C3A5C",
+      "en": "Worked Example: Modeling Student Scores",
+      "ar": "مثال تطبيقي: نمذجة درجات الطلاب",
+      "children": [
+        { "en": "Column-Based Format", "ar": "التنسيق العمودي", "children": [
+          { "en": "One row per student; one column per score (wide format)", "ar": "صف واحد لكل طالب؛ عمود لكل درجة (تنسيق عريض)" }
+        ]},
+        { "en": "Key-Value Paired Format", "ar": "تنسيق أزواج المفتاح-القيمة", "children": [
+          { "en": "One row per student-score pair (long format)", "ar": "صف واحد لكل زوج طالب-درجة (تنسيق طويل)" }
+        ]},
+        { "en": "Impact on Calculations", "ar": "الأثر على الحسابات", "children": [
+          { "en": "Changes how something simple, like an average score, is calculated", "ar": "يغيّر طريقة حساب أمور بسيطة مثل متوسط الدرجات" }
+        ]},
+        { "en": "Adding Context: Score Weights", "ar": "إضافة سياق: أوزان الدرجات", "children": [
+          { "en": "Weighted scoring needs an extra ScoreWeight table", "ar": "احتساب الوزن يتطلب جدول ScoreWeight إضافي" },
+          { "en": "The chosen format changes how that weighting calculation is done", "ar": "التنسيق المختار يغيّر طريقة تنفيذ حساب الوزن" }
+        ]}
+      ]
+    }
+  ]
+}

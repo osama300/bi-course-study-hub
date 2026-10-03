@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BI Course — One-Page Cheat Sheet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A; --accent-soft: rgba(184,132,42,.10); --ar-bg: rgba(184,132,42,.045);
+    --zebra: rgba(22,33,43,.03);
+    --c1:#3B58A6; --c2:#1C7A67; --c3:#A85A22; --c4:#7A4A93;
+    --c5:#2A6D91; --c6:#3D7A40; --c7:#52607A; --c8:#9C3A5C; --c9:#B8452F;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563; --accent-soft: rgba(231,181,99,.10); --ar-bg: rgba(231,181,99,.05);
+      --zebra: rgba(231,234,232,.035);
+      --c1:#6B84D6; --c2:#4FC2A8; --c3:#E08A45; --c4:#B27DD1;
+      --c5:#4FA8D6; --c6:#5FC468; --c7:#8C9BC2; --c8:#E06B93; --c9:#E58367;
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.55; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 960px; margin:0 auto; padding: clamp(24px,5vw,56px) clamp(16px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 20px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:26px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,32px); margin:0 0 6px; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:17px; color:var(--ink-soft); margin:0 0 12px; direction:rtl; text-align:right; }
+  header.hero .desc{ font-size:14px; color:var(--ink-soft); max-width:70ch; margin:0; }
+
+  .pattern-box{ background:var(--accent-soft); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:18px 0 8px; }
+  .pattern-box h3{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  .pattern-box ul{ margin:0; padding-inline-start:20px; font-size:13.5px; }
+  .pattern-box li{ margin-bottom:5px; }
+  .pattern-box .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); font-size:12.5px; direction:rtl; display:block; }
+
+  nav.toc{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin:20px 0 34px; }
+  nav.toc h2{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 10px; }
+  nav.toc ol{ margin:0; padding-inline-start:0; list-style:none; display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:4px 16px; counter-reset:toc; }
+  nav.toc li{ counter-increment:toc; font-size:13px; }
+  nav.toc li::before{ content: counter(toc) ". "; font-family:'IBM Plex Mono',monospace; color:var(--accent); }
+  nav.toc a{ color:var(--ink); text-decoration:none; } nav.toc a:hover{ color:var(--accent); }
+
+  section.sheet{ margin-bottom:40px; padding-inline-start:16px; border-inline-start:3px solid var(--sec, var(--accent)); }
+  section.sheet h2{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:21px; margin:0 0 2px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  section.sheet h2 .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:15px; color:var(--ink-soft); }
+  section.sheet .lec-tag{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); background:var(--zebra); border-radius:999px; padding:2px 9px; margin-bottom:14px; display:inline-block; }
+
+  h3.sub{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:15.5px; margin:22px 0 10px; color:var(--ink); }
+  h3.sub .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:13px; color:var(--ink-soft); }
+
+  table.cmp{ width:100%; border-collapse:collapse; margin-bottom:8px; font-size:13px; }
+  table.cmp caption{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; }
+  table.cmp th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; color:var(--ink-soft); border-bottom:1.5px solid var(--line-strong); padding:7px 10px; background:var(--zebra); }
+  table.cmp td{ border-bottom:1px solid var(--line); padding:8px 10px; vertical-align:top; }
+  table.cmp tbody tr:nth-child(even){ background:var(--zebra); }
+  table.cmp td.term{ font-weight:600; white-space:nowrap; }
+  table.cmp td .ar-cell{ display:block; font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); font-size:12px; margin-top:2px; direction:rtl; text-align:right; }
+  table.cmp .rtl{ direction:rtl; text-align:right; font-family:'IBM Plex Sans Arabic',sans-serif; }
+
+  ol.steps, ul.plain{ margin:0 0 8px; padding-inline-start:22px; font-size:13.5px; }
+  ol.steps li, ul.plain li{ margin-bottom:5px; }
+  ol.steps .ar, ul.plain .ar{ display:block; font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); font-size:12px; direction:rtl; text-align:right; margin-top:1px; }
+
+  .def-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:10px; margin-bottom:8px; }
+  .def-card{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 14px; }
+  .def-card .term{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:14px; margin:0 0 2px; }
+  .def-card .term-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:12.5px; color:var(--ink-soft); margin:0 0 6px; direction:rtl; text-align:right; }
+  .def-card p{ margin:0; font-size:12.5px; color:var(--ink); }
+  .def-card p.ar{ font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); margin-top:4px; direction:rtl; text-align:right; font-size:12.5px; }
+
+  .note{ font-size:12px; color:var(--ink-soft); background:var(--zebra); border-radius:8px; padding:8px 12px; margin:10px 0; }
+  .note strong{ color:var(--ink); }
+  .note .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; direction:rtl; text-align:right; display:block; margin-top:3px; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+
+  @media print{
+    body{ background:#fff; font-size:11px; }
+    #top-btn, nav.toc, .crumb{ display:none; }
+    .page{ max-width:100%; padding:10px; }
+    section.sheet{ margin-bottom:18px; page-break-inside:avoid; }
+    table.cmp, .def-grid{ page-break-inside:avoid; }
+  }
+  @media (max-width:640px){
+    table.cmp{ font-size:12px; }
+    table.cmp th, table.cmp td{ padding:6px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">&larr; Course Hub</a> &middot;
+    <a href="quizedoctor/index.html">Essay Q&amp;A</a> &middot;
+    <a href="quizedoctor/true-false.html">True/False</a> &middot;
+    <span>One-Page Cheat Sheet</span>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Final Review Sheet &middot; Lectures 1&ndash;10</p>
+    <h1>One-Page Cheat Sheet</h1>
+    <p dir="rtl">ورقة مراجعة شاملة — كل المحاضرات، أهم الجداول المقارنة والتعاريف</p>
+    <p class="desc">Everything the doctor's real exams and archived papers test most &mdash; built as comparison tables and tight definitions, since her style leans heavily on "X vs. Y" conceptual distinctions rather than rote recall. Read this top-to-bottom as a final pass after the mind maps.</p>
+  </header>
+
+  <div class="pattern-box">
+    <h3>If you remember nothing else, know these distinctions</h3>
+    <ul>
+      <li>OLTP vs. OLAP &middot; Structured vs. Semi-structured vs. Unstructured &middot; Report vs. Dashboard &middot; Leading vs. Lagging KPI</li>
+      <li>Data Warehouse vs. Data Mart vs. Data Lake &middot; Star vs. Snowflake Schema &middot; Pivot/Slice/Dice &middot; Additive vs. Semi-Additive vs. Non-Additive measures</li>
+      <li>Conceptual vs. Logical vs. Physical data model levels &middot; Analytical DB vs. Transactional DB &middot; DIKW hierarchy order</li>
+    </ul>
+    <span class="ar">لو ما تحفظ إلا شي واحد، احفظ هذي التفريقات — أسلوبها يعتمد على مقارنة مفهومين قريبين أكثر من الحفظ المباشر.</span>
+  </div>
+
+  <nav class="toc">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#data-fund">Data Fundamentals &amp; DIKW</a></li>
+      <li><a href="#bi-analytics">BI vs. Analytics &amp; Analysis Levels</a></li>
+      <li><a href="#kpi-bsc">KPIs &amp; Balanced Scorecard</a></li>
+      <li><a href="#data-model">Data Modeling</a></li>
+      <li><a href="#data-storage">Data Storage &amp; OLAP</a></li>
+      <li><a href="#data-clean">Data Cleaning &amp; Transformation</a></li>
+      <li><a href="#data-present">Data Presentation</a></li>
+      <li><a href="#bi-delivery">BI Delivery: Reports &amp; Dashboards</a></li>
+      <li><a href="#glossary">Quick Glossary</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. DATA FUNDAMENTALS -->
+  <section class="sheet" id="data-fund" style="--sec:var(--c1)">
+    <h2>Data Fundamentals &amp; DIKW <span class="ar">أساسيات البيانات وهرم DIKW</span></h2>
+    <span class="lec-tag">Lecture 1&ndash;2</span>
+
+    <h3 class="sub">Structured vs. Semi-Structured vs. Unstructured Data <span class="ar">(بيانات منظمة / شبه منظمة / غير منظمة)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Type</th><th>Definition</th><th>Typical Source</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="term">Structured<span class="ar-cell">منظمة</span></td>
+          <td>Fixed, predefined schema &mdash; rows &amp; columns with set data types</td>
+          <td>Relational databases, Excel, ERP/CRM systems</td>
+          <td>A <code>Customers</code> table with ID, Name, Email columns</td>
+        </tr>
+        <tr>
+          <td class="term">Semi-Structured<span class="ar-cell">شبه منظمة</span></td>
+          <td>Some organizational tags/markers, but no rigid fixed schema &mdash; flexible fields</td>
+          <td>APIs, NoSQL stores, log files, IoT feeds</td>
+          <td>JSON, XML, an email (structured headers + free-text body)</td>
+        </tr>
+        <tr>
+          <td class="term">Unstructured<span class="ar-cell">غير منظمة</span></td>
+          <td>No predefined format or internal organization at all</td>
+          <td>Documents, multimedia, social media, sensors</td>
+          <td>Images, videos, PDFs, free-text posts, audio</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">Which type has a predefined schema? &rarr; <strong>Structured.</strong> This exact question appeared in a real archived exam.<span class="ar">أي نوع بيانات له مخطط محدد مسبقًا؟ ← منظمة. هذا السؤال بالضبط ظهر بأرشيف حقيقي.</span></p>
+
+    <h3 class="sub">DIKW Hierarchy <span class="ar">(هرم البيانات-المعلومات-المعرفة-الحكمة)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Level</th><th>Definition</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Data<span class="ar-cell">بيانات</span></td><td>Raw facts, no context</td><td>"120"</td></tr>
+        <tr><td class="term">Information<span class="ar-cell">معلومات</span></td><td>Organized data with context</td><td>"120 units sold in October"</td></tr>
+        <tr><td class="term">Knowledge<span class="ar-cell">معرفة</span></td><td>Actionable insight drawn from information</td><td>"Sales rise every Q4 due to holiday demand"</td></tr>
+        <tr><td class="term">Wisdom<span class="ar-cell">حكمة</span></td><td>Integrated understanding of implications, used to act</td><td>"Increase October inventory by 20% ahead of the surge"</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">OLTP vs. OLAP <span class="ar">(معاملاتي مقابل تحليلي)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>OLTP (Transactional)</th><th>OLAP (Analytical)</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Purpose</td><td>Day-to-day operations &mdash; e.g. update a product price</td><td>Multi-dimensional analysis &mdash; e.g. top 10 profitable products</td></tr>
+        <tr><td class="term">Size &amp; Speed</td><td>Small, very fast</td><td>Larger (history + aggregation), speed depends on volume</td></tr>
+        <tr><td class="term">Updates</td><td>Fast, simple inserts/updates by end users</td><td>Mostly reads; periodic batch refreshes</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Big Data's Four V's <span class="ar">(الخصائص الأربع للبيانات الضخمة)</span></h3>
+    <ul class="plain">
+      <li><strong>Volume</strong> &mdash; sheer quantity of data <span class="ar">الحجم</span></li>
+      <li><strong>Velocity</strong> &mdash; speed of generation/processing <span class="ar">السرعة</span></li>
+      <li><strong>Variety</strong> &mdash; many formats/types <span class="ar">التنوع</span></li>
+      <li><strong>Veracity</strong> &mdash; trustworthiness/accuracy <span class="ar">المصداقية</span></li>
+    </ul>
+  </section>
+
+  <!-- 2. BI vs ANALYTICS -->
+  <section class="sheet" id="bi-analytics" style="--sec:var(--c2)">
+    <h2>BI vs. Analytics &amp; Analysis Levels <span class="ar">BI مقابل Analytics ومستويات التحليل</span></h2>
+    <span class="lec-tag">Lecture 1&ndash;2</span>
+
+    <table class="cmp">
+      <thead><tr><th></th><th>Business Intelligence</th><th>Analytics</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Question</td><td>Descriptive &mdash; what happened?</td><td>Predictive &mdash; what will happen?</td></tr>
+        <tr><td class="term">Time Focus</td><td>Retrospective &mdash; past &amp; present</td><td>Prospective &mdash; future outcomes</td></tr>
+        <tr><td class="term">Tools</td><td>Dashboards &amp; reports</td><td>ML, AI, statistics</td></tr>
+        <tr><td class="term">Users</td><td>Managers &amp; executives</td><td>Data scientists &amp; analysts</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Four Levels of Analysis <span class="ar">(المستويات الأربعة للتحليل)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Level</th><th>Question</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Descriptive<span class="ar-cell">وصفي</span></td><td>What happened?</td></tr>
+        <tr><td class="term">Diagnostic<span class="ar-cell">تشخيصي</span></td><td>Why did it happen?</td></tr>
+        <tr><td class="term">Predictive<span class="ar-cell">تنبؤي</span></td><td>What will happen?</td></tr>
+        <tr><td class="term">Prescriptive<span class="ar-cell">توصوي</span></td><td>What action should be taken?</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Descriptive analysis is the <strong>basis</strong> for the more advanced levels &mdash; per a real exam question.<span class="ar">التحليل الوصفي هو الأساس للمستويات التحليلية الأكثر تقدمًا — وفق سؤال بأرشيف حقيقي.</span></p>
+  </section>
+
+  <!-- 3. KPI & BSC -->
+  <section class="sheet" id="kpi-bsc" style="--sec:var(--c3)">
+    <h2>KPIs &amp; Balanced Scorecard <span class="ar">المؤشرات وبطاقة الأداء المتوازن</span></h2>
+    <span class="lec-tag">Lecture 3&ndash;4</span>
+
+    <h3 class="sub">Types of KPI <span class="ar">(أنواع المؤشرات)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Type</th><th>Meaning</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Strategic<span class="ar-cell">استراتيجي</span></td><td>Long-term, high-level, shows if strategy is on target</td><td>Overall Equipment Effectiveness (OEE)</td></tr>
+        <tr><td class="term">Operational<span class="ar-cell">تشغيلي</span></td><td>Detailed, timely, for daily decisions</td><td>Days Sales Outstanding (DSO)</td></tr>
+        <tr><td class="term">Leading<span class="ar-cell">استباقي</span></td><td>Predicts/influences future performance</td><td>More maintenance checks &rarr; fewer defects</td></tr>
+        <tr><td class="term">Lagging<span class="ar-cell">تابع (نتائجي)</span></td><td>Shows the result of past performance</td><td>Revenue this month, units produced</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Leading informs future action; Lagging validates past outcomes.<span class="ar">الاستباقي يوجّه المستقبل، والتابع يُثبت نتائج الماضي.</span></p>
+
+    <h3 class="sub">SMART Criteria <span class="ar">(معايير SMART)</span></h3>
+    <ul class="plain">
+      <li><strong>Specific</strong> &mdash; clear, detailed description <span class="ar">محدد</span></li>
+      <li><strong>Measurable</strong> &mdash; quantifiable via numbers/%/amounts <span class="ar">قابل للقياس</span></li>
+      <li><strong>Achievable</strong> &mdash; ambitious yet attainable, no burnout <span class="ar">قابل للتحقيق</span></li>
+      <li><strong>Relevant</strong> &mdash; aligned with strategic objectives <span class="ar">ذو صلة</span></li>
+      <li><strong>Time-bound</strong> &mdash; realistic timeframe (quarter/month/year) <span class="ar">محدد بزمن</span></li>
+    </ul>
+
+    <h3 class="sub">Four BSC Perspectives + Cause-and-Effect Chain <span class="ar">(أبعاد BSC الأربعة وسلسلة السبب والنتيجة)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Perspective</th><th>Key Question</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Financial<span class="ar-cell">المالي</span></td><td>How do we look to shareholders?</td></tr>
+        <tr><td class="term">Customer<span class="ar-cell">العملاء</span></td><td>How do customers see us?</td></tr>
+        <tr><td class="term">Internal Process<span class="ar-cell">العمليات الداخلية</span></td><td>What must we excel at?</td></tr>
+        <tr><td class="term">Learning &amp; Growth<span class="ar-cell">التعلم والنمو</span></td><td>Can we continue to improve?</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Chain order (bottom-up): <strong>Learning &amp; Growth &rarr; Internal Processes &rarr; Customer Satisfaction &rarr; Financial Results.</strong><span class="ar">الترتيب من الأسفل للأعلى: التعلم والنمو ← العمليات الداخلية ← رضا العملاء ← النتائج المالية.</span></p>
+
+    <h3 class="sub">Most Important KPI per Perspective (per practice ranking) <span class="ar">(الأهم عمليًا بكل بُعد)</span></h3>
+    <ul class="plain">
+      <li>Financial: <strong>Revenue Growth &amp; Net Profit Margin</strong></li>
+      <li>Customer: <strong>Customer Retention Rate</strong></li>
+      <li>Internal Process: <strong>On-time Delivery</strong></li>
+      <li>Learning &amp; Growth: <strong>Employee Retention Rate</strong></li>
+    </ul>
+
+    <h3 class="sub">BSC Implementation &mdash; 4 Phases <span class="ar">(مراحل تطبيق BSC الأربع)</span></h3>
+    <ol class="steps">
+      <li>Strategic Foundation Development <span class="ar">بناء الأساس الاستراتيجي</span></li>
+      <li>Scorecard Design &amp; Metric Selection <span class="ar">تصميم البطاقة واختيار المقاييس</span></li>
+      <li>Organizational Alignment &amp; Cascading <span class="ar">المواءمة التنظيمية والتدرج</span></li>
+      <li>Continuous Improvement &amp; Evolution <span class="ar">التحسين المستمر والتطور</span></li>
+    </ol>
+    <p class="note">Her real exam phrases this as: first phase = "clarifying &amp; translating vision/strategy"; "cascading" = aligning scorecards across levels; "continuous improvement" = reviewing measures regularly.<span class="ar">صياغتها بالاختبار الحقيقي: المرحلة الأولى = "توضيح وترجمة الرؤية والاستراتيجية"؛ cascading = مواءمة البطاقات بمختلف المستويات؛ التحسين المستمر = مراجعة المقاييس بانتظام.</span></p>
+
+    <h3 class="sub">Strategy Map <span class="ar">(خريطة الاستراتيجية)</span></h3>
+    <p class="note">A visual representation showing cause-and-effect relationships between strategic objectives across all four BSC perspectives.<span class="ar">تمثيل مرئي يوضح علاقات السبب والنتيجة بين الأهداف الاستراتيجية عبر الأبعاد الأربعة.</span></p>
+  </section>
+
+  <!-- 4. DATA MODELING -->
+  <section class="sheet" id="data-model" style="--sec:var(--c4)">
+    <h2>Data Modeling <span class="ar">نمذجة البيانات</span></h2>
+    <span class="lec-tag">Lecture 5&ndash;6</span>
+
+    <h3 class="sub">Conceptual vs. Logical vs. Physical <span class="ar">(المستويات الثلاثة لنموذج البيانات)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Level</th><th>Purpose</th><th>Audience</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Conceptual<span class="ar-cell">مفاهيمي</span></td><td>High-level business view of what the system contains</td><td>Business stakeholders &amp; executives</td><td>ER / EER models</td></tr>
+        <tr><td class="term">Logical<span class="ar-cell">منطقي</span></td><td>How the system is structured, independent of any DBMS</td><td>Computer specialists &amp; BI developers</td><td>Customer(ID, Name) 1:N Sales_Fact</td></tr>
+        <tr><td class="term">Physical<span class="ar-cell">فيزيائي</span></td><td>Exact storage details: formats, ordering, access paths</td><td>DBAs &amp; data engineers</td><td>VARCHAR(100), indexes, partitioning</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Fact Table vs. Dimension Table <span class="ar">(جدول الحقائق مقابل جدول الأبعاد)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>Fact Table</th><th>Dimension Table</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Represents</td><td>A business event/measurement, sits at center</td><td>Descriptive context: Who? What? Where? When? How?</td></tr>
+        <tr><td class="term">Contains</td><td>Foreign keys + numeric measures</td><td>A (often surrogate) primary key + descriptive attributes</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Additive vs. Semi-Additive vs. Non-Additive Measures <span class="ar">(أنواع القياسات)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Type</th><th>Rule</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Additive<span class="ar-cell">جامعة</span></td><td>Summed across <strong>all</strong> dimensions</td><td>Sales_Amount</td></tr>
+        <tr><td class="term">Semi-Additive<span class="ar-cell">شبه جامعة</span></td><td>Summed across some dimensions, but <strong>not time</strong></td><td>Account_Balance</td></tr>
+        <tr><td class="term">Non-Additive<span class="ar-cell">غير جامعة</span></td><td>Cannot be summed &mdash; use averages/ratios</td><td>Profit_Margin_Percentage</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Star Schema vs. Snowflake Schema <span class="ar">(مخطط النجمة مقابل الثلج)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>Star</th><th>Snowflake</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Structure</td><td>Fact table center, dimensions radiate directly as "points"</td><td>Dimensions further normalized into sub-tables</td></tr>
+        <tr><td class="term">Trade-off</td><td>Simpler, faster queries</td><td>More normalized, more storage-efficient, richer dimension detail</td></tr>
+        <tr><td class="term">Use Case</td><td>General analytics</td><td>e.g. dealers across many countries/regions needing detail</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">5 Steps to Build a Dimensional Model <span class="ar">(خطوات بناء النموذج البُعدي)</span></h3>
+    <ol class="steps">
+      <li>Identify Business Process <span class="ar">تحديد العملية التجارية</span></li>
+      <li>Determine the Grain (lowest level of detail) <span class="ar">تحديد الدقة التفصيلية</span></li>
+      <li>Identify Facts <span class="ar">تحديد الحقائق</span></li>
+      <li>Identify Dimensions <span class="ar">تحديد الأبعاد</span></li>
+      <li>Build Schema (Star or Snowflake) <span class="ar">بناء المخطط</span></li>
+    </ol>
+  </section>
+
+  <!-- 5. DATA STORAGE -->
+  <section class="sheet" id="data-storage" style="--sec:var(--c5)">
+    <h2>Data Storage &amp; OLAP <span class="ar">تخزين البيانات وOLAP</span></h2>
+    <span class="lec-tag">Lecture 7</span>
+
+    <h3 class="sub">Transactional (OLTP) vs. Analytical Database <span class="ar">(تشغيلية مقابل تحليلية)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>OLTP</th><th>Analytical DB</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Purpose</td><td>Day-to-day operations; fast transactions, many users</td><td>Organize lots of stable data for easy analysis/retrieval</td></tr>
+        <tr><td class="term">Weakness for BI</td><td>Optimized for change, not analysis; short retention; heterogeneous across systems</td><td>Combines heterogeneous sources into one homogeneous structure</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Data Warehouse vs. Data Mart vs. Data Lake <span class="ar">(مستودع مقابل متجر مقابل بحيرة)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>Data Warehouse</th><th>Data Mart</th><th>Data Lake</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Scope</td><td>Enterprise-wide</td><td>One department</td><td>Any raw source, enterprise-wide</td></tr>
+        <tr><td class="term">Size</td><td>100GB&ndash;1TB+</td><td>&lt;100GB</td><td>Variable, often huge</td></tr>
+        <tr><td class="term">Schema</td><td>Required (subject-oriented, integrated)</td><td>Required, departmental scope</td><td><strong>No schema required upfront</strong></td></tr>
+        <tr><td class="term">Data Format</td><td>Structured, processed</td><td>Structured, processed</td><td>Native/raw, multi-structured (IoT, tweets, email, operational)</td></tr>
+      </tbody>
+    </table>
+    <p class="note">A Data Lake and a Data Warehouse can <strong>co-exist</strong> in the same architecture &mdash; one doesn't replace the other.<span class="ar">يمكن لبحيرة البيانات والمستودع أن يتعايشا بنفس البنية — لا يستبدل أحدهما الآخر.</span></p>
+
+    <h3 class="sub">Inmon's Four Defining Properties of a Data Warehouse <span class="ar">(خصائص إنمون الأربع)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Property</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Subject-oriented<span class="ar-cell">موجهة بالموضوع</span></td><td>Organized around business facts/measures (e.g. sales by product)</td></tr>
+        <tr><td class="term">Integrated<span class="ar-cell">متكاملة</span></td><td>One unified view, common definitions across business units</td></tr>
+        <tr><td class="term">Time-variant<span class="ar-cell">متغيرة بالزمن</span></td><td>Recorded historically with a time dimension for comparison</td></tr>
+        <tr><td class="term">Non-volatile<span class="ar-cell">غير متطايرة</span></td><td>Not updated real-time &mdash; refreshed periodically</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">OLAP Cube Operations <span class="ar">(عمليات مكعب OLAP)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Operation</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Pivoting<span class="ar-cell">تدوير</span></td><td>Changes the view/orientation &mdash; not the data itself</td></tr>
+        <tr><td class="term">Slice<span class="ar-cell">تقطيع</span></td><td>Selects one value from one dimension (e.g. Region = "Riyadh")</td></tr>
+        <tr><td class="term">Dice<span class="ar-cell">تكعيب</span></td><td>Selects a sub-cube using conditions on 2+ dimensions at once</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. DATA CLEANING -->
+  <section class="sheet" id="data-clean" style="--sec:var(--c9)">
+    <h2>Data Cleaning &amp; Transformation <span class="ar">تنظيف البيانات وتحويلها</span></h2>
+    <span class="lec-tag">Pulled from real archived exam questions &mdash; no dedicated lecture file received yet</span>
+
+    <table class="cmp">
+      <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Data Cleaning<span class="ar-cell">تنظيف البيانات</span></td><td>Fill in missing values, smooth noisy data, remove outliers</td></tr>
+        <tr><td class="term">Data Transformation<span class="ar-cell">تحويل البيانات</span></td><td>Normalization and aggregation</td></tr>
+        <tr><td class="term">Data Integration<span class="ar-cell">دمج البيانات</span></td><td>Combining multiple databases or files into one</td></tr>
+      </tbody>
+    </table>
+    <p class="note"><strong>Not</strong> part of data cleaning: data visualization (a real exam distractor).<span class="ar">ليست من تنظيف البيانات: تصور البيانات (خيار خاطئ بسؤال حقيقي).</span></p>
+    <p class="note">Garbage in, garbage out: dirty data undermines decision accuracy. Analysts spend most of their time cleaning data before it's usable.<span class="ar">مدخلات خاطئة = مخرجات خاطئة. المحللون يقضون أغلب وقتهم بتنظيف البيانات قبل استخدامها.</span></p>
+  </section>
+
+  <!-- 7. DATA PRESENTATION -->
+  <section class="sheet" id="data-present" style="--sec:var(--c6)">
+    <h2>Data Presentation <span class="ar">عرض البيانات</span></h2>
+    <span class="lec-tag">Lecture 8</span>
+
+    <h3 class="sub">Three Basic Forms <span class="ar">(الأشكال الثلاثة الأساسية)</span></h3>
+    <p class="note">Text, Tables, Graphs &mdash; the choice depends on data type, analysis method, and the information sought. (Audio is <strong>not</strong> one of them.)<span class="ar">نص، جداول، رسوم — الاختيار يعتمد على نوع البيانات وطريقة التحليل. الصوت ليس منها.</span></p>
+
+    <h3 class="sub">Visual Forms/Styles <span class="ar">(أشكال العرض البصري)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Form</th><th>Definition</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Embedded Visual<span class="ar-cell">مدمج</span></td><td>Inside text/tables</td><td>Conditional formatting, inline sparklines</td></tr>
+        <tr><td class="term">Block Visual<span class="ar-cell">كتلي</span></td><td>Independent unit, larger space</td><td>Chart, map, table with embedded visuals</td></tr>
+        <tr><td class="term">Visual App<span class="ar-cell">تطبيق بصري</span></td><td>Standalone application</td><td>Dashboard, infographic, data-driven story</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Map Types <span class="ar">(أنواع الخرائط)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Type</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Geospatial<span class="ar-cell">جغرافية مكانية</span></td><td>Points/areas/paths on real-world maps</td></tr>
+        <tr><td class="term">Abstract illustrational<span class="ar-cell">توضيحية مجردة</span></td><td>Conceptual, not exact locations</td></tr>
+        <tr><td class="term">Contextual<span class="ar-cell">سياقية</span></td><td>Any defined space &mdash; a building, campus, mall</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Table Types in Power BI &amp; Related Tools <span class="ar">(أنواع الجداول بـPower BI)</span></h3>
+    <p class="note">PivotTable (Excel) = Matrix (Power BI) = Cross tab (Access) &mdash; all mean the same thing: a two-dimensional aggregated table, as opposed to a flat transactional/raw-line table.<span class="ar">PivotTable بإكسل = Matrix بـPower BI = Cross tab بـAccess — كلها جدول ثنائي الأبعاد مُجمّع، بعكس الجدول التشغيلي الخام.</span></p>
+  </section>
+
+  <!-- 8. BI DELIVERY -->
+  <section class="sheet" id="bi-delivery" style="--sec:var(--c8)">
+    <h2>BI Delivery: Reports &amp; Dashboards <span class="ar">توصيل BI: التقارير واللوحات</span></h2>
+    <span class="lec-tag">Lecture 9&ndash;10</span>
+
+    <h3 class="sub">Report vs. Dashboard <span class="ar">(التقرير مقابل اللوحة)</span></h3>
+    <table class="cmp">
+      <thead><tr><th></th><th>Report</th><th>Dashboard</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Focus</td><td>Detailed fact data, tabular, numbers &amp; text</td><td>Key measures/KPIs, centralized, visual</td></tr>
+        <tr><td class="term">Audience</td><td>People who need the data itself</td><td>People who need a quick glance/interpretation</td></tr>
+        <tr><td class="term">Purpose</td><td>Printing (styled) or exporting (raw)</td><td>Single-screen monitoring</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">The Dashboard Formula <span class="ar">(معادلة اللوحة)</span></h3>
+    <p class="note"><strong>Dashboard = Data/Information + Visual + User Interface.</strong> Data/Information is the most important element; Visual gives an at-a-glance view; UI unifies everything cleanly.<span class="ar">اللوحة = البيانات/المعلومات + التصور + واجهة المستخدم. البيانات هي الأهم؛ التصور يعطي نظرة سريعة؛ الواجهة توحّد كل شيء.</span></p>
+
+    <h3 class="sub">Dashboard Levels <span class="ar">(مستويات اللوحات)</span></h3>
+    <table class="cmp">
+      <thead><tr><th>Level</th><th>Focus</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="term">Operational<span class="ar-cell">تشغيلية</span></td><td>Real-time monitoring, a few key indicators</td><td>Call center / reservation status</td></tr>
+        <tr><td class="term">Tactical (Analytical)<span class="ar-cell">تكتيكية/تحليلية</span></td><td>Seeking &amp; navigating data to support analysis</td><td>Comparison, history, forecast, benchmarking</td></tr>
+        <tr><td class="term">Strategic (Executive)<span class="ar-cell">استراتيجية/تنفيذية</span></td><td>High-level KPI summary, decision support</td><td>Built around a BSC or Strategy Map; bullet charts, gauges, traffic lights</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. GLOSSARY -->
+  <section class="sheet" id="glossary" style="--sec:var(--c7)">
+    <h2>Quick Glossary <span class="ar">قاموس تعاريف سريع</span></h2>
+    <span class="lec-tag">All lectures &mdash; the "define X in one sentence" questions</span>
+
+    <div class="def-grid">
+      <div class="def-card"><p class="term">Business Intelligence</p><p class="term-ar">ذكاء الأعمال</p><p>Transforms raw data into useful information for strategic &amp; operational decisions.</p></div>
+      <div class="def-card"><p class="term">KPI</p><p class="term-ar">مؤشر الأداء الرئيسي</p><p>A critical, quantifiable indicator of goal achievement.</p></div>
+      <div class="def-card"><p class="term">Semantic Layer</p><p class="term-ar">الطبقة الدلالية</p><p>Translates business terms into technical queries, so non-technical users can query data in plain business language.</p></div>
+      <div class="def-card"><p class="term">Data Model</p><p class="term-ar">نموذج البيانات</p><p>A visual/logical representation of data: its types, attributes, relationships, and how it's organized, stored &amp; used.</p></div>
+      <div class="def-card"><p class="term">Dimensional Model</p><p class="term-ar">النموذج البُعدي</p><p>A technique for analytical systems/warehouses, organizing data into Facts and Dimensions.</p></div>
+      <div class="def-card"><p class="term">Grain</p><p class="term-ar">الدقة التفصيلية</p><p>The lowest level of detail captured in a fact table (e.g. one row per sales transaction line).</p></div>
+      <div class="def-card"><p class="term">Data Cube</p><p class="term-ar">مكعب البيانات</p><p>A multidimensional structure (e.g. Product &times; Region &times; Time) that OLAP is optimized to query.</p></div>
+      <div class="def-card"><p class="term">Managed Reporting</p><p class="term-ar">التقارير المُدارة</p><p>A technical developer prepares the data and builds the output for non-technical users &mdash; not automatic, not real-time.</p></div>
+      <div class="def-card"><p class="term">Strategy Map</p><p class="term-ar">خريطة الاستراتيجية</p><p>A visual showing cause-and-effect across all four BSC perspectives.</p></div>
+      <div class="def-card"><p class="term">Data Governance</p><p class="term-ar">حوكمة البيانات</p><p>Policies for data ownership, security, quality, metadata &amp; master data.</p></div>
+      <div class="def-card"><p class="term">ETL</p><p class="term-ar">الاستخراج والتحويل والتحميل</p><p>Extract (pull from sources) &rarr; Transform (clean/standardize) &rarr; Load (move into the warehouse).</p></div>
+      <div class="def-card"><p class="term">Decision Support System (DSS)</p><p class="term-ar">نظام دعم القرار</p><p>A system where decisions are built directly on data, bridging the gap between data and actionable knowledge.</p></div>
+    </div>
+  </section>
+
+  <footer class="note"><p>One-Page Cheat Sheet &middot; built from every mind map (L1&ndash;10) + patterns from the doctor's real exams and archived papers &middot; printable (Ctrl/Cmd+P)</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Original lecture slides/recordings — copyrighted course material, not for public redistribution
+*.pdf
+*.pptx
+*.ppt
+*.doc
+*.docx
+
+# OS cruft
+.DS_Store

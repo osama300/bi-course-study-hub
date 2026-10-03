@@ -1,0 +1,129 @@
+{
+  "id": "root",
+  "en": "BI Delivery/Reporting: Reports & Dashboards",
+  "ar": "توصيل BI وتقاريره: التقارير واللوحات",
+  "children": [
+    {
+      "id": "what-is",
+      "color": "#3B58A6",
+      "en": "What Is BI Delivery/Reporting?",
+      "ar": "ما هو توصيل BI وتقاريره؟",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "The process of providing or delivering needed data & analysis results to users or applications", "ar": "عملية توفير أو تسليم البيانات المطلوبة ونتائج التحليل للمستخدمين أو التطبيقات" }
+        ]},
+        { "en": "Two Delivery Forms", "ar": "شكلان للتوصيل", "children": [
+          { "en": "Report: focuses on fact data & information presentation/exploration", "ar": "التقرير: يركّز على عرض بيانات الحقائق والمعلومات واستكشافها" },
+          { "en": "Dashboard: focuses on key measures, centralized for a quick glance", "ar": "اللوحة: تركّز على المقاييس الرئيسية، مركزة لنظرة سريعة" }
+        ]}
+      ]
+    },
+    {
+      "id": "reports",
+      "color": "#1C7A67",
+      "en": "Reports",
+      "ar": "التقارير",
+      "children": [
+        { "en": "Characteristics", "ar": "الخصائص", "children": [
+          { "en": "Detailed data in tabular format — typically numbers & text only", "ar": "بيانات تفصيلية بصيغة جدولية — غالبًا أرقام ونص فقط" },
+          { "en": "Geared toward people who need the data, not a direct interpretation of it", "ar": "موجهة لمن يحتاج البيانات نفسها، لا تفسيرًا مباشرًا لها" },
+          { "en": "Purpose: mainly for printing (styled) or exporting (raw data)", "ar": "الغرض: للطباعة غالبًا (بتنسيق) أو للتصدير (بيانات خام)" }
+        ]}
+      ]
+    },
+    {
+      "id": "dashboard-def",
+      "color": "#A85A22",
+      "en": "Dashboards — Definition & Features",
+      "ar": "اللوحات — التعريف والخصائص",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "A visual-oriented display of the most important data, consolidated on one screen for a quick glance", "ar": "عرض موجّه بصريًا لأهم البيانات، مُجمّع بشاشة واحدة لنظرة سريعة" }
+        ]},
+        { "en": "Key Features", "ar": "الخصائص الرئيسية", "children": [
+          { "en": "Visual-oriented: graphics-heavy, but can include textual info too", "ar": "موجهة بصريًا: كثيفة الرسوم، لكن قد تشمل معلومات نصية أيضًا" },
+          { "en": "Most important data: key metrics & KPIs only, due to space limits", "ar": "أهم البيانات فقط: المقاييس والمؤشرات الرئيسية فقط، بسبب محدودية المساحة" },
+          { "en": "Consolidated: data from multiple sources/perspectives, unified in one view", "ar": "مُجمّعة: بيانات من مصادر/منظورات متعددة، موحدة برؤية واحدة" },
+          { "en": "Single screen: fits without excessive panning, zooming, or scrolling", "ar": "شاشة واحدة: تلائم بدون تمرير أو تكبير أو سحب مفرط" }
+        ]}
+      ]
+    },
+    {
+      "id": "elements",
+      "color": "#7A4A93",
+      "en": "Elements of a Dashboard",
+      "ar": "عناصر اللوحة",
+      "children": [
+        { "en": "The Formula", "ar": "المعادلة", "children": [
+          { "en": "Dashboard = Data/Information + Visual + User Interface", "ar": "اللوحة = البيانات/المعلومات + التصور البصري + واجهة المستخدم" }
+        ]},
+        { "en": "The Three Parts", "ar": "الأجزاء الثلاثة", "children": [
+          { "en": "Data/information: the most important element", "ar": "البيانات/المعلومات: العنصر الأهم" },
+          { "en": "Visual: charts etc. providing a high-level, at-a-glance view", "ar": "التصور: رسوم بيانية وغيرها توفر نظرة عامة سريعة" },
+          { "en": "User interface: a clean UI unifying all elements as a whole", "ar": "واجهة المستخدم: تصميم نظيف يوحّد كل العناصر ككل" }
+        ]}
+      ]
+    },
+    {
+      "id": "levels",
+      "color": "#2A6D91",
+      "en": "Levels/Types of Dashboards",
+      "ar": "مستويات/أنواع اللوحات",
+      "children": [
+        { "en": "Operational — Monitoring", "ar": "تشغيلية — مراقبة", "children": [
+          { "en": "Real-time view of important indicators", "ar": "عرض آني لمؤشرات مهمة" }
+        ]},
+        { "en": "Tactical — Analysis/Exploration", "ar": "تكتيكية — تحليل/استكشاف", "children": [
+          { "en": "Optimized UI for seeking and navigating data to support analysis", "ar": "واجهة مُحسَّنة للبحث والتنقل بالبيانات لدعم التحليل" }
+        ]},
+        { "en": "Strategic — Decision Support", "ar": "استراتيجية — دعم القرار", "children": [
+          { "en": "A high-level summary, at the executive or departmental level", "ar": "ملخص عالي المستوى، على مستوى التنفيذيين أو الأقسام" }
+        ]}
+      ]
+    },
+    {
+      "id": "operational-analytical",
+      "color": "#3D7A40",
+      "en": "Operational & Analytical Dashboards",
+      "ar": "اللوحات التشغيلية والتحليلية",
+      "children": [
+        { "en": "Operational Dashboard", "ar": "اللوحة التشغيلية", "children": [
+          { "en": "Real/near-real-time data; a few key indicators, not lots of detail", "ar": "بيانات آنية أو شبه آنية؛ عدد قليل من المؤشرات لا تفاصيل كثيرة" },
+          { "en": "e.g. call center or reservation status monitoring", "ar": "مثال: مراقبة حالة مركز اتصال أو نظام حجز" }
+        ]},
+        { "en": "Analytical Dashboard", "ar": "اللوحة التحليلية", "children": [
+          { "en": "Tactical level; explores data & analyzes patterns interactively", "ar": "مستوى تكتيكي؛ تستكشف البيانات وتحلل الأنماط تفاعليًا" },
+          { "en": "Centers on a key question with context: comparison, history, forecast, benchmarking", "ar": "تتمحور حول سؤال رئيسي بسياق: مقارنة، تاريخ، تنبؤ، معايير مرجعية" },
+          { "en": "Supports ad-hoc querying & dynamic visualization", "ar": "تدعم الاستعلام الحر والتصور الديناميكي" }
+        ]}
+      ]
+    },
+    {
+      "id": "strategic",
+      "color": "#52607A",
+      "en": "Strategic (Executive) Dashboards",
+      "ar": "اللوحات الاستراتيجية (التنفيذية)",
+      "children": [
+        { "en": "Purpose", "ar": "الغرض", "children": [
+          { "en": "High-level summary of business performance via KPIs; monitors strategic goal execution", "ar": "ملخص عالي المستوى لأداء الأعمال عبر المؤشرات؛ يراقب تنفيذ الأهداف الاستراتيجية" },
+          { "en": "Commonly built around a Balanced Scorecard or a Strategy Map", "ar": "تُبنى غالبًا حول بطاقة الأداء المتوازن أو خريطة الاستراتيجية" }
+        ]},
+        { "en": "Common Visual Forms", "ar": "الأشكال البصرية الشائعة", "children": [
+          { "en": "Bullet chart, Gauge, Traffic lights", "ar": "رسم الرصاصة (Bullet Chart)، المقياس (Gauge)، إشارات المرور" }
+        ]}
+      ]
+    },
+    {
+      "id": "anatomy",
+      "color": "#9C3A5C",
+      "en": "Anatomy of a Dashboard Example",
+      "ar": "تشريح مثال للوحة معلومات",
+      "children": [
+        { "en": "Typical Components", "ar": "المكونات النموذجية", "children": [
+          { "en": "Header (logo/title), Hero Chart, Single-value KPI card", "ar": "رأس اللوحة (شعار/عنوان)، الرسم الرئيسي (Hero Chart)، بطاقة مؤشر بقيمة واحدة" },
+          { "en": "Embedded visual, textual info, a table with embedded visuals, and a chart", "ar": "تصور مدمج، معلومات نصية، جدول بتصورات مدمجة، ورسم بياني" }
+        ]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 2</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A; --accent-soft: rgba(184,132,42,.10); --ar-bg: rgba(184,132,42,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563; --accent-soft: rgba(231,181,99,.10); --ar-bg: rgba(231,181,99,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(18px,2.6vw,22px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:17px; color:var(--ink-soft); margin:0 0 18px; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 14px; font-size:15.5px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 14px; font-size:15.5px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">&larr; Predicted Model 1</a> &middot;
+    <span>Predicted Model 2</span> &middot;
+    <a href="predicted-model-3.html">Predicted Model 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted Model 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted Model 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted Model 6 &rarr;</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Predicted Practice Exam</p>
+    <h1>Predicted Exam — Model 2</h1>
+    <p dir="rtl">نموذج توقعي 2 — أسئلة محتملة وإجاباتها</p>
+    <p class="desc">A second predicted set, covering different lecture material than Model 1 &mdash; semantic layers, the four levels of analysis, BSC implementation phases, data governance, and the KPI design guide.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: هذي أسئلة <strong>متوقعة</strong> مو أسئلة فعلية من الدكتورة — مبنية على أسلوبها الملاحظ ومحتوى المحاضرات الخمس. استخدمها كتدريب إضافي، لا كبديل عن نماذجها الأصلية.</p>
+  </header>
+
+  <div class="part-title">Part A &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">12 statements</span>
+    <span class="stat true">6 True</span>
+    <span class="stat false">6 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Big Data is often described using four dimensions: Volume, Velocity, Variety, and Veracity."</p>
+    <p class="statement-ar" dir="rtl">"يُوصف البيانات الضخمة غالبًا بأربعة أبعاد: الحجم، السرعة، التنوع، والمصداقية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's "four Vs" framing of Big Data challenges.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع تأطير المحاضرة للبيانات الضخمة بـ"الأبعاد الأربعة" (4Vs).</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"A semantic layer stores the physical database tables directly, without translating them into business terms."</p>
+    <p class="statement-ar" dir="rtl">"تخزّن الطبقة الدلالية جداول قاعدة البيانات الفيزيائية مباشرة، دون ترجمتها لمصطلحات عمل."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The opposite is true &mdash; a semantic layer's whole purpose is to map complex data into familiar business terms, so users don't have to deal with the raw physical structure.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>العكس هو الصحيح — الغرض الكامل للطبقة الدلالية هو تحويل البيانات المعقدة لمصطلحات عمل مألوفة، بحيث لا يتعامل المستخدم مع البنية الفيزيائية الخام.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Metadata is data that describes other data, but not the content of the data itself."</p>
+    <p class="statement-ar" dir="rtl">"البيانات الوصفية (Metadata) هي بيانات تصف بيانات أخرى، وليست محتوى البيانات نفسه."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This is the lecture's exact definition of metadata.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا هو تعريف المحاضرة الدقيق للبيانات الوصفية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Cascading in BSC means applying one identical scorecard to every level of the organization without adaptation."</p>
+    <p class="statement-ar" dir="rtl">"التدرج (Cascading) في BSC يعني تطبيق بطاقة أداء واحدة مطابقة على كل مستويات المنظمة دون تكييف."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Cascading develops <strong>different, aligned</strong> scorecards at the corporate, business-unit, functional, and individual levels &mdash; not one single unadapted scorecard copied everywhere.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التدرج يُطوّر بطاقات <strong>مختلفة ومتوافقة</strong> على مستوى المؤسسة والوحدات والوظائف والأفراد — لا بطاقة واحدة مطابقة تُنسخ بكل مكان.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Vertical alignment in a strategy map links KPIs across different BSC perspectives, while horizontal alignment ensures KPIs within the same perspective reinforce each other."</p>
+    <p class="statement-ar" dir="rtl">"الربط العمودي بخريطة الاستراتيجية يربط المؤشرات عبر أبعاد BSC المختلفة، بينما الربط الأفقي يضمن أن مؤشرات نفس البُعد تعزز بعضها."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This is the exact distinction the lecture draws between vertical and horizontal KPI linkage in a strategy map.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا هو الفرق الدقيق الذي تحدده المحاضرة بين الربط العمودي والأفقي للمؤشرات بخريطة الاستراتيجية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">06</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Net Promoter Score (NPS) is classified as a Financial perspective KPI."</p>
+    <p class="statement-ar" dir="rtl">"يُصنَّف مؤشر Net Promoter Score (NPS) ضمن البُعد المالي."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>NPS is a <strong>Customer</strong> perspective KPI, measuring loyalty and likelihood to recommend &mdash; alongside CSAT, Customer Retention Rate, Market Share, and Customer Acquisition Cost.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>NPS مؤشر من بُعد <strong>العملاء</strong>، يقيس الولاء واحتمال التوصية — إلى جانب CSAT ومعدل الاحتفاظ بالعملاء والحصة السوقية وتكلفة اكتساب العميل.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">07</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A Hierarchical data model organizes data in a tree-like structure and is commonly used in XML and JSON files."</p>
+    <p class="statement-ar" dir="rtl">"النموذج الشجري (الهرمي) ينظم البيانات ببنية شجرية، ويُستخدم شائعًا بملفات XML وJSON."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture: data organized as a tree, records linked together, commonly implemented in systems like IBM IMS and in XML/JSON files.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع المحاضرة: بيانات منظمة شجريًا، سجلات مرتبطة ببعضها، تُنفَّذ شائعًا بأنظمة مثل IBM IMS وملفات XML/JSON.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">08</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"An Entity-Relationship (ER) model is mainly used for physical database implementation and is optimized for computing operations."</p>
+    <p class="statement-ar" dir="rtl">"نموذج الكيان والعلاقة (ER) يُستخدم أساسًا للتنفيذ الفيزيائي لقاعدة البيانات، ومُحسَّن للعمليات الحاسوبية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>ER is a <strong>conceptual</strong>-level model, good for human understanding &mdash; the lecture explicitly says it is <strong>not</strong> optimized for computing operations, and has no extensive implementation details.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>ER نموذج <strong>مفاهيمي</strong>، جيد لفهم الإنسان — تنص المحاضرة صراحة أنه <strong>غير</strong> مُحسَّن للعمليات الحاسوبية، وليس له تفاصيل تنفيذ موسّعة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">09</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Data governance covers policies for data ownership and security, while data quality relates to metadata and master data management."</p>
+    <p class="statement-ar" dir="rtl">"حوكمة البيانات تغطي سياسات ملكية البيانات وأمنها، بينما جودة البيانات ترتبط بالبيانات الوصفية وإدارة البيانات الرئيسية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches how BI Architecture's governance layer is described: governance = ownership &amp; security policy; quality is grouped together with metadata and master data.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق كيف وُصفت طبقة الحوكمة ببنية BI: الحوكمة = سياسات الملكية والأمن؛ والجودة مُجمَّعة مع البيانات الوصفية والبيانات الرئيسية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">10</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Self-service analytics always requires a data model to be predefined before any analysis can happen."</p>
+    <p class="statement-ar" dir="rtl">"التحليل الذاتي (Self-service) يتطلب دائمًا نموذج بيانات مُعد مسبقًا قبل أي تحليل."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This describes <strong>traditional</strong> BI. In the self-service/modern analytics movement, models may instead be <strong>auto-created at the time of analysis</strong>, which is exactly what distinguishes it from the traditional approach.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا وصف لـ BI <strong>التقليدي</strong>. أما بحركة التحليل الذاتي/الحديث، فقد تُنشأ النماذج <strong>تلقائيًا وقت التحليل</strong>، وهذا بالضبط ما يميزها عن النهج التقليدي.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">11</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"According to the SMART framework, a KPI's Relevant criterion means it must be aligned with the organization's strategic objectives."</p>
+    <p class="statement-ar" dir="rtl">"وفق إطار SMART، معيار Relevant يعني أن يكون المؤشر متوافقًا مع الأهداف الاستراتيجية للمنظمة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the SMART framework's definition of "Relevant."</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع تعريف إطار SMART لمعيار "ذو صلة".</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">12</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"The Learning & Growth perspective in BSC primarily measures financial return on employee investment."</p>
+    <p class="statement-ar" dir="rtl">"بُعد التعلم والنمو بـBSC يقيس أساسًا العائد المالي على الاستثمار بالموظفين."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Learning &amp; Growth measures employee capability, information systems, and organizational culture &mdash; not a financial return figure. Financial returns belong to the <strong>Financial</strong> perspective; L&amp;G is what enables future improvement, not a monetary metric itself.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التعلم والنمو يقيس كفاءة الموظفين وأنظمة المعلومات والثقافة التنظيمية — لا رقمًا لعائد مالي. العوائد المالية تقع ضمن البُعد <strong>المالي</strong>؛ التعلم والنمو هو ما يُمكّن التحسن المستقبلي، لا مقياسًا نقديًا بحد ذاته.</p></div>
+  </section>
+
+  <div class="part-title">Part B &mdash; Essay Questions <span class="ar">أسئلة مقالية</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">E1</span>
+    <h2 class="q-en">Explain the concept of a Semantic Layer and how it differs from a database Schema.</h2>
+    <p class="q-ar" dir="rtl">اشرح مفهوم الطبقة الدلالية (Semantic Layer) وكيف تختلف عن مخطط قاعدة البيانات (Schema).</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>A <strong>Semantic Layer</strong> is a business-facing representation of corporate data that lets end users access and work with data autonomously using familiar business terms &mdash; like "customer" or "revenue" &mdash; instead of the underlying technical language. It maps complex data into these terms, stored as objects accessed through business views. It is used by systems like SQL Server Analysis Services to enable self-service reporting.</p>
+      <p>A <strong>Schema</strong>, by contrast, is the formal, technical definition and blueprint of a database and its objects &mdash; the physical implementation of a data model. The key difference is direction: a schema describes the database from the system's point of view (structure); a semantic layer sits on top and translates it into the business's point of view (meaning), so a business user never needs to know the schema at all.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>الطبقة الدلالية</strong> تمثيل موجّه للأعمال لبيانات المؤسسة، يتيح للمستخدمين الوصول للبيانات والعمل معها ذاتيًا بمصطلحات عمل مألوفة — مثل "عميل" أو "إيراد" — بدل اللغة التقنية الأساسية. تُحوّل البيانات المعقدة لهذه المصطلحات، المُخزَّنة كعناصر يُصار إليها عبر عروض عمل. تستخدمها أنظمة مثل SQL Server Analysis Services لإتاحة التقارير الذاتية.</p>
+      <p>أما <strong>المخطط (Schema)</strong>، فهو التعريف الرسمي والتقني لقاعدة البيانات وعناصرها — التطبيق الفيزيائي لنموذج البيانات. الفرق الأساسي هو الاتجاه: المخطط يصف قاعدة البيانات من منظور النظام (البنية)؛ والطبقة الدلالية تقع فوقه وتترجمه لمنظور الأعمال (المعنى)، فلا يحتاج مستخدم الأعمال معرفة المخطط إطلاقًا.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E2</span>
+    <h2 class="q-en">Discuss the four levels of analysis (Descriptive, Diagnostic, Predictive, Prescriptive) with an example of each.</h2>
+    <p class="q-ar" dir="rtl">ناقش مستويات التحليل الأربعة (وصفي، تشخيصي، تنبؤي، توصوي) مع مثال لكل واحد.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Descriptive</strong> summarizes existing data to understand what happened &mdash; e.g. a monthly sales report by region. <strong>Diagnostic</strong> focuses on past performance to determine why, via a dashboard &mdash; e.g. tracing a regional sales drop to a product stockout. <strong>Predictive</strong> uses statistical/ML models to predict a future outcome &mdash; e.g. forecasting next quarter's sales. <strong>Prescriptive</strong>, a type of predictive analytics, goes further to recommend a course of action &mdash; e.g. recommending exact restock quantities per region.</p>
+      <p>Each level answers a more advanced question than the last: what happened &rarr; why &rarr; what will happen &rarr; what should we do.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>الوصفي</strong> يلخص البيانات الموجودة لفهم ما حدث — مثال: تقرير مبيعات شهري حسب المنطقة. <strong>التشخيصي</strong> يركّز على الأداء الماضي لتحديد السبب، عبر لوحة تحليلية — مثال: تتبع انخفاض مبيعات منطقة لنفاد مخزون منتج. <strong>التنبؤي</strong> يستخدم نماذج إحصائية/تعلم آلي للتنبؤ بنتيجة مستقبلية — مثال: توقع مبيعات الربع القادم. <strong>التوصوي</strong>، نوع من التنبؤي، يذهب أبعد ليوصي بإجراء — مثال: التوصية بكميات إعادة تخزين دقيقة لكل منطقة.</p>
+      <p>كل مستوى يجيب سؤالًا أكثر تقدمًا من سابقه: ماذا حدث ← لماذا ← ماذا سيحدث ← ماذا يجب أن نفعل.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E3</span>
+    <h2 class="q-en">Explain the BSC Implementation Framework and its four phases.</h2>
+    <p class="q-ar" dir="rtl">اشرح إطار تطبيق بطاقة الأداء المتوازن ومراحله الأربع.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>1. Strategic Foundation Development</strong> reviews mission, vision, and strategic objectives, and engages stakeholders. <strong>2. Scorecard Design &amp; Metric Selection</strong> translates objectives into specific, measurable KPIs with targets and initiatives. <strong>3. Organizational Alignment &amp; Cascading</strong> spreads the BSC across corporate, unit, functional, and individual levels, creating line-of-sight. <strong>4. Continuous Improvement &amp; Evolution</strong> regularly reviews and updates measures, targets, and initiatives.</p>
+      <p>BSC implementation is not a one-time project but an ongoing management system requiring stakeholder engagement and change management throughout.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>١. بناء الأساس الاستراتيجي</strong> يراجع الرسالة والرؤية والأهداف الاستراتيجية، ويُشرك أصحاب المصلحة. <strong>٢. تصميم البطاقة واختيار المقاييس</strong> يترجم الأهداف لمؤشرات محددة وقابلة للقياس مع أهداف رقمية ومبادرات. <strong>٣. المواءمة التنظيمية والتدرج</strong> ينشر البطاقة عبر المستوى المؤسسي والوحدات والوظائف والأفراد، خالقًا ارتباطًا واضحًا. <strong>٤. التحسين المستمر والتطور</strong> يراجع ويحدّث المقاييس والأهداف والمبادرات بانتظام.</p>
+      <p>تطبيق BSC ليس مشروعًا لمرة واحدة، بل نظام إداري مستمر يتطلب إشراك أصحاب المصلحة وإدارة التغيير طوال الوقت.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E4</span>
+    <h2 class="q-en">Define Data Governance and Data Quality, and explain their importance within a BI Architecture.</h2>
+    <p class="q-ar" dir="rtl">عرّف حوكمة البيانات وجودتها، واشرح أهميتهما ضمن بنية BI.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Data Governance</strong> is the policies and processes defining who owns data, who is accountable, and how it's secured. <strong>Data Quality</strong> is how accurate, complete, and reliable that data actually is, tied to Metadata and Master Data.</p>
+      <p>These are cross-cutting concerns underneath every BI Architecture stage. Weak governance means no accountability and inconsistent "spreadmart" versions of data; weak quality means every downstream layer &mdash; warehouse, cubes, dashboards, decisions &mdash; inherits unreliable numbers ("garbage in, garbage out"). They are what make it safe to trust and act on BI's output.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>حوكمة البيانات</strong> هي السياسات والعمليات التي تحدد من يملك البيانات، ومن المسؤول، وكيف تُؤمَّن. <strong>جودة البيانات</strong> هي مدى دقة تلك البيانات واكتمالها وموثوقيتها فعليًا، مرتبطة بالبيانات الوصفية والرئيسية.</p>
+      <p>هذه اعتبارات شاملة تقع تحت كل مرحلة ببنية BI. الحوكمة الضعيفة تعني غياب المساءلة ونسخ بيانات غير متسقة ("Spreadmart")؛ والجودة الضعيفة تعني أن كل طبقة تالية — المستودع، المكعبات، اللوحات، القرارات — ترث أرقامًا غير موثوقة ("مدخلات خاطئة = مخرجات خاطئة"). هما ما يجعل من الآمن الثقة بمخرجات BI والتصرف بناءً عليها.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E5</span>
+    <h2 class="q-en">Using the 6-step KPI design guide, explain how an organization goes from mission to a finished KPI.</h2>
+    <p class="q-ar" dir="rtl">باستخدام دليل تصميم المؤشرات ذي الست خطوات، اشرح كيف تنتقل المنظمة من الرسالة إلى مؤشر جاهز.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>1.</strong> Define Mission &amp; Vision &mdash; core purpose and aspirations. <strong>2.</strong> Identify Strategic Objectives derived from that mission. <strong>3.</strong> Outline Criteria for Success &mdash; the target, its attainability, timing, and monitoring method. <strong>4.</strong> Build the KPI Formula, tested with sample data. <strong>5.</strong> Collect the Data, verifying availability and accuracy centrally. <strong>6.</strong> Present the KPIs via dashboards (operational) or reports (strategic).</p>
+      <p>Skipping a step produces a weak KPI: building a formula before defining objectives risks measuring something disconnected from strategy &mdash; exactly the kind of KPI that fails SMART's "Relevant" criterion.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>١.</strong> تحديد الرسالة والرؤية — الغرض الأساسي والطموحات. <strong>٢.</strong> تحديد الأهداف الاستراتيجية المستمدة من تلك الرسالة. <strong>٣.</strong> تحديد معايير النجاح — الهدف وإمكانية تحقيقه وتوقيته وطريقة متابعته. <strong>٤.</strong> بناء معادلة المؤشر، واختبارها ببيانات تجريبية. <strong>٥.</strong> جمع البيانات، بالتحقق من توفرها ودقتها مركزيًا. <strong>٦.</strong> عرض المؤشرات عبر لوحات (تشغيلية) أو تقارير (استراتيجية).</p>
+      <p>تخطي خطوة ينتج مؤشرًا ضعيفًا: بناء معادلة قبل تحديد الأهداف يخاطر بقياس شيء منفصل عن الاستراتيجية — وهذا بالضبط نوع المؤشر الذي يفشل بمعيار "ذو صلة" ضمن SMART.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 2 &middot; 12 True/False + 5 Essay &middot; not from the doctor &mdash; a style-matched practice set</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

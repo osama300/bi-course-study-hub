@@ -1,0 +1,153 @@
+{
+  "id": "root",
+  "en": "Data Storage for Analytics Solutions",
+  "ar": "تخزين البيانات لحلول التحليلات",
+  "children": [
+    {
+      "id": "why-storage",
+      "color": "#3B58A6",
+      "en": "Why We Need Data Storage",
+      "ar": "لماذا نحتاج تخزين البيانات",
+      "children": [
+        { "en": "A Single Source of Truth", "ar": "مصدر حقيقة واحد", "children": [
+          { "en": "Data quality & integrity, secured & access-controlled", "ar": "جودة البيانات وسلامتها، مؤمّنة ومتحكم بالوصول إليها" },
+          { "en": "With a defined model & structure, used by multiple users & apps", "ar": "بنموذج وهيكل محددين، يستخدمه مستخدمون وتطبيقات متعددة" }
+        ]},
+        { "en": "Two Major Database Styles", "ar": "نوعان رئيسيان من قواعد البيانات", "children": [
+          { "en": "Transactional (operational) databases vs. Analytical databases", "ar": "قواعد بيانات تشغيلية (معاملاتية) مقابل قواعد بيانات تحليلية" }
+        ]}
+      ]
+    },
+    {
+      "id": "oltp",
+      "color": "#1C7A67",
+      "en": "Transactional (OLTP) Databases",
+      "ar": "قواعد البيانات التشغيلية (OLTP)",
+      "children": [
+        { "en": "What They're For", "ar": "وظيفتها", "children": [
+          { "en": "Day-to-day operations: sales, orders, updates", "ar": "العمليات اليومية: المبيعات والطلبات والتحديثات" },
+          { "en": "Fast transactions on small data; many concurrent users; strong integrity", "ar": "معاملات سريعة على بيانات قليلة؛ مستخدمون متزامنون كُثر؛ سلامة بيانات عالية" },
+          { "en": "Not suitable for analysis & reporting — designed for operations, not decisions", "ar": "غير مناسبة للتحليل والتقارير — مصممة للعمليات لا للقرارات" }
+        ]},
+        { "en": "Key Limitations for Analysis", "ar": "القيود الرئيسية للتحليل", "children": [
+          { "en": "Performance: optimized for change, not analysis; short data retention", "ar": "الأداء: مُحسَّنة للتغيير لا للتحليل؛ احتفاظ قصير بالبيانات" },
+          { "en": "Heterogeneity: different systems store data very differently", "ar": "التباين: أنظمة مختلفة تخزن البيانات بطرق مختلفة جدًا" }
+        ]}
+      ]
+    },
+    {
+      "id": "analytical-db",
+      "color": "#A85A22",
+      "en": "Analytical Databases",
+      "ar": "قواعد البيانات التحليلية",
+      "children": [
+        { "en": "Purpose", "ar": "الغرض", "children": [
+          { "en": "Organize lots of stable data for ease of analysis & retrieval", "ar": "تنظيم كم كبير من البيانات المستقرة لتسهيل التحليل والاسترجاع" }
+        ]},
+        { "en": "Key Capabilities", "ar": "القدرات الرئيسية", "children": [
+          { "en": "Combine heterogeneous sources into one homogeneous structure", "ar": "دمج مصادر متباينة ضمن هيكل متجانس واحد" },
+          { "en": "Hold valid, consistent, consolidated data; updated periodically", "ar": "تحتفظ ببيانات صحيحة ومتسقة وموحدة؛ تُحدَّث دوريًا" }
+        ]},
+        { "en": "Implementations", "ar": "طرق التنفيذ", "children": [
+          { "en": "(Enterprise) Data Warehouse, Data Mart, OLAP, Data Lake, Data Lakehouse", "ar": "مستودع بيانات (مؤسسي)، متجر بيانات، OLAP، بحيرة بيانات، Lakehouse" }
+        ]}
+      ]
+    },
+    {
+      "id": "warehousing",
+      "color": "#7A4A93",
+      "en": "Data Warehousing",
+      "ar": "مستودعات البيانات",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "Collecting, integrating, storing & managing data from multiple sources in a central repository", "ar": "جمع البيانات من مصادر متعددة ودمجها وتخزينها وإدارتها بمستودع مركزي" },
+          { "en": "Inmon: \"subject-oriented, integrated, time-variant, nonvolatile\" collection for decision-making", "ar": "إنمون: مجموعة \"موجهة بالموضوع، متكاملة، متغيرة بالزمن، غير متطايرة\" لدعم القرار" }
+        ]},
+        { "en": "The Four Defining Properties", "ar": "الخصائص الأربع المحددة", "children": [
+          { "en": "Subject-oriented: organized around facts/measures (e.g. sales by product/region)", "ar": "موجهة بالموضوع: منظمة حول الحقائق/المقاييس (مثل المبيعات حسب المنتج/المنطقة)" },
+          { "en": "Integrated: a unified view with common definitions across business units", "ar": "متكاملة: رؤية موحدة بتعريفات مشتركة عبر وحدات العمل" },
+          { "en": "Time-variant: recorded historically, with a time dimension for comparisons", "ar": "متغيرة بالزمن: مسجلة تاريخيًا، ببُعد زمني للمقارنات" },
+          { "en": "Non-volatile: not updated in real time, refreshed periodically", "ar": "غير متطايرة: لا تُحدَّث لحظيًا، بل تُحدَّث دوريًا" }
+        ]}
+      ]
+    },
+    {
+      "id": "dw-vs-oltp",
+      "color": "#2A6D91",
+      "en": "Data Warehouse vs. Operational Database",
+      "ar": "مستودع البيانات مقابل القاعدة التشغيلية",
+      "children": [
+        { "en": "Source & Purpose", "ar": "المصدر والغرض", "children": [
+          { "en": "OLTP: original operational data, to run core business tasks", "ar": "OLTP: بيانات تشغيلية أصلية، لتشغيل مهام العمل الأساسية" },
+          { "en": "OLAP/DW: consolidated data, to support planning & decisions", "ar": "OLAP/DW: بيانات موحدة، لدعم التخطيط والقرار" }
+        ]},
+        { "en": "Operations & Queries", "ar": "العمليات والاستعلامات", "children": [
+          { "en": "OLTP: fast simple inserts/updates by end users", "ar": "OLTP: إدخالات/تحديثات سريعة وبسيطة من المستخدمين" },
+          { "en": "OLAP/DW: mostly reads; periodic batch refreshes; complex aggregation queries", "ar": "OLAP/DW: معظمها قراءة؛ تحديثات دفعية دورية؛ استعلامات تجميع معقدة" }
+        ]},
+        { "en": "Size & Speed", "ar": "الحجم والسرعة", "children": [
+          { "en": "OLTP: relatively small & very fast", "ar": "OLTP: صغيرة نسبيًا وسريعة جدًا" },
+          { "en": "OLAP/DW: larger due to history & aggregation structures; speed depends on data volume", "ar": "OLAP/DW: أكبر بسبب التاريخ وهياكل التجميع؛ السرعة تعتمد على حجم البيانات" }
+        ]}
+      ]
+    },
+    {
+      "id": "multidimensional",
+      "color": "#3D7A40",
+      "en": "Multidimensional Data & OLAP",
+      "ar": "البيانات متعددة الأبعاد وOLAP",
+      "children": [
+        { "en": "Why Multidimensional Modeling", "ar": "لماذا النمذجة متعددة الأبعاد", "children": [
+          { "en": "Organizes data via dimensions (Time, Product, Region) to answer analytical questions faster", "ar": "تنظم البيانات عبر أبعاد (الوقت، المنتج، المنطقة) للإجابة عن أسئلة تحليلية بسرعة أكبر" }
+        ]},
+        { "en": "From Spreadsheet to Data Cube", "ar": "من جدول البيانات إلى مكعب البيانات", "children": [
+          { "en": "A spreadsheet is 2D (e.g. Product × Region); adding Time makes it 3D", "ar": "جدول البيانات ثنائي الأبعاد (مثل المنتج × المنطقة)؛ إضافة الوقت يجعله ثلاثي الأبعاد" },
+          { "en": "e.g. Laptop + Sana'a + Q1 = $20,000 — a 3D Data Cube cell", "ar": "مثال: لابتوب + صنعاء + الربع 1 = 20,000$ — خلية بمكعب بيانات ثلاثي" }
+        ]},
+        { "en": "What Is a Data Cube", "ar": "ما هو مكعب البيانات", "children": [
+          { "en": "A multidimensional structure; OLAP is optimized for multi-dimensional queries", "ar": "هيكل متعدد الأبعاد؛ OLAP مُحسَّن للاستعلامات متعددة الأبعاد" }
+        ]},
+        { "en": "OLAP Operations", "ar": "عمليات OLAP", "children": [
+          { "en": "Pivoting: changes the view/orientation, not the data", "ar": "التدوير (Pivoting): يغيّر العرض/الاتجاه، لا البيانات" },
+          { "en": "Slice: selects one value from one dimension", "ar": "التقطيع (Slice): يختار قيمة واحدة من بُعد واحد" },
+          { "en": "Dice: selects a subset using multiple dimensions", "ar": "التكعيب (Dice): يختار جزءًا باستخدام عدة أبعاد" }
+        ]}
+      ]
+    },
+    {
+      "id": "data-mart",
+      "color": "#52607A",
+      "en": "Data Mart",
+      "ar": "متجر البيانات",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "A localized data warehouse storing only data relevant to one department", "ar": "مستودع بيانات محلي يخزّن فقط البيانات الخاصة بقسم معين" }
+        ]},
+        { "en": "Mart vs. Warehouse", "ar": "المتجر مقابل المستودع", "children": [
+          { "en": "Scope: department vs. enterprise; Size: <100GB vs. 100GB–1TB+", "ar": "النطاق: قسم مقابل مؤسسة؛ الحجم: أقل من 100GB مقابل 100GB-1TB+" }
+        ]},
+        { "en": "Problems with Data Warehousing", "ar": "مشاكل مستودعات البيانات", "children": [
+          { "en": "Long design/implementation process; lacks agility for ad-hoc needs", "ar": "عملية تصميم/تنفيذ طويلة؛ تفتقر للمرونة بالاحتياجات الطارئة" }
+        ]}
+      ]
+    },
+    {
+      "id": "data-lake",
+      "color": "#9C3A5C",
+      "en": "Data Lake",
+      "ar": "بحيرة البيانات",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "A repository for disparate data in its native format: IoT, tweets/email, operational data", "ar": "مستودع لبيانات متنوعة بصيغتها الأصلية: IoT، تغريدات/بريد، بيانات تشغيلية" }
+        ]},
+        { "en": "Objectives", "ar": "الأهداف", "children": [
+          { "en": "No schema required upfront; fast data acquisition; stores multi-structured data natively", "ar": "لا يتطلب مخططًا مسبقًا؛ اكتساب بيانات سريع؛ يخزّن بيانات متعددة الهياكل بصيغتها الأصلية" }
+        ]},
+        { "en": "Implementation & Coexistence", "ar": "التنفيذ والتعايش", "children": [
+          { "en": "HDFS, NoSQL databases, Object stores (S3, Azure Blob)", "ar": "HDFS، قواعد بيانات NoSQL، تخزين كائنات (S3، Azure Blob)" },
+          { "en": "A Data Lake and a Data Warehouse can co-exist in the same architecture", "ar": "يمكن لبحيرة البيانات والمستودع أن يتعايشا بنفس البنية" }
+        ]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "id": "root",
+  "en": "Key Performance Indicators (KPI)",
+  "ar": "مؤشرات الأداء الرئيسية",
+  "children": [
+    {
+      "id": "intro",
+      "color": "#3B58A6",
+      "en": "Introduction & Definition",
+      "ar": "المقدمة والتعريف",
+      "children": [
+        {
+          "en": "Performance Management",
+          "ar": "إدارة الأداء",
+          "children": [
+            { "en": "Aligns resources, employees & activities with strategic objectives", "ar": "تربط الموارد والموظفين والأنشطة بالأهداف الاستراتيجية" },
+            { "en": "Set goals, monitor progress, evaluate results, take corrective action", "ar": "تحديد الأهداف، متابعة التقدم، تقييم النتائج، تصحيح المسار" }
+          ]
+        },
+        {
+          "en": "What is a KPI?",
+          "ar": "ما هو مؤشر الأداء الرئيسي؟",
+          "children": [
+            { "en": "A critical, quantifiable indicator of goal achievement", "ar": "مؤشر كمي حاسم يوضح مدى تحقيق الأهداف" },
+            { "en": "Provides focus for improvement & an analytical basis for decisions", "ar": "يوفر تركيزًا للتحسين وأساسًا تحليليًا لاتخاذ القرار" },
+            { "en": "Managing by KPIs = set targets, then track progress against them", "ar": "الإدارة بالمؤشرات = تحديد أهداف ومتابعة التقدم نحوها" }
+          ]
+        },
+        {
+          "en": "Before vs. After Winning KPIs",
+          "ar": "قبل وبعد اعتماد مؤشرات فعالة",
+          "children": [
+            { "en": "Before: teams scatter away from the strategic direction", "ar": "قبل: الفرق تتشتت عن الاتجاه الاستراتيجي" },
+            { "en": "After: teams move in alignment with the strategy", "ar": "بعد: الفرق تتحرك بتناسق مع الاستراتيجية" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "characteristics",
+      "color": "#1C7A67",
+      "en": "Seven Characteristics of KPIs",
+      "ar": "خصائص مؤشرات الأداء",
+      "children": [
+        { "en": "Nonfinancial Measures", "ar": "مقاييس غير مالية", "children": [{ "en": "Not expressed in dollars, yen, pounds, euros, etc.", "ar": "لا تُقاس بعملة كالدولار أو اليورو" }] },
+        { "en": "Measured Frequently", "ar": "تُقاس بتكرار عالٍ", "children": [{ "en": "24/7, daily, or weekly", "ar": "على مدار الساعة، يوميًا، أو أسبوعيًا" }] },
+        { "en": "Acted on by Senior Management", "ar": "تستدعي فعل الإدارة العليا", "children": [{ "en": "CEO & senior management team respond directly", "ar": "الرئيس التنفيذي والإدارة العليا يستجيبون مباشرة" }] },
+        { "en": "Clear Required Action", "ar": "توضح الإجراء المطلوب", "children": [{ "en": "Staff understand the measure & know what to fix", "ar": "يفهم الموظفون المقياس ويعرفون ما يجب إصلاحه" }] },
+        { "en": "Significant Impact", "ar": "تأثير كبير", "children": [{ "en": "Affects critical success factors & multiple BSC perspectives", "ar": "تؤثر على عوامل النجاح الحرجة وأكثر من بُعد في BSC" }] },
+        { "en": "Encourage Appropriate Action", "ar": "تشجع على الإجراء الصحيح", "children": [{ "en": "Drive the right behavior across the organization", "ar": "تدفع نحو السلوك الصحيح داخل المنظمة" }] }
+      ]
+    },
+    {
+      "id": "benefits",
+      "color": "#A85A22",
+      "en": "Main Benefits of Tracking KPIs",
+      "ar": "الفوائد الرئيسية لتتبع المؤشرات",
+      "children": [
+        { "en": "Clarity & Focus", "ar": "الوضوح والتركيز", "children": [
+          { "en": "Communicates vision, mission & objectives", "ar": "توضّح الرؤية والرسالة والأهداف" },
+          { "en": "Aligns teams' efforts with overall strategy", "ar": "تُنسّق جهود الفرق مع الاستراتيجية العامة" }
+        ]},
+        { "en": "Easier Performance Tracking", "ar": "تتبع أسهل للأداء", "children": [
+          { "en": "Identifies strengths, weaknesses, opportunities & threats", "ar": "تحدد نقاط القوة والضعف والفرص والتهديدات" }
+        ]},
+        { "en": "Supports Decision-Making", "ar": "دعم اتخاذ القرار", "children": [
+          { "en": "Evidence-based insight from real data", "ar": "رؤى مبنية على بيانات فعلية لدعم القرار" }
+        ]},
+        { "en": "Fosters an Accountability Culture", "ar": "تعزيز ثقافة المساءلة", "children": [
+          { "en": "Builds ownership, learning & innovation across the company", "ar": "تبني الملكية والتعلم والابتكار داخل الشركة" }
+        ]}
+      ]
+    },
+    {
+      "id": "types",
+      "color": "#7A4A93",
+      "en": "Types of KPIs",
+      "ar": "أنواع مؤشرات الأداء",
+      "children": [
+        { "en": "Strategic KPIs", "ar": "مؤشرات استراتيجية", "children": [
+          { "en": "Long-term, high-level; show if strategy is on target", "ar": "طويلة المدى وعالية المستوى؛ توضح مسار الاستراتيجية" },
+          { "en": "e.g. OEE — Overall Equipment Effectiveness", "ar": "مثال: فعالية المعدات الإجمالية OEE" },
+          { "en": "e.g. Defect Rate — target an 8% reduction", "ar": "مثال: معدل العيوب — هدف تخفيضه 8%" }
+        ]},
+        { "en": "Operational KPIs", "ar": "مؤشرات تشغيلية", "children": [
+          { "en": "Detailed, timely info for daily decisions", "ar": "معلومات تفصيلية آنية لقرارات يومية" },
+          { "en": "e.g. Days Sales Outstanding (DSO)", "ar": "مثال: أيام تحصيل المبيعات DSO" },
+          { "en": "e.g. Operating Cash Flow", "ar": "مثال: التدفق النقدي التشغيلي" }
+        ]},
+        { "en": "Leading KPIs", "ar": "مؤشرات استباقية", "children": [
+          { "en": "Predict or influence future performance", "ar": "تتنبأ بالأداء المستقبلي أو تؤثر فيه" },
+          { "en": "e.g. more maintenance checks → fewer defects", "ar": "مثال: زيادة الصيانة الدورية تقلل الأعطال" }
+        ]},
+        { "en": "Lagging KPIs", "ar": "مؤشرات تابعة (نتائجية)", "children": [
+          { "en": "Show the result of past performance", "ar": "توضح نتيجة الأداء السابق" },
+          { "en": "e.g. units produced, revenue this month", "ar": "مثال: عدد الوحدات المنتجة، إيراد الشهر" },
+          { "en": "Leading informs future action; Lagging validates past outcomes", "ar": "الاستباقي يوجّه المستقبل، والتابع يُثبت نتائج الماضي" }
+        ]}
+      ]
+    },
+    {
+      "id": "smart",
+      "color": "#2A6D91",
+      "en": "SMART Criteria for Effective KPIs",
+      "ar": "معايير SMART لمؤشرات فعالة",
+      "children": [
+        { "en": "Specific", "ar": "محدد", "children": [
+          { "en": "A clear, detailed description of exactly what to achieve", "ar": "وصف واضح ومحدد لما يجب تحقيقه بالضبط" },
+          { "en": "e.g. \"Raise satisfaction 10% by Q3\", not just \"improve satisfaction\"", "ar": "مثال: \"رفع الرضا 10% بنهاية الربع 3\" لا \"تحسين الرضا\" فقط" }
+        ]},
+        { "en": "Measurable", "ar": "قابل للقياس", "children": [
+          { "en": "Quantifiable via amounts, percentages or raw numbers", "ar": "قابل للقياس عبر كميات أو نسب أو أرقام" },
+          { "en": "e.g. website traffic, cash flow, debt-to-asset ratio", "ar": "مثال: زيارات الموقع، التدفق النقدي، نسبة الدين للأصول" }
+        ]},
+        { "en": "Achievable", "ar": "قابل للتحقيق", "children": [
+          { "en": "Ambitious yet attainable — motivates without causing burnout", "ar": "طموح لكنه ممكن — يحفّز دون إرهاق" }
+        ]},
+        { "en": "Relevant", "ar": "ذو صلة", "children": [
+          { "en": "Aligned with the organization's strategic objectives", "ar": "متوافق مع الأهداف الاستراتيجية للمنظمة" }
+        ]},
+        { "en": "Time-bound", "ar": "محدد بزمن", "children": [
+          { "en": "A realistic timeframe to measure progress: quarter, month, year", "ar": "إطار زمني واقعي لقياس التقدم: ربع سنوي، شهري، سنوي" }
+        ]}
+      ]
+    },
+    {
+      "id": "guide",
+      "color": "#3D7A40",
+      "en": "A Practical Guide to Designing KPIs",
+      "ar": "دليل عملي لتصميم المؤشرات",
+      "children": [
+        { "en": "1. Define Mission & Vision", "ar": "١. تحديد الرسالة والرؤية", "children": [
+          { "en": "Core purpose, values & long-term aspirations", "ar": "الغرض الأساسي والقيم والطموحات طويلة المدى" }
+        ]},
+        { "en": "2. Identify Strategic Objectives", "ar": "٢. تحديد الأهداف الاستراتيجية", "children": [
+          { "en": "High-level goals that guide relevant KPI selection", "ar": "أهداف عالية المستوى توجّه اختيار المؤشرات المناسبة" }
+        ]},
+        { "en": "3. Outline Criteria for Success", "ar": "٣. تحديد معايير النجاح", "children": [
+          { "en": "Define the target, attainability, timing & monitoring method", "ar": "تحديد الهدف وإمكانية تحقيقه وتوقيته وطريقة متابعته" }
+        ]},
+        { "en": "4. Build the KPI Formula", "ar": "٤. بناء معادلة المؤشر", "children": [
+          { "en": "A single metric, or a combined calculated formula", "ar": "مقياس واحد، أو معادلة مركّبة من عدة عناصر" },
+          { "en": "e.g. Revenue ÷ Number of Machines = Productivity", "ar": "مثال: الإيراد ÷ عدد الآلات = الإنتاجية" }
+        ]},
+        { "en": "5. Collect the Data", "ar": "٥. جمع البيانات", "children": [
+          { "en": "Verify data availability & accuracy; centralize reporting", "ar": "التحقق من توفر البيانات ودقتها وتجميعها مركزيًا" }
+        ]},
+        { "en": "6. Present Your KPIs", "ar": "٦. عرض المؤشرات", "children": [
+          { "en": "Dashboards for operational KPIs; reports for strategic KPIs", "ar": "لوحات معلومات للمؤشرات التشغيلية، وتقارير للاستراتيجية" }
+        ]}
+      ]
+    },
+    {
+      "id": "tools",
+      "color": "#52607A",
+      "en": "Tools for KPI Tracking & Reporting",
+      "ar": "أدوات تتبع المؤشرات والتقارير",
+      "children": [
+        { "en": "Dashboards", "ar": "لوحات المعلومات", "children": [
+          { "en": "Power BI, Tableau, Google Data Studio", "ar": "Power BI، Tableau، Google Data Studio" }
+        ]},
+        { "en": "Scorecards", "ar": "بطاقات الأداء", "children": [
+          { "en": "Balanced Scorecard Framework", "ar": "إطار بطاقة الأداء المتوازن BSC" }
+        ]},
+        { "en": "Spreadsheets & BI Reports", "ar": "جداول البيانات وتقارير BI", "children": [
+          { "en": "Microsoft Excel, SQL-based reports", "ar": "Microsoft Excel، تقارير مبنية على SQL" }
+        ]}
+      ]
+    },
+    {
+      "id": "case-study",
+      "color": "#9C3A5C",
+      "en": "Case Study: FCIT",
+      "ar": "دراسة حالة: كلية الحوسبة وتقنية المعلومات",
+      "children": [
+        { "en": "Mission", "ar": "الرسالة", "children": [
+          { "en": "Distinguished academic programs & a stimulating research environment in computing & tech", "ar": "برامج أكاديمية متميزة وبيئة بحثية محفزة في الحوسبة والتقنية" },
+          { "en": "Per quality standards, accreditation & labor-market alignment", "ar": "وفق معايير الجودة والاعتماد الأكاديمي ومواءمة سوق العمل" }
+        ]},
+        { "en": "Vision", "ar": "الرؤية", "children": [
+          { "en": "Academic & research leadership in computing & tech, nationally & regionally", "ar": "الريادة الأكاديمية والبحثية في الحوسبة والتقنية وطنيًا وإقليميًا" }
+        ]},
+        { "en": "Strategic Objectives", "ar": "الأهداف الاستراتيجية", "children": [
+          { "en": "Improve student satisfaction with support services", "ar": "تحسين رضا الطلاب عن خدمات الدعم" },
+          { "en": "Increase on-time program completion", "ar": "زيادة نسبة إتمام البرامج بالوقت المحدد" },
+          { "en": "Reduce student dropout rates", "ar": "تقليل معدلات تسرب الطلاب" }
+        ]},
+        { "en": "Success Criteria", "ar": "معايير النجاح", "children": [
+          { "en": "90% of students satisfied with support services", "ar": "رضا 90% من الطلاب عن خدمات الدعم" },
+          { "en": "At least 85% graduate within the expected time", "ar": "تخرج 85% على الأقل بالوقت المتوقع" },
+          { "en": "Dropout rate ≤ 5% annually", "ar": "معدل تسرب لا يتجاوز 5% سنويًا" }
+        ]},
+        { "en": "KPI Formulas", "ar": "معادلات المؤشرات", "children": [
+          { "en": "Satisfaction % = Satisfied Responses ÷ Total Responses × 100", "ar": "معدل الرضا % = الردود الراضية ÷ إجمالي الردود × 100" },
+          { "en": "On-time Graduation % = On-time Graduates ÷ Total Students × 100", "ar": "معدل التخرج بالوقت % = المتخرجون بالوقت ÷ إجمالي الطلاب × 100" },
+          { "en": "Dropout Rate % = Dropouts ÷ Total Enrolled × 100", "ar": "معدل التسرب % = المتسربون ÷ إجمالي المسجلين × 100" }
+        ]},
+        { "en": "Presenting the KPIs", "ar": "عرض المؤشرات", "children": [
+          { "en": "Monthly dashboard shared with university leadership", "ar": "لوحة شهرية تُشارك مع قيادة الجامعة" },
+          { "en": "Color-coded: green = target met, red = underperforming", "ar": "ترميز لوني: أخضر لتحقيق الهدف، أحمر لضعف الأداء" },
+          { "en": "Discussed in quarterly performance review meetings", "ar": "تُناقش في اجتماعات مراجعة الأداء الفصلية" }
+        ]}
+      ]
+    }
+  ]
+}

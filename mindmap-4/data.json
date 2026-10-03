@@ -1,0 +1,206 @@
+{
+  "id": "root",
+  "en": "Formulating KPIs Using the Balanced Scorecard (BSC)",
+  "ar": "صياغة مؤشرات الأداء باستخدام بطاقة الأداء المتوازن",
+  "children": [
+    {
+      "id": "rationale",
+      "color": "#3B58A6",
+      "en": "Why BSC? The Rationale",
+      "ar": "لماذا بطاقة الأداء المتوازن؟",
+      "children": [
+        {
+          "en": "Why Traditional Metrics Fall Short",
+          "ar": "لماذا تقصر المقاييس المالية التقليدية",
+          "children": [
+            { "en": "Financial metrics are backward-looking, not future indicators", "ar": "المقاييس المالية تنظر للماضي، لا تتنبأ بالمستقبل" },
+            { "en": "Miss the value of intangible assets: relationships, capability, knowledge", "ar": "تغفل قيمة الأصول غير الملموسة: العلاقات والكفاءات والمعرفة" }
+          ]
+        },
+        {
+          "en": "Balancing Stakeholder Interests",
+          "ar": "موازنة مصالح أصحاب المصلحة",
+          "children": [
+            { "en": "Shareholders (returns), customers (value), employees (growth), society (responsibility)", "ar": "المساهمون (عوائد)، العملاء (قيمة)، الموظفون (تطور)، المجتمع (مسؤولية)" },
+            { "en": "Financial metrics alone can't address this stakeholder complexity", "ar": "المقاييس المالية وحدها لا تكفي لتلبية هذا التعقيد" }
+          ]
+        },
+        {
+          "en": "Origin",
+          "ar": "الأصل",
+          "children": [
+            { "en": "Kaplan & Norton, Harvard Business Review, 1992", "ar": "كابلن ونورتون، مجلة Harvard Business Review، 1992" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intro-bsc",
+      "color": "#1C7A67",
+      "en": "Introduction to the Balanced Scorecard",
+      "ar": "مقدمة عن بطاقة الأداء المتوازن",
+      "children": [
+        {
+          "en": "Definition",
+          "ar": "التعريف",
+          "children": [
+            { "en": "A strategic planning & management system", "ar": "نظام للتخطيط والإدارة الاستراتيجية" },
+            { "en": "Communicates goals, aligns daily work, prioritizes projects, tracks targets", "ar": "يوضّح الأهداف، ينسّق العمل اليومي، يرتّب أولويات المشاريع، يتابع الأهداف" }
+          ]
+        },
+        {
+          "en": "Purpose",
+          "ar": "الغرض",
+          "children": [
+            { "en": "Translates strategy into operational terms", "ar": "يترجم الاستراتيجية إلى مصطلحات تشغيلية" },
+            { "en": "Balances financial measures with performance drivers", "ar": "يوازن بين المقاييس المالية ومحركات الأداء" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perspectives",
+      "color": "#A85A22",
+      "en": "The Four Perspectives of BSC",
+      "ar": "أبعاد بطاقة الأداء المتوازن الأربعة",
+      "children": [
+        { "en": "Financial", "ar": "المالي", "children": [
+          { "en": "How do we look to shareholders? Revenue growth & shareholder value", "ar": "كيف يرانا المساهمون؟ نمو الإيرادات وقيمة المساهمين" }
+        ]},
+        { "en": "Customer", "ar": "العملاء", "children": [
+          { "en": "How do customers see us? Satisfaction, retention, market share", "ar": "كيف يرانا العملاء؟ الرضا، الاحتفاظ، الحصة السوقية" }
+        ]},
+        { "en": "Internal Business Process", "ar": "العمليات الداخلية", "children": [
+          { "en": "What must we excel at? Operations that create customer & shareholder value", "ar": "بماذا يجب أن نتفوق؟ عمليات تخلق قيمة للعميل والمساهم" }
+        ]},
+        { "en": "Learning & Growth", "ar": "التعلم والنمو", "children": [
+          { "en": "Can we keep improving? Employee capability, systems, culture", "ar": "هل نستمر بالتحسن؟ كفاءة الموظفين والأنظمة والثقافة" }
+        ]},
+        { "en": "Cause-and-Effect Chain", "ar": "سلسلة السبب والنتيجة", "children": [
+          { "en": "Learning & Growth → Internal Processes → Customer Satisfaction → Financial Results", "ar": "التعلم والنمو ← العمليات الداخلية ← رضا العملاء ← النتائج المالية" }
+        ]}
+      ]
+    },
+    {
+      "id": "framework",
+      "color": "#7A4A93",
+      "en": "BSC Implementation Framework",
+      "ar": "إطار تطبيق بطاقة الأداء المتوازن",
+      "children": [
+        { "en": "1. Strategic Foundation Development", "ar": "١. بناء الأساس الاستراتيجي", "children": [
+          { "en": "Review mission, vision & strategic objectives", "ar": "مراجعة الرسالة والرؤية والأهداف الاستراتيجية" },
+          { "en": "Stakeholder analysis: identify champions, address resistance, build consensus", "ar": "تحليل أصحاب المصلحة: تحديد الداعمين ومعالجة المقاومة وبناء التوافق" }
+        ]},
+        { "en": "2. Scorecard Design & Metric Selection", "ar": "٢. تصميم البطاقة واختيار المقاييس", "children": [
+          { "en": "Translate objectives into specific, measurable KPIs", "ar": "ترجمة الأهداف إلى مؤشرات محددة وقابلة للقياس" },
+          { "en": "Metrics must be strategically relevant, actionable & feasible", "ar": "يجب أن تكون المقاييس ذات صلة استراتيجية وقابلة للتنفيذ والتطبيق" },
+          { "en": "Targets: challenging yet achievable — motivates without causing burnout", "ar": "الأهداف: طموحة وممكنة التحقيق — تحفّز دون إرهاق" },
+          { "en": "Initiatives: the specific action programs/projects that close the gap to the target", "ar": "المبادرات: برامج وإجراءات عملية محددة تُغلق الفجوة نحو الهدف" }
+        ]},
+        { "en": "3. Organizational Alignment & Cascading", "ar": "٣. المواءمة التنظيمية والتدرج", "children": [
+          { "en": "Cascade the BSC to corporate, unit, functional & individual levels", "ar": "تدريج البطاقة إلى مستوى المؤسسة والوحدات والوظائف والأفراد" },
+          { "en": "Creates \"line-of-sight\" between individual work and strategy", "ar": "يخلق ارتباطًا واضحًا بين عمل الفرد والاستراتيجية" }
+        ]},
+        { "en": "4. Continuous Improvement & Evolution", "ar": "٤. التحسين المستمر والتطور", "children": [
+          { "en": "Regularly review & update measures, targets & initiatives", "ar": "مراجعة وتحديث المقاييس والأهداف والمبادرات بانتظام" },
+          { "en": "Combines quantitative trend analysis with qualitative assessment", "ar": "يجمع بين تحليل الاتجاهات الكمي والتقييم النوعي" }
+        ]}
+      ]
+    },
+    {
+      "id": "kpi-bsc-context",
+      "color": "#2A6D91",
+      "en": "KPIs in the BSC Context",
+      "ar": "المؤشرات ضمن سياق البطاقة المتوازنة",
+      "children": [
+        { "en": "Definition & Relationship", "ar": "التعريف والعلاقة", "children": [
+          { "en": "KPIs are quantifiable measurements reflecting critical success factors", "ar": "المؤشرات مقاييس كمية تعكس عوامل النجاح الحرجة" },
+          { "en": "They are the measurement tool within each BSC perspective", "ar": "هي أداة القياس داخل كل بُعد من أبعاد البطاقة" }
+        ]},
+        { "en": "Why the Right KPIs Matter", "ar": "أهمية اختيار المؤشرات الصحيحة", "children": [
+          { "en": "\"What gets measured gets managed\"", "ar": "\"ما يُقاس يُدار\"" },
+          { "en": "Ensures alignment, focus & meaningful insight", "ar": "يضمن التوافق والتركيز والرؤى المفيدة" }
+        ]},
+        { "en": "Characteristics of Effective KPIs", "ar": "خصائص المؤشرات الفعالة", "children": [
+          { "en": "Follow SMART: Specific, Measurable, Achievable, Relevant, Time-bound", "ar": "تتبع SMART: محدد، قابل للقياس، قابل للتحقيق، ذو صلة، محدد بزمن" },
+          { "en": "Also actionable & aligned with strategic objectives", "ar": "قابلة للتنفيذ ومتوافقة مع الأهداف الاستراتيجية" }
+        ]}
+      ]
+    },
+    {
+      "id": "kpis-by-perspective",
+      "color": "#3D7A40",
+      "en": "KPIs by Perspective",
+      "ar": "المؤشرات حسب كل بُعد",
+      "children": [
+        { "en": "Financial KPIs", "ar": "المؤشرات المالية", "children": [
+          { "en": "Revenue Growth Rate — % increase over a period", "ar": "معدل نمو الإيرادات — % الزيادة خلال فترة" },
+          { "en": "Net Profit Margin — net profit as % of revenue", "ar": "هامش الربح الصافي — % الربح من الإيرادات" },
+          { "en": "Return on Investment (ROI)", "ar": "العائد على الاستثمار ROI" },
+          { "en": "Operating Cash Flow", "ar": "التدفق النقدي التشغيلي" },
+          { "en": "Most common in practice: Revenue Growth & Net Profit Margin lead", "ar": "الأكثر استخدامًا عمليًا: نمو الإيرادات وهامش الربح الصافي" }
+        ]},
+        { "en": "Customer KPIs", "ar": "مؤشرات العملاء", "children": [
+          { "en": "Customer Satisfaction Score (CSAT)", "ar": "مؤشر رضا العملاء CSAT" },
+          { "en": "Net Promoter Score (NPS) — loyalty & likelihood to recommend", "ar": "صافي نقاط الترويج NPS — الولاء واحتمال التوصية" },
+          { "en": "Customer Retention Rate — rated most important in practice", "ar": "معدل الاحتفاظ بالعملاء — الأعلى أهمية عمليًا" },
+          { "en": "Market Share", "ar": "الحصة السوقية" },
+          { "en": "Customer Acquisition Cost", "ar": "تكلفة اكتساب العميل" }
+        ]},
+        { "en": "Internal Process KPIs", "ar": "مؤشرات العمليات الداخلية", "children": [
+          { "en": "Operational: cycle time, defect rate, process yield", "ar": "تشغيلية: وقت الدورة، معدل العيوب، إنتاجية العملية" },
+          { "en": "Innovation: new product development time", "ar": "الابتكار: وقت تطوير منتج جديد" },
+          { "en": "Customer service: response time", "ar": "خدمة العملاء: وقت الاستجابة" },
+          { "en": "Regulatory compliance rate", "ar": "معدل الالتزام التنظيمي" },
+          { "en": "On-time delivery rated highest-impact in practice", "ar": "التسليم في الوقت المحدد له الأثر الأكبر عمليًا" }
+        ]},
+        { "en": "Learning & Growth KPIs", "ar": "مؤشرات التعلم والنمو", "children": [
+          { "en": "Employee Training Hours", "ar": "ساعات تدريب الموظفين" },
+          { "en": "Employee Satisfaction Score", "ar": "مؤشر رضا الموظفين" },
+          { "en": "Employee Retention Rate — rated highest-impact", "ar": "معدل الاحتفاظ بالموظفين — الأعلى تأثيرًا" },
+          { "en": "Innovation Rate (new ideas implemented)", "ar": "معدل الابتكار (الأفكار الجديدة المنفذة)" },
+          { "en": "IT System Availability", "ar": "توفر الأنظمة التقنية" },
+          { "en": "Knowledge Sharing Index", "ar": "مؤشر تبادل المعرفة" },
+          { "en": "Should link directly to strategy & internal-process improvement", "ar": "يجب ربطها مباشرة بالاستراتيجية وتحسين العمليات الداخلية" }
+        ]}
+      ]
+    },
+    {
+      "id": "strategy-maps",
+      "color": "#52607A",
+      "en": "Strategy Maps & KPI Linkages",
+      "ar": "خرائط الاستراتيجية وربط المؤشرات",
+      "children": [
+        { "en": "What Is a Strategy Map?", "ar": "ما هي خريطة الاستراتيجية؟", "children": [
+          { "en": "A visual map of cause-and-effect across all 4 BSC perspectives", "ar": "تمثيل مرئي لعلاقات السبب والنتيجة عبر الأبعاد الأربعة" }
+        ]},
+        { "en": "Creating KPI Linkages", "ar": "بناء روابط المؤشرات", "children": [
+          { "en": "Vertical: link KPIs across perspectives, e.g. training → efficiency → satisfaction → revenue", "ar": "عمودي: ربط المؤشرات عبر الأبعاد، مثل التدريب ← الكفاءة ← الرضا ← الإيراد" },
+          { "en": "Horizontal: KPIs within one perspective reinforce each other", "ar": "أفقي: المؤشرات داخل نفس البُعد تعزز بعضها" },
+          { "en": "Balance leading (predictive) and lagging (outcome) indicators", "ar": "التوازن بين المؤشرات الاستباقية والتابعة" }
+        ]},
+        { "en": "Benefits of Strategy Maps", "ar": "فوائد خرائط الاستراتيجية", "children": [
+          { "en": "Communicate strategy & clarify cause-and-effect logic", "ar": "توصيل الاستراتيجية وتوضيح منطق السبب والنتيجة" },
+          { "en": "Reveal gaps in strategic thinking & keep KPIs aligned", "ar": "كشف الفجوات في التفكير الاستراتيجي والحفاظ على توافق المؤشرات" }
+        ]}
+      ]
+    },
+    {
+      "id": "self-check",
+      "color": "#9C3A5C",
+      "en": "Self-Check Questions",
+      "ar": "أسئلة المراجعة الذاتية",
+      "children": [
+        { "en": "Define key performance indicators", "ar": "عرّف مؤشرات الأداء الرئيسية", "children": [
+          { "en": "See: Introduction & Definition branch, Lecture 3", "ar": "راجع: فرع المقدمة والتعريف، المحاضرة 3" }
+        ]},
+        { "en": "How important is managing through performance indicators?", "ar": "ما أهمية الإدارة عبر مؤشرات الأداء؟", "children": [
+          { "en": "See: Main Benefits of Tracking KPIs, Lecture 3", "ar": "راجع: الفوائد الرئيسية لتتبع المؤشرات، المحاضرة 3" }
+        ]},
+        { "en": "What criteria make a KPI effective per the SMART framework?", "ar": "ما المعايير التي تجعل المؤشر فعالًا وفق SMART؟", "children": [
+          { "en": "See: SMART Criteria branch, Lecture 3", "ar": "راجع: فرع معايير SMART، المحاضرة 3" }
+        ]}
+      ]
+    }
+  ]
+}

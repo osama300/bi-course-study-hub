@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 1</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A; --accent-soft: rgba(184,132,42,.10); --ar-bg: rgba(184,132,42,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563; --accent-soft: rgba(231,181,99,.10); --ar-bg: rgba(231,181,99,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{
+    font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line);
+    border-radius:10px; padding:12px 16px; margin:0 0 20px;
+  }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{
+    font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  /* T/F cards */
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  /* Essay cards */
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(18px,2.6vw,22px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:17px; color:var(--ink-soft); margin:0 0 18px; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 14px; font-size:15.5px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 14px; font-size:15.5px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <span>Predicted Model 1</span> &middot;
+    <a href="predicted-model-2.html">Predicted Model 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted Model 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted Model 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted Model 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted Model 6 &rarr;</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Predicted Practice Exam</p>
+    <h1>Predicted Exam — Model 1</h1>
+    <p dir="rtl">نموذج توقعي 1 — أسئلة محتملة وإجاباتها</p>
+    <p class="desc">Not questions the doctor has actually asked &mdash; these are new questions, written to match her observed style (conceptual T/F reversals, "define &amp; explain with example" essays), drawn from parts of the five lectures her real practice exams haven't covered yet.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: هذي أسئلة <strong>متوقعة</strong> مو أسئلة فعلية من الدكتورة — مبنية على أسلوبها الملاحظ ومحتوى المحاضرات الخمس اللي ما غطته نماذجها الحقيقية بعد. استخدمها كتدريب إضافي، لا كبديل عن نماذجها الأصلية.</p>
+  </header>
+
+  <div class="part-title">Part A &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">12 statements</span>
+    <span class="stat true">6 True</span>
+    <span class="stat false">6 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"OLAP is used for exploratory analytical queries, such as finding the top 10 most profitable products."</p>
+    <p class="statement-ar" dir="rtl">"يُستخدم OLAP لاستعلامات تحليلية استكشافية، مثل إيجاد أفضل 10 منتجات ربحًا."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This matches the lecture's own example directly: OLTP handles transactional tasks like changing a price, while OLAP answers exploratory, analytical questions like "what are the top 10 most profitable products?"</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق مثال المحاضرة مباشرة: OLTP يتعامل مع مهام معاملاتية مثل تغيير سعر، بينما OLAP يجيب عن أسئلة تحليلية استكشافية مثل "ما أفضل 10 منتجات ربحًا؟"</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Insight and decision mean the same thing in a BI context."</p>
+    <p class="statement-ar" dir="rtl">"الرؤية (Insight) والقرار (Decision) لهما نفس المعنى ضمن سياق BI."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>They are explicitly distinguished: Insight is deep understanding and comprehension of the business and the data, which may not directly lead to action. A Decision is more actionable &mdash; it's the step that actually commits to a course of action based on that understanding.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يُميَّز بينهما صراحة: الرؤية فهم عميق واستيعاب للأعمال والبيانات، وقد لا تؤدي مباشرة لفعل. أما القرار فأكثر قابلية للتنفيذ — هو الخطوة التي تلتزم فعليًا بمسار إجراء بناءً على ذلك الفهم.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A Decision Support System (DSS) refers to decisions built directly from data, without necessarily using intensive advanced analytical techniques."</p>
+    <p class="statement-ar" dir="rtl">"أنظمة دعم القرار (DSS) تشير لقرارات مبنية مباشرة على بيانات، دون الحاجة بالضرورة لتقنيات تحليلية متقدمة ومكثفة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This matches how BI has traditionally been understood as a data-driven DSS &mdash; decisions where data directly contributes to the outcome without necessarily requiring intensive, advanced analytical methods.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق كيف فُهم BI تقليديًا كنظام دعم قرار مبني على البيانات — قرارات تسهم فيها البيانات مباشرة بالنتيجة دون الحاجة بالضرورة لأساليب تحليلية متقدمة ومكثفة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Diagnostic analytics focuses on predicting future outcomes."</p>
+    <p class="statement-ar" dir="rtl">"التحليل التشخيصي (Diagnostic) يركّز على التنبؤ بالنتائج المستقبلية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Diagnostic analytics focuses on <strong>past</strong> performance to determine what happened and why. It is <strong>Predictive</strong> analytics that emphasizes predicting future outcomes using statistical models and machine learning.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التحليل التشخيصي يركّز على الأداء <strong>الماضي</strong> لتحديد ما حدث ولماذا. أما التحليل <strong>التنبؤي</strong> فهو الذي يركّز على التنبؤ بالنتائج المستقبلية باستخدام نماذج إحصائية وتعلم آلي.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Advanced analytics techniques include text mining, sentiment analysis, and neural networks."</p>
+    <p class="statement-ar" dir="rtl">"تشمل تقنيات التحليلات المتقدمة تنقيب النصوص وتحليل المشاعر والشبكات العصبية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's list of advanced analytic techniques: pattern matching, forecasting, semantic/sentiment analysis, text/data mining, and neural networks are all named explicitly.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع قائمة تقنيات التحليلات المتقدمة بالمحاضرة: مطابقة الأنماط، التنبؤ، التحليل الدلالي/تحليل المشاعر، تنقيب النصوص/البيانات، والشبكات العصبية كلها مذكورة صراحة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">06</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"SSRS is the main Microsoft tool used for building OLAP cubes."</p>
+    <p class="statement-ar" dir="rtl">"SSRS هي الأداة الرئيسية من Microsoft لبناء مكعبات OLAP."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>OLAP cubes are built with <strong>SSAS</strong> (SQL Server Analysis Services), the major analytics/multidimensional-model server. <strong>SSRS</strong> (Reporting Services) is a separate component used for on-premises, Web-based reporting &mdash; not for building cubes.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>مكعبات OLAP تُبنى بـ<strong>SSAS</strong> (خدمة تحليل SQL Server)، خادم التحليل والنموذج متعدد الأبعاد الرئيسي. أما <strong>SSRS</strong> (خدمة التقارير) فمكوّن منفصل للتقارير المحلية عبر الويب — لا لبناء المكعبات.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">07</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A Data Mart is a subset of a data warehouse, built for a specific department."</p>
+    <p class="statement-ar" dir="rtl">"متجر البيانات (Data Mart) هو جزء من مستودع البيانات، مخصص لقسم معين."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the lecture directly: Data Marts are "subsets of data warehouses for specific departments (e.g. sales, finance)."</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق المحاضرة مباشرة: متاجر البيانات هي "أجزاء من مستودعات البيانات لأقسام محددة (مثل المبيعات، المالية)."</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">08</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Operational KPIs are high-level and focus on whether the overall strategy is on target."</p>
+    <p class="statement-ar" dir="rtl">"المؤشرات التشغيلية عالية المستوى وتركّز على ما إذا كانت الاستراتيجية العامة بمسارها الصحيح."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>This describes <strong>Strategic</strong> KPIs, which are long-term and high-level. Operational KPIs are the opposite: detailed, timely information used for daily decisions or corrective action on a specific process.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا وصف للمؤشرات <strong>الاستراتيجية</strong>، وهي طويلة المدى وعالية المستوى. المؤشرات التشغيلية عكس ذلك: معلومات تفصيلية وآنية تُستخدم لقرارات يومية أو إجراءات تصحيحية على عملية محددة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">09</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A KPI should encourage the right behavior across the organization, according to its seven characteristics."</p>
+    <p class="statement-ar" dir="rtl">"يجب أن يشجع المؤشر على السلوك الصحيح داخل المنظمة، وفق خصائصه السبع."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>"They encourage appropriate action" is listed directly as one of the seven characteristics of effective KPIs.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>"تشجع على الإجراء المناسب" مذكورة مباشرة كإحدى الخصائص السبع للمؤشرات الفعالة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">10</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"In the SMART framework, the Measurable criterion means a KPI's target should be ambitious yet attainable."</p>
+    <p class="statement-ar" dir="rtl">"ضمن إطار SMART، معيار Measurable يعني أن يكون هدف المؤشر طموحًا لكن قابلًا للتحقيق."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>"Ambitious yet attainable" describes the <strong>Achievable</strong> criterion. Measurable means the KPI must be quantifiable &mdash; via amounts, percentages, or raw numbers &mdash; so success has an exact definition.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>"طموح لكن قابل للتحقيق" يصف معيار <strong>Achievable</strong>. أما Measurable فيعني أن يكون المؤشر قابلًا للقياس الكمي — عبر كميات أو نسب أو أرقام — بحيث يكون للنجاح تعريف دقيق.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">11</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The Balanced Scorecard was introduced by Kaplan and Norton in a 1992 Harvard Business Review article."</p>
+    <p class="statement-ar" dir="rtl">"تم تقديم بطاقة الأداء المتوازن من قِبل Kaplan وNorton بمقال بمجلة Harvard Business Review عام 1992."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Directly confirmed: "Kaplan and Norton's initial work, published in the Harvard Business Review in 1992, introduced the concept of a 'balanced' scorecard."</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>مؤكد مباشرة: "عمل كابلن ونورتون الأولي، المنشور بمجلة Harvard Business Review عام 1992، قدّم مفهوم بطاقة الأداء 'المتوازنة'."</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">12</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"The conceptual data model is primarily intended for database administrators and developers."</p>
+    <p class="statement-ar" dir="rtl">"النموذج المفاهيمي للبيانات موجّه بشكل أساسي لمدراء قواعد البيانات والمطورين."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The conceptual level's audience is <strong>business stakeholders</strong>, for communicating and defining business terms. DBAs and developers are the audience for the <strong>physical</strong> level, focused on technical implementation.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>جمهور المستوى المفاهيمي هو <strong>أصحاب المصلحة بالأعمال</strong>، لتوصيل وتعريف مصطلحات العمل. مدراء قواعد البيانات والمطورون هم جمهور المستوى <strong>الفيزيائي</strong>، المركّز على التنفيذ التقني.</p></div>
+  </section>
+
+  <div class="part-title">Part B &mdash; Essay Questions <span class="ar">أسئلة مقالية</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">E1</span>
+    <h2 class="q-en">Explain the DIKW hierarchy and how it relates to the difference between transactional (OLTP) and analytical (OLAP) processing.</h2>
+    <p class="q-ar" dir="rtl">اشرح هرم DIKW وعلاقته بالفرق بين المعالجة التشغيلية (OLTP) والتحليلية (OLAP).</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>The DIKW hierarchy depicts the relationship between Data, Information, Knowledge, and Wisdom as a chain of increasing meaning. Data is raw, unorganized facts. Information is the result of organizing that data so it has context and meaning. Knowledge is the understanding derived from information that makes it useful and actionable. Wisdom is the highest level: an integrated understanding of implications and indirect results that goes beyond the immediate domain.</p>
+      <p>This hierarchy loosely maps onto the difference between transactional and analytical processing. <strong>OLTP</strong> operates at the Data level: it handles day-to-day operations like inserting, updating, and moving individual records (e.g. changing a product's price) &mdash; it is not designed to generate insight. <strong>OLAP</strong> operates further up the hierarchy, toward Information and Knowledge: it is used to explore and aggregate data to answer analytical questions (e.g. "What are the top 10 most profitable products?").</p>
+      <p>In short, OLTP captures the raw data; OLAP is one of the main tools used to climb the DIKW hierarchy from that raw data toward actionable insight.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>هرم DIKW يوضح العلاقة بين البيانات والمعلومات والمعرفة والحكمة كسلسلة من المعنى المتصاعد. البيانات حقائق خام غير منظمة. المعلومات نتيجة تنظيم تلك البيانات لتصبح ذات سياق ومعنى. المعرفة هي الفهم المستمد من المعلومات الذي يجعلها مفيدة وقابلة للتنفيذ. الحكمة أعلى مستوى: فهم متكامل للتبعات والنتائج غير المباشرة يتجاوز المجال المباشر.</p>
+      <p>يرتبط هذا الهرم بشكل فضفاض بالفرق بين المعالجة التشغيلية والتحليلية. <strong>OLTP</strong> تعمل عند مستوى البيانات: تتعامل مع عمليات يومية كإدخال وتحديث ونقل سجلات فردية (مثل تغيير سعر منتج) — وليست مصممة لتوليد رؤى. أما <strong>OLAP</strong> فتعمل عند مستوى أعلى بالهرم، باتجاه المعلومات والمعرفة: تُستخدم لاستكشاف وتجميع البيانات للإجابة عن أسئلة تحليلية (مثل "ما أفضل 10 منتجات ربحًا؟").</p>
+      <p>باختصار، OLTP تلتقط البيانات الخام؛ وOLAP إحدى الأدوات الرئيسية للصعود بهرم DIKW من تلك البيانات الخام نحو رؤية قابلة للتنفيذ.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E2</span>
+    <h2 class="q-en">Define Strategic KPIs and Operational KPIs, and give one example of each.</h2>
+    <p class="q-ar" dir="rtl">عرّف المؤشرات الاستراتيجية والتشغيلية، وأعطِ مثالًا لكل واحدة.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Strategic KPIs</strong> are long-term, high-level indicators that help an organization identify whether its overall strategy is working and on target &mdash; sometimes called "high-level KPIs." Example: <strong>Overall Equipment Effectiveness (OEE)</strong>, which measures manufacturing efficiency by combining availability, performance, and quality into a single strategic indicator.</p>
+      <p><strong>Operational KPIs</strong>, in contrast, clearly articulate detailed and timely information used to make daily decisions or take corrective action on a process. Example: <strong>Days Sales Outstanding (DSO)</strong>, which tracks the average time it takes clients to pay after a purchase.</p>
+      <p>The key distinction is altitude and frequency: Strategic KPIs answer "is our overall direction working?" at a slower cadence, while Operational KPIs answer "what should we fix today?" at a faster, more granular cadence.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>المؤشرات الاستراتيجية</strong> مؤشرات طويلة المدى وعالية المستوى تساعد المنظمة على معرفة ما إذا كانت استراتيجيتها تعمل وعلى المسار الصحيح — تُسمى أحيانًا "مؤشرات عالية المستوى". مثال: <strong>فعالية المعدات الإجمالية (OEE)</strong>، التي تقيس كفاءة التصنيع بدمج التوفر والأداء والجودة بمؤشر استراتيجي واحد.</p>
+      <p><strong>المؤشرات التشغيلية</strong>، بالمقابل، توضح معلومات تفصيلية وآنية تُستخدم لاتخاذ قرارات يومية أو إجراءات تصحيحية على عملية. مثال: <strong>أيام تحصيل المبيعات (DSO)</strong>، التي تتبع متوسط الوقت الذي يستغرقه العملاء لدفع مستحقاتهم بعد الشراء.</p>
+      <p>الفرق الأساسي هو الارتفاع والتكرار: الاستراتيجية تجيب "هل اتجاهنا العام يعمل؟" بوتيرة أبطأ، والتشغيلية تجيب "ماذا نصلح اليوم؟" بوتيرة أسرع وأكثر تفصيلًا.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E3</span>
+    <h2 class="q-en">Explain the four perspectives of the Balanced Scorecard and how they connect in a cause-and-effect chain.</h2>
+    <p class="q-ar" dir="rtl">اشرح أبعاد بطاقة الأداء المتوازن الأربعة وكيف ترتبط بسلسلة سبب ونتيجة.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>BSC organizes strategy into four perspectives. <strong>Financial</strong> asks "How do we look to shareholders?" and tracks revenue growth and shareholder value. <strong>Customer</strong> asks "How do customers see us?" and tracks satisfaction, retention, and market share. <strong>Internal Business Process</strong> asks "What must we excel at?" and tracks the operations that create value. <strong>Learning &amp; Growth</strong> asks "Can we continue to improve?" and tracks employee capability, systems, and culture.</p>
+      <p>These form a cause-and-effect chain flowing bottom-up: improvements in Learning &amp; Growth drive improvements in Internal Processes, which drive improvements in the Customer perspective, which ultimately drive Financial results. This chain is exactly what a Strategy Map visualizes.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>بطاقة الأداء المتوازن تنظم الاستراتيجية بأربعة أبعاد. <strong>المالي</strong> يسأل "كيف يرانا المساهمون؟" ويتتبع نمو الإيرادات وقيمة المساهمين. <strong>العملاء</strong> يسأل "كيف يرانا العملاء؟" ويتتبع الرضا والاحتفاظ والحصة السوقية. <strong>العمليات الداخلية</strong> يسأل "بماذا يجب أن نتفوق؟" ويتتبع العمليات التي تخلق قيمة. <strong>التعلم والنمو</strong> يسأل "هل نستمر بالتحسن؟" ويتتبع كفاءة الموظفين والأنظمة والثقافة.</p>
+      <p>تُشكّل هذه سلسلة سبب ونتيجة تتدفق من الأسفل للأعلى: التحسن بالتعلم والنمو يدفع تحسنًا بالعمليات الداخلية، مما يدفع تحسنًا ببُعد العملاء، مما يدفع أخيرًا نتائج مالية أفضل. هذه السلسلة بالضبط ما تُصوّره خريطة الاستراتيجية.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E4</span>
+    <h2 class="q-en">Compare the three levels of data models (Conceptual, Logical, Physical) in terms of audience and purpose.</h2>
+    <p class="q-ar" dir="rtl">قارن بين مستويات نموذج البيانات الثلاثة (مفاهيمي، منطقي، فيزيائي) من حيث الجمهور والغرض.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>The <strong>Conceptual</strong> level is aimed at business stakeholders; its purpose is communication and definition of shared business terms and rules in simple, non-technical form. The <strong>Logical</strong> level is aimed at data architects and business analysts; its purpose is clarification and detail, expressing those business rules as concrete data structures without committing to a specific database technology. The <strong>Physical</strong> level is aimed at DBAs and developers; its purpose is technical implementation &mdash; exactly how the model is built on an actual database.</p>
+      <p>Moving from conceptual to physical, the audience shifts from non-technical to highly technical, and the model's job shifts from "agree on meaning" to "make it run efficiently."</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>المستوى <strong>المفاهيمي</strong> موجّه لأصحاب المصلحة بالأعمال؛ غرضه التوصيل وتعريف مصطلحات وقواعد عمل مشتركة بشكل بسيط غير تقني. المستوى <strong>المنطقي</strong> موجّه لمهندسي البيانات ومحللي الأعمال؛ غرضه التوضيح والتفصيل، بالتعبير عن قواعد العمل كهياكل بيانات ملموسة دون الالتزام بتقنية قاعدة بيانات محددة. المستوى <strong>الفيزيائي</strong> موجّه لمدراء قواعد البيانات والمطورين؛ غرضه التنفيذ التقني — كيف يُبنى النموذج بالضبط على قاعدة بيانات فعلية.</p>
+      <p>بالانتقال من المفاهيمي للفيزيائي، يتحول الجمهور من غير تقني لتقني بحت، وتتحول مهمة النموذج من "الاتفاق على المعنى" إلى "جعله يعمل بكفاءة".</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">E5</span>
+    <h2 class="q-en">Explain the role of a Data Warehouse in BI Architecture, and why operational databases are not suitable for analysis.</h2>
+    <p class="q-ar" dir="rtl">اشرح دور مستودع البيانات ضمن بنية BI، ولماذا لا تصلح قواعد البيانات التشغيلية للتحليل.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>Operational databases are optimized for OLTP &mdash; fast, reliable record-level updates during daily operations. This creates two problems for analysis: a <strong>performance</strong> problem (transaction-oriented, usually without historical data) and a <strong>heterogeneity</strong> problem (different systems store data inconsistently).</p>
+      <p>A <strong>Data Warehouse</strong> solves both by acting as a centralized analytical store: it pulls data (via ETL) from many sources, organizes it consistently, and retains history so trends can be analyzed. Within BI Architecture it sits between Data Integration and Analytical Processing, acting as the "single source of truth" that dashboards and OLAP tools query, instead of hitting fragile operational systems directly.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>قواعد البيانات التشغيلية مُحسَّنة لـ OLTP — تحديثات سريعة وموثوقة على مستوى السجل أثناء العمليات اليومية. هذا يخلق مشكلتين للتحليل: مشكلة <strong>أداء</strong> (موجهة للمعاملات، عادة بدون بيانات تاريخية) ومشكلة <strong>تباين</strong> (أنظمة مختلفة تخزن البيانات بشكل غير متسق).</p>
+      <p><strong>مستودع البيانات</strong> يحل المشكلتين بالعمل كمخزن تحليلي مركزي: يسحب البيانات (عبر ETL) من مصادر متعددة، ينظمها باتساق، ويحتفظ بالتاريخ لتحليل الاتجاهات. ضمن بنية BI يقع بين تكامل البيانات والمعالجة التحليلية، كـ"مصدر الحقيقة الواحد" الذي تستعلم منه اللوحات وأدوات OLAP، بدل الوصول المباشر لأنظمة تشغيلية هشة.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 1 &middot; 12 True/False + 5 Essay &middot; not from the doctor &mdash; a style-matched practice set</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

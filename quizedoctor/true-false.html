@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor's Exam Questions — True or False</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8;
+    --card:#FFFFFF;
+    --ink:#16212B;
+    --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12);
+    --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A;
+    --accent-soft: rgba(184,132,42,.10);
+    --ar-bg: rgba(184,132,42,.045);
+    --true:#1F7A55;
+    --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F;
+    --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B;
+      --card:#171F26;
+      --ink:#E7EAE8;
+      --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14);
+      --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563;
+      --accent-soft: rgba(231,181,99,.10);
+      --ar-bg: rgba(231,181,99,.05);
+      --true:#5FCE96;
+      --true-bg: rgba(95,206,150,.13);
+      --false:#E58367;
+      --false-bg: rgba(229,131,103,.13);
+    }
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7;
+  }
+  .font-display{ font-family:'El Messiri','IBM Plex Sans Arabic',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);
+    margin:0 0 22px; display:flex; gap:8px; align-items:center;
+  }
+  .crumb a{ color:var(--accent); text-decoration:none; }
+  .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 10px;
+  }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .stat{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px;
+    border:1px solid var(--line);
+  }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .s-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding: clamp(18px,3.4vw,26px); margin-bottom:18px;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none;
+  }
+  .verdict{
+    flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em;
+    padding:5px 13px; border-radius:999px; display:flex; align-items:center; gap:6px;
+  }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+
+  .statement{
+    font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px;
+    padding-inline-start:14px; border-inline-start:3px solid var(--line-strong);
+  }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{
+    font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft);
+    padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px;
+  }
+
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+
+  .why-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 8px;
+  }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{
+    direction:rtl; text-align:right; background:var(--ar-bg);
+    border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0;
+    padding:12px 14px; margin-top:14px;
+  }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:36px; }
+
+  #top-btn{
+    position:fixed; bottom:20px; right:20px; z-index:20;
+    width:42px; height:42px; border-radius:50%;
+    background:var(--card); border:1px solid var(--line-strong); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.35);
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  #top-btn.visible{ opacity:1; pointer-events:auto; }
+  #top-btn:hover{ transform:translateY(-2px); }
+
+  @media print{
+    body{ background:#fff; }
+    #top-btn{ display:none; }
+    .s-card{ border:1px solid #ddd; box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">&larr; Essay Q&amp;A</a> &middot;
+    <span>True/False</span> &middot;
+    <a href="predicted-model-1.html">Predicted Model 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted Model 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted Model 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted Model 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted Model 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted Model 6</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Doctor's Practice Exams</p>
+    <h1>Doctor's Exam Questions — True or False</h1>
+    <p dir="rtl">أسئلة الدكتورة الموضوعية — صح وخطأ</p>
+    <p class="desc">All true/false statements from the doctor's practice exam models (نموذج 1 &amp; نموذج 2), judged by concept rather than exact wording. Each has a clear verdict and a full explanation in English and Arabic.</p>
+    <div class="stat-row">
+      <span class="stat font-mono">13 statements</span>
+      <span class="stat true">7 True</span>
+      <span class="stat false">6 False</span>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">01</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"If you haven't defined what you want to achieve, it is too early to define the KPI."</p>
+      <p class="statement-ar" dir="rtl">"إذا لم تحدد شيئًا تريد تحقيقه، فمن المبكر تحديد الـ KPI."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>This matches the KPI design process directly: Step 1 is "Define Mission &amp; Vision" and Step 2 is "Identify Strategic Objectives" &mdash; both come before Step 4, "Build the KPI Formula." A KPI only has meaning relative to a goal; without a defined objective, there is nothing for the KPI to measure progress toward.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>يطابق هذا منطق خطوات تصميم المؤشر مباشرة: الخطوة 1 "تحديد الرسالة والرؤية" والخطوة 2 "تحديد الأهداف الاستراتيجية" &mdash; كلاهما يسبق الخطوة 4 "بناء معادلة المؤشر". المؤشر له معنى فقط بالنسبة لهدف؛ بدون هدف محدد، لا يوجد شيء يقيس المؤشر التقدم نحوه.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">02</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"Organizations face difficulty integrating data in order to generate real-time insight."</p>
+      <p class="statement-ar" dir="rtl">"المؤسسات تواجه صعوبة في تكامل البيانات لتنشئ رؤية في الوقت الفعلي."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>This reflects a core theme of the BI Architecture material: data is scattered across separate systems ("data everywhere"), suffers from silo problems ("spreadmart"), and even when it exists, is often hard to access due to technical or administrative barriers &mdash; all of which slow the path to real-time insight. (A near-identical phrasing &mdash; "without data integration it's hard to generate current insight" &mdash; appears on the other exam model; it's the same concept.)</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>يعكس هذا موضوعًا أساسيًا من محتوى بنية BI: البيانات مبعثرة عبر أنظمة منفصلة ("البيانات في كل مكان")، وتعاني من مشاكل الجزر ("Spreadmart")، وحتى عند توفرها يصعب الوصول إليها لأسباب تقنية أو إدارية &mdash; كل هذا يبطئ الطريق للرؤية الآنية. (نفس المفهوم يظهر بصياغة مقاربة بالنموذج الآخر: "بدون تكامل بيانات يصعب توليد رؤية حالية".)</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">03</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"'BI' is an umbrella term that includes data integration, storage, and reporting."</p>
+      <p class="statement-ar" dir="rtl">"مصطلح BI umbrella هو مصطلح شامل يتضمن تكامل البيانات والتخزين والتقارير."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>Matches the lecture's definition almost word for word: "BI is an umbrella term for a set of methods, processes, applications, and technologies&hellip; which includes data gathering/ingestion, data storage, data analysis, reporting, and other tasks."</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>يطابق تعريف المحاضرة تقريبًا حرفيًا: "BI مصطلح شامل لمجموعة من الطرق والعمليات والتطبيقات والتقنيات&hellip; تشمل جمع البيانات وتخزينها وتحليلها وإعداد التقارير وغيرها."</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">04</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"A Lagging KPI is used for future prediction."</p>
+      <p class="statement-ar" dir="rtl">"Lagging KPI يكون للتنبؤ المستقبلي."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>This is backwards. Lagging KPIs determine the <strong>result of past</strong> performance (e.g. units produced, revenue this month) &mdash; they validate outcomes that already happened. It is <strong>Leading</strong> KPIs that predict or influence <strong>future</strong> performance. As the lecture states directly: "Leading KPIs inform future actions while lagging KPIs validate past outcomes."</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>هذه معكوسة. مؤشرات Lagging تحدد <strong>نتيجة الأداء الماضي</strong> (مثل عدد الوحدات المنتجة، إيراد الشهر) &mdash; تُثبت نتائج حدثت بالفعل. أما مؤشرات <strong>Leading</strong> فهي التي تتنبأ بالأداء <strong>المستقبلي</strong> أو تؤثر فيه. كما تنص المحاضرة مباشرة: "المؤشرات الاستباقية توجّه الإجراءات المستقبلية، بينما المؤشرات التابعة تُثبت النتائج الماضية."</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">05</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"A poor data model leads to inconsistent data and analysis."</p>
+      <p class="statement-ar" dir="rtl">"poor data model يؤدي إلى بيانات وتحليل غير متسقة."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>Directly supported by the "Why a Good Data Model Matters" material: a poor model affects calculation methods and analysis/query results (e.g. a misclassified data type causing a nonsensical sum), and hurts readability and manageability through messy or redundant structures &mdash; all producing inconsistent results.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>مدعوم مباشرة بمحتوى "أهمية النموذج الجيد للبيانات": النموذج الضعيف يؤثر على طرق الحساب ونتائج التحليل والاستعلام (مثل تصنيف خاطئ لنوع بيانات يسبب جمعًا لا معنى له)، ويضر بالوضوح وسهولة الإدارة بهياكل فوضوية أو مكررة &mdash; كل هذا ينتج نتائج غير متسقة.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">06</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"Prescriptive analysis is predictive analysis of outcomes that uses statistical models."</p>
+      <p class="statement-ar" dir="rtl">"التحليل الـ prescriptive هو تحليل تنبؤي للنتائج يستخدم نماذج إحصائية."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>This statement actually describes <strong>Predictive</strong> analytics ("predicting the possible outcome using statistical models and machine learning techniques"). Prescriptive analytics is described as "a type of predictive analytics," but its defining feature &mdash; which this statement omits &mdash; is that it goes further to <strong>recommend a course of action</strong>, not merely predict an outcome.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>هذه العبارة تصف فعليًا التحليل <strong>التنبؤي (Predictive)</strong> &mdash; "التنبؤ بالنتيجة المحتملة باستخدام نماذج إحصائية وتعلم آلي". أما التحليل <strong>التوصوي (Prescriptive)</strong> فهو "نوع من التحليل التنبؤي"، لكن ميزته المحددة &mdash; التي أغفلتها العبارة &mdash; أنه يذهب أبعد ليُوصي <strong>بإجراء</strong>، لا أن يكتفي بالتنبؤ بالنتيجة.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">07</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"BI delivery is providing analysis results to users or applications."</p>
+      <p class="statement-ar" dir="rtl">"BI delivery هو توفير نتائج التحليل إلى المستخدمين أو التطبيقات."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>Matches the lecture definition almost verbatim: "BI delivery, or BI reporting, is the process of providing or delivering needed data and analysis results to users or applications."</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>يطابق تعريف المحاضرة تقريبًا حرفيًا: "توصيل BI، أو تقارير BI، هي عملية توفير أو تسليم البيانات المطلوبة ونتائج التحليل للمستخدمين أو التطبيقات."</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">08</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"Data can be presented through text, tables, and graphs."</p>
+      <p class="statement-ar" dir="rtl">"يمكن عرض البيانات من خلال الـ text، tables، graph."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>Direct match: "Data can be presented in one of three forms: text, tables, and/or graphs."</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>تطابق مباشر: "يمكن عرض البيانات بواحد من ثلاثة أشكال: نصي، جدولي، و/أو رسومي."</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">09</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"BI is transforming processed data into meaningful and useful information."</p>
+      <p class="statement-ar" dir="rtl">"الـ BI هو تحويل الـ processed data إلى meaningful and useful information."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>A precise-wording trap. The actual definition is transforming <strong>raw</strong> data into meaningful information &mdash; not processed data. If the data were already "processed," that transformation would have already happened. BI's whole value proposition starts from the raw, unprocessed state.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>فخ بالصياغة الدقيقة. التعريف الفعلي هو تحويل البيانات <strong>الخام (Raw)</strong> لمعلومات مفيدة &mdash; وليس البيانات المعالجة. لو كانت البيانات "معالجة" أصلاً، فالتحويل يكون قد حدث بالفعل. قيمة BI بالكامل تبدأ من الحالة الخام غير المعالجة.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">10</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"A semi-additive measure can be summed across all dimensions, including time."</p>
+      <p class="statement-ar" dir="rtl">"semi-additive تستطيع جمع كل الأبعاد وأيضًا الوقت."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>The defining feature of a semi-additive measure is that it can be summed across all dimensions <strong>except time</strong> (e.g. an account balance &mdash; you don't sum daily balances over a month to get a meaningful total; you'd take an average or an end-of-period value instead). Including time in the "can be summed" list contradicts the very definition of "semi."</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>الميزة المحددة للقياس شبه الجامع (semi-additive) أنه يمكن جمعه عبر كل الأبعاد <strong>ما عدا الوقت</strong> (مثل رصيد حساب بنكي &mdash; لا تجمع الأرصدة اليومية على شهر للحصول على مجموع ذي معنى؛ بل تأخذ المتوسط أو رصيد نهاية الفترة). إدراج الوقت ضمن "يمكن جمعه" يناقض تعريف "شبه" نفسه.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">11</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"Revenue growth is considered part of the customer perspective."</p>
+      <p class="statement-ar" dir="rtl">"revenue growth يعتبر من customer perspective."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>Revenue Growth Rate is explicitly listed as a <strong>Financial</strong> perspective KPI in the Balanced Scorecard (alongside Net Profit Margin, ROI, and Operating Cash Flow). Customer perspective KPIs are things like CSAT, NPS, Customer Retention Rate, Market Share, and Customer Acquisition Cost.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>معدل نمو الإيرادات مذكور صراحة كمؤشر من البُعد <strong>المالي (Financial)</strong> في بطاقة الأداء المتوازن (إلى جانب هامش الربح الصافي وROI والتدفق النقدي التشغيلي). مؤشرات بُعد العملاء هي أشياء مثل CSAT وNPS ومعدل الاحتفاظ بالعملاء والحصة السوقية وتكلفة اكتساب العميل.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">12</span>
+        <span class="verdict false">&#10007; FALSE</span>
+      </div>
+      <p class="statement is-false">"BI is useful only with simple data."</p>
+      <p class="statement-ar" dir="rtl">"الـ BI مفيد فقط عند البيانات البسيطة."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>The opposite is true. The entire BI Architecture &mdash; ETL pipelines, data warehouses/marts/lakes, OLAP processing &mdash; exists specifically to handle complex, large-scale, heterogeneous data (structured and unstructured, from many sources, at Big Data scale). BI's value grows, not shrinks, with data complexity.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>العكس هو الصحيح. بنية BI بالكامل &mdash; خطوط ETL، مستودعات/متاجر/بحيرات البيانات، معالجة OLAP &mdash; موجودة خصيصًا للتعامل مع بيانات معقدة وضخمة ومتنوعة المصادر (منظمة وغير منظمة، من مصادر متعددة، بحجم Big Data). قيمة BI تكبر لا تصغر مع تعقيد البيانات.</p>
+      </div>
+    </section>
+
+    <section class="s-card">
+      <div class="s-top">
+        <span class="s-badge">13</span>
+        <span class="verdict true">&#10003; TRUE</span>
+      </div>
+      <p class="statement is-true">"Employee Training falls under the Learning &amp; Growth perspective."</p>
+      <p class="statement-ar" dir="rtl">"Employee Training تكون ضمن النمو والتعلم."</p>
+      <hr class="divider dashed">
+      <p class="why-label">Why</p>
+      <div class="why-en"><p>"Employee Training Hours" is explicitly listed as a Learning &amp; Growth perspective KPI in the Balanced Scorecard, alongside Employee Satisfaction, Employee Retention Rate, Innovation Rate, IT System Availability, and Knowledge Sharing Index.</p></div>
+      <div class="why-ar" dir="rtl">
+        <p class="why-label ar-label" dir="rtl">السبب</p>
+        <p>"ساعات تدريب الموظفين" مذكورة صراحة كمؤشر من بُعد التعلم والنمو في بطاقة الأداء المتوازن، إلى جانب رضا الموظفين ومعدل الاحتفاظ بهم ومعدل الابتكار وتوفر الأنظمة التقنية ومؤشر تبادل المعرفة.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="note">
+    <p>13 consolidated statements &middot; from the doctor's practice exam models (نموذج 1 &amp; نموذج 2) &middot; judged by concept, not exact wording</p>
+  </footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){
+    if (window.scrollY > 400) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  });
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

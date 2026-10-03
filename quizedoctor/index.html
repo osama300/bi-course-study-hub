@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor's Exam Questions — Model Answers</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8;
+    --card:#FFFFFF;
+    --ink:#16212B;
+    --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12);
+    --line-strong: rgba(22,33,43,.22);
+    --accent:#B8842A;
+    --accent-soft: rgba(184,132,42,.10);
+    --ar-bg: rgba(184,132,42,.045);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B;
+      --card:#171F26;
+      --ink:#E7EAE8;
+      --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14);
+      --line-strong: rgba(231,234,232,.24);
+      --accent:#E7B563;
+      --accent-soft: rgba(231,181,99,.10);
+      --ar-bg: rgba(231,181,99,.05);
+    }
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.7;
+  }
+  .font-display{ font-family:'El Messiri','IBM Plex Sans Arabic',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  [dir="rtl"]{ font-family:'IBM Plex Sans Arabic','El Messiri',sans-serif; }
+
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  header.hero{ margin-bottom:36px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 10px;
+  }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0; }
+
+  nav.toc{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; margin: 28px 0 48px;
+  }
+  nav.toc h2{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  nav.toc ol{ margin:0; padding-inline-start:0; list-style:none; display:flex; flex-direction:column; gap:2px; counter-reset: toc; }
+  nav.toc li{ counter-increment: toc; }
+  nav.toc a{
+    display:flex; gap:10px; align-items:baseline; text-decoration:none; color:var(--ink);
+    padding:7px 6px; border-radius:8px; font-size:14.5px;
+  }
+  nav.toc a:hover{ background:var(--accent-soft); }
+  nav.toc a::before{
+    content: counter(toc, decimal-leading-zero);
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--accent); flex:none; width:22px;
+  }
+  nav.toc .ar-hint{ color:var(--ink-soft); font-family:'IBM Plex Sans Arabic',sans-serif; font-size:13px; }
+
+  .q-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding: clamp(20px,4vw,34px); margin-bottom:28px;
+    scroll-margin-top: 20px;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .q-badge{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em;
+    color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px;
+  }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(18px,2.6vw,22px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:17px; color:var(--ink-soft); margin:0 0 18px; }
+
+  .divider{ border:none; border-top:1px solid var(--line); margin:18px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+
+  .answer-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 12px;
+  }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+
+  .answer-en p, .answer-ar p{ margin:0 0 14px; font-size:15.5px; }
+  .answer-en p:last-child, .answer-ar p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-en ul, .answer-ar ul{ margin:0 0 14px; padding-inline-start:22px; display:flex; flex-direction:column; gap:8px; }
+  .answer-en li, .answer-ar li{ font-size:15.5px; }
+
+  .answer-ar{
+    direction:rtl; text-align:right;
+    background:var(--ar-bg); border-inline-start:3px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:16px 18px;
+  }
+  html[dir="rtl"] .answer-ar, .answer-ar[dir="rtl"]{ border-inline-start:3px solid var(--accent); }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+
+  #top-btn{
+    position:fixed; bottom:20px; right:20px; z-index:20;
+    width:42px; height:42px; border-radius:50%;
+    background:var(--card); border:1px solid var(--line-strong); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.35);
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  #top-btn.visible{ opacity:1; pointer-events:auto; }
+  #top-btn:hover{ transform:translateY(-2px); }
+
+  @media print{
+    body{ background:#fff; }
+    #top-btn{ display:none; }
+    .q-card{ border:1px solid #ddd; box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="eyebrow" style="margin-bottom:18px; display:flex; gap:8px; flex-wrap:wrap;">
+    <span>Essay Q&amp;A</span> &middot;
+    <a href="true-false.html" style="color:var(--accent); text-decoration:none;">True/False</a> &middot;
+    <a href="predicted-model-1.html" style="color:var(--accent); text-decoration:none;">Predicted Model 1</a> &middot;
+    <a href="predicted-model-2.html" style="color:var(--accent); text-decoration:none;">Predicted Model 2</a> &middot;
+    <a href="predicted-model-3.html" style="color:var(--accent); text-decoration:none;">Predicted Model 3</a> &middot;
+    <a href="predicted-model-4.html" style="color:var(--accent); text-decoration:none;">Predicted Model 4</a> &middot;
+    <a href="predicted-model-5.html" style="color:var(--accent); text-decoration:none;">Predicted Model 5</a> &middot;
+    <a href="predicted-model-6.html" style="color:var(--accent); text-decoration:none;">Predicted Model 6</a>
+  </p>
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Doctor's Practice Exams</p>
+    <h1>Doctor's Exam Questions — Model Answers</h1>
+    <p dir="rtl">أسئلة الدكتورة المقالية — إجابات نموذجية</p>
+    <p class="desc">All essay &amp; theoretical questions from the doctor's practice exam models (نموذج 1 &amp; نموذج 2), consolidated with no repeats. Each question has a full model answer in English, with a complete Arabic translation beneath it.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <h2>9 Questions &middot; جدول الأسئلة</h2>
+    <ol>
+      <li><a href="#q1">Compare BI and Business Analytics in detail <span class="ar-hint">— قارن بين BI وBusiness Analytics</span></a></li>
+      <li><a href="#q2">Define the Star Schema &amp; the role of Dimension Tables <span class="ar-hint">— عرّف Star Schema ودور جداول الأبعاد</span></a></li>
+      <li><a href="#q3">Define the Strategy Map &amp; its relation to KPIs, with an example <span class="ar-hint">— عرّف Strategy Map وعلاقتها بالمؤشرات</span></a></li>
+      <li><a href="#q4">Define KPIs &amp; how they help decision-making <span class="ar-hint">— عرّف KPIs ودورها باتخاذ القرار</span></a></li>
+      <li><a href="#q5">Raw vs. Processed Data, and the impact of dirty data <span class="ar-hint">— البيانات الخام والمعالجة، وأثر البيانات الوسخة</span></a></li>
+      <li><a href="#q6">Discuss the role of Initiatives in the BSC framework <span class="ar-hint">— ناقش دور Initiatives في BSC</span></a></li>
+      <li><a href="#q7">Define Dimensional Modeling &amp; why it's fundamental to DW/BI <span class="ar-hint">— عرّف Dimensional Modeling وأهميتها</span></a></li>
+      <li><a href="#q8">Explain a comprehensive BI Architecture &amp; the data flow <span class="ar-hint">— اشرح BI Architecture الشامل وتدفق البيانات</span></a></li>
+      <li><a href="#q9">Explain the SMART framework <span class="ar-hint">— اشرح إطار SMART</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section class="q-card" id="q1">
+      <span class="q-badge">Q1</span>
+      <h2 class="q-en">Compare BI and Business Analytics in detail.</h2>
+      <p class="q-ar" dir="rtl">قارن بين ذكاء الأعمال (BI) وتحليل الأعمال (Business Analytics) بشكل مفصل.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>Business Intelligence (BI) and Business Analytics (Analytics) are closely related but distinct disciplines within the broader field of data-driven decision-making.</p>
+        <p><strong>Definition &amp; Purpose:</strong> BI focuses on descriptive analysis &mdash; reporting and monitoring what happened and why, using historical and current data to track performance against KPIs. Analytics focuses on predictive and prescriptive analysis &mdash; forecasting what will happen and recommending what should be done, using statistical, machine-learning, and AI techniques.</p>
+        <p><strong>Time Perspective:</strong> BI looks backward and at the present (retrospective) &mdash; e.g. "How many units did we sell last quarter?" Analytics looks forward (prospective) &mdash; e.g. "What will sales look like next quarter?"</p>
+        <p><strong>Tools &amp; Techniques:</strong> BI relies on dashboards, reports, OLAP, and SQL queries &mdash; tools like Tableau, Power BI, Qlik, SAP. Analytics relies on advanced statistical modeling, regression, clustering, and AI/ML &mdash; tools like Python, R, SAS, advanced SQL.</p>
+        <p><strong>Complexity &amp; Users:</strong> BI uses simpler, rule-based queries for business users and executives who need operational insight without deep technical expertise. Analytics involves advanced modeling, typically used by data scientists and analysts with programming and statistical knowledge.</p>
+        <p><strong>Relationship:</strong> They are complementary, not competing. Analytics is often described as an evolution of BI: BI answers "what happened," Analytics answers "what will happen and what should we do about it." A mature data-driven organization uses both together.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p>ذكاء الأعمال (BI) وتحليل الأعمال (Business Analytics) مجالان مترابطان لكن متمايزان ضمن اتخاذ القرار المبني على البيانات.</p>
+        <p><strong>التعريف والغرض:</strong> BI يركّز على التحليل الوصفي &mdash; التقارير والمراقبة لما حدث ولماذا، باستخدام بيانات تاريخية وحالية لتتبع الأداء مقابل المؤشرات. أما Analytics فيركّز على التحليل التنبؤي والتوصوي &mdash; التنبؤ بما سيحدث والتوصية بما يجب فعله، باستخدام تقنيات إحصائية وتعلم آلي وذكاء اصطناعي.</p>
+        <p><strong>البعد الزمني:</strong> BI ينظر للماضي والحاضر (استرجاعي) &mdash; مثال: "كم وحدة بعنا الربع الماضي؟" بينما Analytics ينظر للمستقبل (استشرافي) &mdash; مثال: "كيف ستكون المبيعات الربع القادم؟"</p>
+        <p><strong>الأدوات والتقنيات:</strong> BI يعتمد على لوحات المعلومات والتقارير وOLAP واستعلامات SQL بأدوات مثل Tableau وPower BI وQlik. أما Analytics فيعتمد على نمذجة إحصائية متقدمة والانحدار والتجميع والذكاء الاصطناعي بأدوات مثل Python وR وSAS.</p>
+        <p><strong>التعقيد والمستخدمون:</strong> BI يستخدم استعلامات أبسط قائمة على قواعد، لمستخدمي الأعمال والتنفيذيين دون خبرة تقنية عميقة. أما Analytics فيتطلب نمذجة متقدمة، ويستخدمه عادة علماء البيانات والمحللون.</p>
+        <p><strong>العلاقة:</strong> هما مكمّلان لا متنافسان. يوصف Analytics غالبًا بأنه تطور لـ BI: BI يجيب "ماذا حدث؟" وAnalytics يجيب "ماذا سيحدث وماذا يجب أن نفعل حياله؟" والمنظمة الناضجة بياناتيًا تستخدم الاثنين معًا.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q2">
+      <span class="q-badge">Q2</span>
+      <h2 class="q-en">Define the Star Schema, and explain the role of Dimension Tables in it.</h2>
+      <p class="q-ar" dir="rtl">عرّف مخطط النجمة (Star Schema)، واشرح دور جداول الأبعاد (Dimension Tables) فيه.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>A <strong>Star Schema</strong> is the most common physical implementation of a dimensional data model. It consists of one central <strong>Fact Table</strong> surrounded by multiple <strong>Dimension Tables</strong>, connected by foreign keys &mdash; visually resembling a star, hence the name.</p>
+        <p>The <strong>Fact Table</strong> sits at the center and represents a business event or measurement: it holds the numeric, measurable data (the "facts") such as sales amount, quantity sold, or cost, along with foreign keys pointing to each related dimension.</p>
+        <p><strong>Dimension Tables</strong> surround the fact table and provide the descriptive context &mdash; the who, what, where, and when &mdash; needed to filter, group, and make sense of the facts. For example, a <em>DimProduct</em> table describes product name/category, <em>DimGeo</em> describes region/city, and <em>DimYear</em> describes the time period. Without dimension tables, the numbers in the fact table would be meaningless; dimensions let a user ask questions like "total sales by region by year by product category."</p>
+        <p>A key related concept is <strong>grain</strong> &mdash; the level of detail one row in the fact table represents (e.g. one row per sale, per product, per store, per day). Every column must be consistent with that same grain. Measures can also be <strong>additive</strong> (summable across every dimension, e.g. sales amount), <strong>semi-additive</strong> (summable across all dimensions except time, e.g. an account balance), or <strong>non-additive</strong> (cannot be summed at all, e.g. a ratio).</p>
+        <p>Star schemas are the foundation of OLAP and the dominant technique (per Ralph Kimball) for data warehouse and BI presentation, because their simple structure makes queries fast and intuitive for business users.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p><strong>مخطط النجمة (Star Schema)</strong> هو التطبيق الفيزيائي الأكثر شيوعًا للنموذج البُعدي. يتكون من <strong>جدول حقائق (Fact Table)</strong> مركزي واحد، محاط بعدة <strong>جداول أبعاد (Dimension Tables)</strong>، مرتبطة بمفاتيح خارجية &mdash; يشبه بصريًا شكل النجمة، ومن هنا التسمية.</p>
+        <p><strong>جدول الحقائق</strong> يقع في المركز ويمثل حدثًا أو قياسًا في الأعمال: يحتوي البيانات الرقمية القابلة للقياس ("الحقائق") مثل مبلغ المبيعات أو الكمية المباعة أو التكلفة، بالإضافة لمفاتيح خارجية تشير لكل بُعد مرتبط.</p>
+        <p><strong>جداول الأبعاد</strong> تحيط بجدول الحقائق وتوفر السياق الوصفي &mdash; من وماذا وأين ومتى &mdash; اللازم لتصفية الحقائق وتجميعها وفهمها. مثلًا، جدول <em>DimProduct</em> يصف اسم/فئة المنتج، وجدول <em>DimGeo</em> يصف المنطقة/المدينة، وجدول <em>DimYear</em> يصف الفترة الزمنية. بدون جداول الأبعاد، تصبح أرقام جدول الحقائق بلا معنى؛ فالأبعاد تتيح طرح أسئلة مثل "إجمالي المبيعات حسب المنطقة وحسب السنة وحسب فئة المنتج."</p>
+        <p>مفهوم مرتبط أساسي هو <strong>الدقة التفصيلية (Grain)</strong> &mdash; مستوى التفصيل الذي يمثله صف واحد بجدول الحقائق (مثلًا: صف واحد لكل عملية بيع، لكل منتج، لكل متجر، لكل يوم). كل عمود يجب أن يلتزم بنفس هذا المستوى. القياسات تُصنَّف أيضًا إلى <strong>جامعة</strong> (تُجمع عبر كل الأبعاد، مثل مبلغ المبيعات)، <strong>شبه جامعة</strong> (تُجمع عبر كل الأبعاد ما عدا الوقت، مثل رصيد الحساب)، أو <strong>غير جامعة</strong> (لا يمكن جمعها إطلاقًا، مثل نسبة مئوية).</p>
+        <p>مخططات النجمة هي أساس OLAP والتقنية السائدة (حسب رالف كيمبال) لعرض مستودعات البيانات وBI، لأن بنيتها البسيطة تجعل الاستعلامات سريعة وبديهية لمستخدمي الأعمال.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q3">
+      <span class="q-badge">Q3</span>
+      <h2 class="q-en">Define the Strategy Map, and explain its relationship to KPIs with an example.</h2>
+      <p class="q-ar" dir="rtl">عرّف خريطة الاستراتيجية (Strategy Map)، واشرح علاقتها بمؤشرات الأداء الرئيسية (KPIs) مع إعطاء مثال.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>A <strong>Strategy Map</strong> is a visual representation of an organization's strategy that illustrates the cause-and-effect relationships between strategic objectives across the four Balanced Scorecard (BSC) perspectives: Financial, Customer, Internal Business Process, and Learning &amp; Growth.</p>
+        <p>Its relationship to KPIs is that a strategy map shows <strong>how</strong> improvement in one perspective's KPIs logically drives improvement in another's, creating a chain of cause and effect that ultimately leads to financial results, through two kinds of linkage:</p>
+        <ul>
+          <li><strong>Vertical alignment:</strong> linking KPIs across different perspectives (e.g. employee training hours &rarr; process efficiency &rarr; customer satisfaction &rarr; revenue growth).</li>
+          <li><strong>Horizontal alignment:</strong> ensuring KPIs within the same perspective reinforce one another.</li>
+        </ul>
+        <p>A strategy map also balances <strong>leading indicators</strong> (predictive, e.g. training hours) with <strong>lagging indicators</strong> (outcome-based, e.g. revenue), so the organization sees both what drives future performance and what confirms past results.</p>
+        <p><strong>Example:</strong> Increasing "Employee Training Hours" (Learning &amp; Growth) improves employee skills, which reduces "Cycle Time" and "Defect Rate" (Internal Process), which improves "Customer Satisfaction" and "Retention Rate" (Customer), which ultimately increases "Revenue Growth Rate" and "Net Profit Margin" (Financial). The strategy map draws this whole chain as connected boxes with arrows, making the strategy's logic visible and testable, and helping identify gaps or missing KPIs in the causal chain.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p><strong>خريطة الاستراتيجية (Strategy Map)</strong> هي تمثيل مرئي لاستراتيجية المنظمة يوضّح علاقات السبب والنتيجة بين الأهداف الاستراتيجية عبر الأبعاد الأربعة لبطاقة الأداء المتوازن (BSC): المالي، العملاء، العمليات الداخلية، والتعلم والنمو.</p>
+        <p>علاقتها بالمؤشرات أنها توضّح <strong>كيف</strong> يؤدي تحسّن مؤشرات بُعد معين منطقيًا لتحسّن مؤشرات بُعد آخر، مكوّنةً سلسلة سبب ونتيجة تنتهي بنتائج مالية، عبر نوعين من الربط:</p>
+        <ul>
+          <li><strong>الربط العمودي:</strong> ربط المؤشرات عبر الأبعاد المختلفة (مثل: ساعات تدريب الموظفين ← كفاءة العمليات ← رضا العملاء ← نمو الإيرادات).</li>
+          <li><strong>الربط الأفقي:</strong> ضمان أن المؤشرات ضمن نفس البُعد تعزز بعضها البعض.</li>
+        </ul>
+        <p>خريطة الاستراتيجية توازن أيضًا بين <strong>المؤشرات الاستباقية</strong> (تنبؤية، مثل ساعات التدريب) و<strong>المؤشرات التابعة</strong> (نتائجية، مثل الإيراد)، بحيث ترى المنظمة ما يقود الأداء المستقبلي وما يؤكد النتائج الماضية معًا.</p>
+        <p><strong>مثال:</strong> زيادة "ساعات تدريب الموظفين" (التعلم والنمو) تحسّن مهارات الموظفين، مما يقلل "وقت الدورة" و"معدل العيوب" (العمليات الداخلية)، مما يحسّن "رضا العملاء" و"معدل الاحتفاظ بهم" (العملاء)، مما يزيد في النهاية "معدل نمو الإيرادات" و"هامش الربح الصافي" (المالي). خريطة الاستراتيجية ترسم هذه السلسلة كاملة كصناديق متصلة بأسهم، مما يجعل منطق الاستراتيجية مرئيًا وقابلًا للاختبار، ويساعد باكتشاف الفجوات أو المؤشرات الناقصة بالسلسلة السببية.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q4">
+      <span class="q-badge">Q4</span>
+      <h2 class="q-en">Define KPIs, and explain how they help in decision-making.</h2>
+      <p class="q-ar" dir="rtl">عرّف مؤشرات الأداء الرئيسية (KPIs)، واشرح كيف تساعد في اتخاذ القرارات.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>A <strong>Key Performance Indicator (KPI)</strong> is a critical, quantifiable indicator that shows how effectively an individual, team, or organization is achieving its key business objectives. Effective KPIs follow the <strong>SMART</strong> framework &mdash; Specific, Measurable, Achievable, Relevant, Time-bound &mdash; and share seven characteristics: nonfinancial, measured frequently, acted on by senior management, clearly indicate required action, have significant impact, and encourage the right behavior.</p>
+        <p>KPIs help decision-making in several concrete ways:</p>
+        <ul>
+          <li><strong>Clarity &amp; focus</strong> &mdash; they communicate the organization's vision, mission, and objectives, aligning every team's daily activity with the overall strategy.</li>
+          <li><strong>Evidence-based decisions</strong> &mdash; instead of managing by intuition, decisions are grounded in real, measured data, closing the gap between raw data and actionable knowledge.</li>
+          <li><strong>Early warning &amp; tracking</strong> &mdash; frequent measurement lets managers spot problems or opportunities quickly and act before a small issue becomes a major one.</li>
+          <li><strong>Accountability</strong> &mdash; KPIs are typically owned by specific people or teams, creating ownership and a culture where "what gets measured gets managed."</li>
+          <li><strong>Strategic alignment</strong> &mdash; within frameworks like the Balanced Scorecard, KPIs turn abstract strategy into concrete, monitorable targets, so leadership can decide where to invest resources.</li>
+        </ul>
+        <p>In short, KPIs convert data into a shared, objective language for decision-making, replacing guesswork with a measurable, trackable basis for action.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p><strong>مؤشر الأداء الرئيسي (KPI)</strong> هو مؤشر كمي حاسم يوضح مدى فعالية تحقيق فرد أو فريق أو منظمة لأهداف العمل الرئيسية. المؤشرات الفعالة تتبع إطار <strong>SMART</strong> &mdash; محدد، قابل للقياس، قابل للتحقيق، ذو صلة، ومحدد بزمن &mdash; وتشترك بسبع خصائص: غير مالية، تُقاس بتكرار، تستدعي فعل الإدارة العليا، توضح الإجراء المطلوب بوضوح، لها تأثير كبير، وتشجع السلوك الصحيح.</p>
+        <p>تساعد المؤشرات باتخاذ القرار بعدة طرق ملموسة:</p>
+        <ul>
+          <li><strong>الوضوح والتركيز</strong> &mdash; توصّل رؤية المنظمة ورسالتها وأهدافها، وتُنسّق نشاط كل فريق اليومي مع الاستراتيجية العامة.</li>
+          <li><strong>قرارات مبنية على أدلة</strong> &mdash; بدل الإدارة بالحدس، تُبنى القرارات على بيانات فعلية مقاسة، مما يسد الفجوة بين البيانات الخام والمعرفة القابلة للتنفيذ.</li>
+          <li><strong>إنذار مبكر ومتابعة</strong> &mdash; القياس المتكرر يتيح للمدراء اكتشاف المشاكل أو الفرص بسرعة والتصرف قبل أن تتفاقم مشكلة صغيرة.</li>
+          <li><strong>المساءلة</strong> &mdash; عادة يكون لكل مؤشر مالك محدد، فمتابعته تخلق شعورًا بالملكية وثقافة "ما يُقاس يُدار".</li>
+          <li><strong>التوافق الاستراتيجي</strong> &mdash; ضمن أطر مثل بطاقة الأداء المتوازن، تحوّل المؤشرات الاستراتيجية المجردة إلى أهداف تشغيلية ملموسة وقابلة للمتابعة.</li>
+        </ul>
+        <p>باختصار، تحوّل المؤشرات البيانات إلى لغة مشتركة وموضوعية لاتخاذ القرار، لتستبدل التخمين بأساس قابل للقياس والمتابعة للفعل.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q5">
+      <span class="q-badge">Q5</span>
+      <h2 class="q-en">Define Raw Data and Processed Data. Explain why data must be cleaned before analysis, and the impact of dirty data on decision accuracy.</h2>
+      <p class="q-ar" dir="rtl">عرّف البيانات الخام (Raw Data) والبيانات المعالجة واشرح لماذا يجب تنظيف البيانات قبل استخدامها في التحليل، وأثر الـ Dirty Data على دقة اتخاذ القرار.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p><strong>Raw Data</strong> is the original, unprocessed data captured directly from its source &mdash; a database transaction log, a sensor reading, a survey response &mdash; before any cleaning, transformation, or validation. <strong>Processed (clean) Data</strong> is raw data that has been transformed: duplicates removed, missing values handled, formats standardized, errors corrected &mdash; validated and structured so it is ready for reliable analysis.</p>
+        <p><strong>Why data must be cleaned before analysis:</strong> analysis assumes the underlying data is trustworthy. Raw data is almost always messy &mdash; pulled from multiple systems, in different formats, with missing or inconsistent values &mdash; and analyzing it directly produces misleading results. In practice, analysts often spend an estimated 50&ndash;90% of their time cleaning and reformatting raw data before it's fit for purpose, rather than doing the actual analysis.</p>
+        <p><strong>The impact of dirty data on decision accuracy</strong> ("garbage in, garbage out"):</p>
+        <ul>
+          <li><strong>Wrong calculations</strong> &mdash; e.g. if a "year" column is incorrectly typed as an integer, a tool might sum the years instead of listing them, producing a nonsensical result.</li>
+          <li><strong>Broken relationships</strong> &mdash; missing or incorrect relationships between tables (common in auto-generated data models) lead to filters that silently fail to apply, so reports quietly exclude or double-count data.</li>
+          <li><strong>Inconsistent, unreliable reports</strong> &mdash; duplicate or conflicting values (data silo/"spreadmart" problems) mean two reports built from the "same" data can show different numbers, eroding trust.</li>
+          <li><strong>Bad decisions at scale</strong> &mdash; since dashboards and KPIs feed directly into management decisions, an error from dirty data propagates invisibly into strategic and operational choices &mdash; a company might cut a profitable line or over-invest in a failing one based on flawed numbers.</li>
+        </ul>
+        <p>In short, clean data is the foundation every other layer of BI &mdash; modeling, analysis, KPIs, decisions &mdash; depends on. Poor data quality doesn't just create noise; it actively misleads decision-makers with false confidence.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p><strong>البيانات الخام (Raw Data)</strong> هي البيانات الأصلية غير المعالجة، المُلتقطة مباشرة من مصدرها &mdash; سجل معاملة بقاعدة بيانات، قراءة من مستشعر، إجابة استبيان &mdash; قبل أي تنظيف أو تحويل أو تحقق. <strong>البيانات المعالجة (Processed/Clean Data)</strong> هي البيانات الخام بعد أن مرّت بالتحويل: إزالة التكرار، معالجة القيم المفقودة، توحيد الصيغ، تصحيح الأخطاء &mdash; والتحقق منها وتنظيمها لتصبح جاهزة لتحليل موثوق.</p>
+        <p><strong>لماذا يجب تنظيف البيانات قبل التحليل:</strong> التحليل يفترض أن البيانات الأساسية موثوقة. البيانات الخام غالبًا فوضوية &mdash; مسحوبة من أنظمة متعددة، بصيغ مختلفة، بقيم مفقودة أو غير متسقة &mdash; وتحليلها مباشرة ينتج نتائج مضللة. عمليًا، يقضي المحللون غالبًا ما يُقدَّر بـ 50-90% من وقتهم بتنظيف البيانات وإعادة تنسيقها قبل أن تصبح صالحة للاستخدام، بدل التحليل الفعلي.</p>
+        <p><strong>أثر البيانات الوسخة (Dirty Data) على دقة القرار</strong> ("مدخلات خاطئة = مخرجات خاطئة"):</p>
+        <ul>
+          <li><strong>حسابات خاطئة</strong> &mdash; مثلًا لو عمود "السنة" مُصنَّف خطأً كرقم صحيح، قد تجمع الأداة السنوات ببعضها بدل تعدادها &mdash; نتيجة لا معنى لها.</li>
+          <li><strong>علاقات مكسورة</strong> &mdash; علاقات ناقصة أو خاطئة بين الجداول (شائعة بالنماذج المُولَّدة تلقائيًا) تؤدي لمرشحات لا تنطبق بصمت، فتستبعد التقارير بيانات أو تُكررها دون أن ينتبه أحد.</li>
+          <li><strong>تقارير غير متسقة وغير موثوقة</strong> &mdash; قيم مكررة أو متضاربة (مشاكل جزر البيانات/Spreadmart) تعني أن تقريرين مبنيين على "نفس" البيانات قد يُظهران أرقامًا مختلفة، مما يُضعف الثقة بالبيانات.</li>
+          <li><strong>قرارات خاطئة على نطاق واسع</strong> &mdash; بما أن اللوحات والمؤشرات تُغذي مباشرة القرارات الإدارية، فإن خطأً نشأ من بيانات وسخة ينتقل بصمت إلى قرارات استراتيجية وتشغيلية &mdash; قد تُلغي شركة خط منتج مربح أو تستثمر أكثر من اللازم بخط فاشل بناءً على أرقام خاطئة.</li>
+        </ul>
+        <p>باختصار، البيانات النظيفة هي الأساس الذي تعتمد عليه كل طبقة أخرى بـ BI &mdash; النمذجة، التحليل، المؤشرات، القرارات. رداءة جودة البيانات لا تُنتج ضوضاء فقط، بل تُضلل صانعي القرار بثقة زائفة.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q6">
+      <span class="q-badge">Q6</span>
+      <h2 class="q-en">Discuss the role of Initiatives in the BSC framework.</h2>
+      <p class="q-ar" dir="rtl">ناقش دور المبادرات (Initiatives) في إطار عمل بطاقة الأداء المتوازن BSC.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>Within the Balanced Scorecard (BSC) framework, <strong>Initiatives</strong> are the specific action programs and projects an organization launches to actually close the gap between current performance and the targets set for each KPI. If objectives define <em>what</em> the organization wants to achieve, and KPIs/targets define <em>how success will be measured</em>, initiatives define <em>how</em> the organization will get there in practice.</p>
+        <p>Their role sits within the second phase of BSC implementation &mdash; <strong>Scorecard Design &amp; Metric Selection</strong> &mdash; where, after strategic objectives are translated into specific, measurable KPIs, the organization sets targets (challenging yet achievable, to motivate without causing burnout) and pairs each with one or more concrete initiatives. For example, if the KPI target is "increase on-time program completion to 85%," the initiative might be "launch an early-warning academic advising program" &mdash; a specific, resourced project designed to move that exact number.</p>
+        <p>Initiatives matter because a target without an initiative is just a wish: it states a destination but not the vehicle to get there. They are also what gets reviewed and adjusted during the <strong>Continuous Improvement</strong> phase &mdash; if a KPI isn't moving toward its target, the initiative (not necessarily the target) is usually what needs to change. In this sense, initiatives are the operational engine that connects strategy (top of the scorecard) to day-to-day execution (bottom of the scorecard).</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p>ضمن إطار بطاقة الأداء المتوازن (BSC)، <strong>المبادرات (Initiatives)</strong> هي برامج وإجراءات عملية محددة تُطلقها المنظمة لتُغلق فعليًا الفجوة بين الأداء الحالي والأهداف المحددة لكل مؤشر. إذا كانت الأهداف الاستراتيجية تحدد <em>ماذا</em> تريد المنظمة تحقيقه، والمؤشرات/الأهداف الرقمية تحدد <em>كيف سيُقاس النجاح</em>، فإن المبادرات تحدد <em>كيف</em> ستصل المنظمة لذلك عمليًا.</p>
+        <p>يقع دورها ضمن المرحلة الثانية من تطبيق BSC &mdash; <strong>تصميم البطاقة واختيار المقاييس</strong> &mdash; حيث بعد ترجمة الأهداف الاستراتيجية لمؤشرات محددة وقابلة للقياس، تحدد المنظمة أهدافًا رقمية (طموحة وممكنة، تحفّز دون إرهاق) وتقرن كل هدف بمبادرة أو أكثر ملموسة. مثلًا، لو كان هدف المؤشر "زيادة إتمام البرامج بالوقت المحدد إلى 85%"، فقد تكون المبادرة "إطلاق برنامج إرشاد أكاديمي للإنذار المبكر" &mdash; مشروع محدد ومزوَّد بالموارد مصمم خصيصًا لتحريك هذا الرقم بالذات.</p>
+        <p>أهمية المبادرات أن الهدف بدون مبادرة مجرد أمنية: يحدد الوجهة دون وسيلة الوصول إليها. كما أنها ما يُراجَع ويُعدَّل خلال مرحلة <strong>التحسين المستمر</strong> &mdash; فلو لم يتحرك مؤشر نحو هدفه، غالبًا المبادرة (وليس الهدف بالضرورة) هي ما يحتاج تغييرًا. بهذا المعنى، المبادرات هي المحرك التشغيلي الذي يربط الاستراتيجية (أعلى البطاقة) بالتنفيذ اليومي (أسفل البطاقة).</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q7">
+      <span class="q-badge">Q7</span>
+      <h2 class="q-en">Define Dimensional Modeling, and explain why it's the fundamental technique for Data Warehousing and BI (DW/BI).</h2>
+      <p class="q-ar" dir="rtl">عرّف النمذجة البُعدية (Dimensional Modeling) ولماذا تُعد التقنية الأساسية لمستودعات البيانات وذكاء الأعمال DW/BI.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p><strong>Dimensional Modeling</strong> is a data modeling technique constructed around two types of elements: <strong>facts</strong> (numeric measures of business performance, such as sales amount or cost) and <strong>dimensions</strong> (the descriptive context &mdash; who, what, where, when &mdash; used to filter, group, and analyze those facts). It is a conceptual model typically implemented physically as a <strong>Star Schema</strong> (one central fact table + surrounding dimension tables), and can also be implemented in multidimensional OLAP databases (e.g. SQL Server Analysis Services).</p>
+        <p>It is considered the fundamental technique for DW/BI for several reasons:</p>
+        <ul>
+          <li><strong>Built around business questions:</strong> unlike a normalized transactional (OLTP) database designed for data integrity during updates, a dimensional model is directly based on the common business questions users actually ask (e.g. "total sales by region by quarter"), making it intuitive for business users, not just database experts.</li>
+          <li><strong>Query performance:</strong> its simple star-shaped structure needs fewer table joins than a fully normalized relational schema, so queries and aggregations run much faster &mdash; essential for interactive dashboards.</li>
+          <li><strong>The foundation of OLAP:</strong> dimensional models are the direct basis of OLAP (multidimensional analysis), enabling the "slice and dice" analysis that BI tools depend on.</li>
+          <li><strong>Industry consensus:</strong> as data-warehousing pioneer Ralph Kimball put it, dimensional modeling has been broadly accepted as "absolutely critical to a successful DW/BI initiative" &mdash; the dominant technique used across the industry for presenting data to business users.</li>
+        </ul>
+        <p>In short, dimensional modeling bridges the gap between how data is efficiently stored and how business users actually think about and need to query it &mdash; which is precisely BI's job.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p><strong>النمذجة البُعدية (Dimensional Modeling)</strong> تقنية نمذجة بيانات مبنية حول نوعين من العناصر: <strong>الحقائق (Facts)</strong> (قياسات رقمية لأداء الأعمال، مثل مبلغ المبيعات أو التكلفة)، و<strong>الأبعاد (Dimensions)</strong> (السياق الوصفي &mdash; من وماذا وأين ومتى &mdash; المستخدم لتصفية هذه الحقائق وتجميعها وتحليلها). هي نموذج مفاهيمي يُنفَّذ فيزيائيًا عادة كـ <strong>مخطط نجمة (Star Schema)</strong> (جدول حقائق مركزي + جداول أبعاد محيطة به)، ويمكن تنفيذها أيضًا بقواعد بيانات OLAP متعددة الأبعاد (مثل SQL Server Analysis Services).</p>
+        <p>تُعتبر التقنية الأساسية لـ DW/BI لعدة أسباب:</p>
+        <ul>
+          <li><strong>مبنية حول أسئلة الأعمال:</strong> بعكس قاعدة بيانات معاملات (OLTP) مُطبَّعة مصممة لسلامة البيانات أثناء التحديث، النموذج البُعدي مبني مباشرة على أسئلة الأعمال الشائعة التي يطرحها المستخدمون فعليًا (مثل "إجمالي المبيعات حسب المنطقة حسب الربع")، مما يجعله بديهيًا لمستخدمي الأعمال، لا لخبراء قواعد البيانات فقط.</li>
+          <li><strong>أداء الاستعلامات:</strong> بنيته النجمية البسيطة تتطلب عمليات ربط أقل بين الجداول مقارنة بمخطط علائقي مُطبَّع بالكامل، فتُنفَّذ الاستعلامات والتجميعات أسرع بكثير &mdash; أمر أساسي للوحات المعلومات التفاعلية.</li>
+          <li><strong>أساس OLAP:</strong> النماذج البُعدية هي الأساس المباشر لـ OLAP (التحليل متعدد الأبعاد)، وتُمكّن من تحليل "التقطيع والتكعيب" الذي تعتمد عليه أدوات BI.</li>
+          <li><strong>إجماع صناعي:</strong> كما قال رالف كيمبال، رائد مستودعات البيانات، حظيت النمذجة البُعدية بقبول واسع باعتبارها "أساسية تمامًا لنجاح أي مبادرة DW/BI" &mdash; فهي التقنية السائدة المستخدمة بالصناعة لعرض البيانات لمستخدمي الأعمال.</li>
+        </ul>
+        <p>باختصار، النمذجة البُعدية تسد الفجوة بين كيفية تخزين البيانات بكفاءة وكيف يفكر مستخدمو الأعمال فعليًا ويحتاجون للاستعلام عن تلك البيانات &mdash; وهذا بالضبط عمل BI.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q8">
+      <span class="q-badge">Q8</span>
+      <h2 class="q-en">Explain a comprehensive BI Architecture and how data flows from various sources to its final form.</h2>
+      <p class="q-ar" dir="rtl">أشرح بنية BI الشاملة (Comprehensive BI Architecture) وكيف تتدفق البيانات من المصادر المختلفة حتى الوصول إلى الشكل النهائي.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>A comprehensive BI Architecture is the structured framework of technologies, processes, and tools that moves data from raw sources all the way to actionable insight. It flows through six connected stages:</p>
+        <ul>
+          <li><strong>1. Data Sources</strong> &mdash; where data originates: operational databases (SQL/NoSQL), ERP/CRM systems, spreadsheets, IoT devices, cloud platforms. Data here is raw, scattered, and in varied formats.</li>
+          <li><strong>2. Data Integration (ETL/ELT)</strong> &mdash; <em>Extract</em> data from each source, <em>Transform</em> it (clean, standardize, handle missing values, calculate metrics), then <em>Load</em> it into a centralized repository. Tools: Informatica, Talend, Microsoft SSIS, Apache NiFi.</li>
+          <li><strong>3. Data Storage</strong> &mdash; the transformed data lands in a dedicated analytical store (operational databases are too slow/inconsistent for analysis): the <strong>Data Warehouse</strong> (structured, enterprise-wide, e.g. Snowflake, Redshift), <strong>Data Marts</strong> (department-specific subsets), and <strong>Data Lakes</strong> (raw/unstructured storage, e.g. Hadoop, Azure Data Lake).</li>
+          <li><strong>4. Analytical Processing</strong> &mdash; via <strong>OLAP</strong> (multidimensional analysis/pivot tables), in-memory processing (fast queries in Power BI/Tableau), and advanced analytics (Python/R predictive models).</li>
+          <li><strong>5. Data Presentation</strong> &mdash; results become human-readable: dashboards, reports, scorecards, visualizations, plus real-time KPI alerts (e.g. "sales dropped below target").</li>
+          <li><strong>6. Delivery &amp; Sharing</strong> &mdash; the final stage: results reach users and applications via web portals, reporting/BI/application servers, and client apps (browser, desktop, mobile), reaching power users, casual users, and analysts/developers for operational and strategic decisions.</li>
+        </ul>
+        <p>Underlying all six stages is a cross-cutting concern: <strong>Data Governance &amp; Quality</strong> (ownership, security, metadata, master data) ensures the data moving through this pipeline stays trustworthy at every stage.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p>بنية BI الشاملة هي الإطار المنظم من التقنيات والعمليات والأدوات التي تنقل البيانات من مصادرها الخام حتى الوصول لرؤى قابلة للتنفيذ. تتدفق عبر ست مراحل مترابطة:</p>
+        <ul>
+          <li><strong>١. مصادر البيانات</strong> &mdash; حيث تنشأ البيانات: قواعد بيانات تشغيلية (SQL/NoSQL)، أنظمة ERP/CRM، جداول بيانات، أجهزة IoT، منصات سحابية. البيانات هنا خام ومبعثرة وبصيغ متنوعة.</li>
+          <li><strong>٢. تكامل البيانات (ETL/ELT)</strong> &mdash; <em>الاستخراج</em> من كل مصدر، ثم <em>التحويل</em> (تنظيف، توحيد الصيغة، معالجة القيم المفقودة، حساب المقاييس)، ثم <em>التحميل</em> لمستودع مركزي. الأدوات: Informatica وTalend وMicrosoft SSIS وApache NiFi.</li>
+          <li><strong>٣. تخزين البيانات</strong> &mdash; البيانات المُحوَّلة تصل لمخزن تحليلي مخصص (القواعد التشغيلية بطيئة وغير متسقة للتحليل): <strong>مستودع البيانات</strong> (منظم على مستوى المؤسسة، مثل Snowflake وRedshift)، <strong>متاجر البيانات</strong> (أجزاء خاصة بكل قسم)، و<strong>بحيرات البيانات</strong> (تخزين خام/غير منظم، مثل Hadoop وAzure Data Lake).</li>
+          <li><strong>٤. المعالجة التحليلية</strong> &mdash; عبر <strong>OLAP</strong> (تحليل متعدد الأبعاد/جداول محورية)، المعالجة بالذاكرة (استعلامات سريعة بـ Power BI/Tableau)، والتحليلات المتقدمة (نماذج تنبؤية بـ Python/R).</li>
+          <li><strong>٥. عرض البيانات</strong> &mdash; تتحول النتائج لمخرجات مفهومة: لوحات معلومات وتقارير وبطاقات أداء وتصورات بصرية، مع تنبيهات مؤشرات فورية (مثل "المبيعات انخفضت عن الهدف").</li>
+          <li><strong>٦. التوزيع والمشاركة</strong> &mdash; المرحلة الأخيرة: تصل النتائج للمستخدمين والتطبيقات عبر بوابات ويب وخوادم تقارير/BI/تطبيقات وتطبيقات عملاء (متصفح، سطح مكتب، جوال)، لمستخدمين متقدمين وعاديين ومحللين ومطورين، لقرارات تشغيلية واستراتيجية.</li>
+        </ul>
+        <p>وتحت كل هذه المراحل الست يقع اعتبار شامل: <strong>حوكمة البيانات وجودتها</strong> (الملكية، الأمن، البيانات الوصفية، البيانات الرئيسية) تضمن بقاء البيانات المتدفقة عبر هذا المسار موثوقة بكل مرحلة.</p>
+      </div>
+    </section>
+
+    <section class="q-card" id="q9">
+      <span class="q-badge">Q9</span>
+      <h2 class="q-en">Explain the SMART framework.</h2>
+      <p class="q-ar" dir="rtl">اشرح إطار عمل SMART.</p>
+      <hr class="divider">
+      <p class="answer-label">Model Answer</p>
+      <div class="answer-en">
+        <p>The <strong>SMART</strong> framework defines five criteria that make a KPI effective &mdash; a business's ability to track progress toward a goal is only as good as the quality of its KPIs, and SMART ensures that quality.</p>
+        <ul>
+          <li><strong>Specific:</strong> a clear, detailed, simple description of exactly what you want to achieve &mdash; not vague. E.g. "Improve customer satisfaction" is too broad; "Improve customer satisfaction ratings by 10% by the end of Q3" is specific.</li>
+          <li><strong>Measurable:</strong> quantifiable via amounts, percentages, or raw numbers, so there is an exact definition of success. E.g. website traffic, cash flow, debt-to-asset ratio.</li>
+          <li><strong>Achievable:</strong> ambitious yet attainable within reason &mdash; challenging enough to motivate people, realistic enough that they don't burn out or lose credibility with stakeholders.</li>
+          <li><strong>Relevant:</strong> aligned with the organization's actual strategic objectives &mdash; tracking something just because it's easy to measure, but disconnected from strategy, isn't useful.</li>
+          <li><strong>Time-bound:</strong> a defined, realistic timeframe in which progress will be measured &mdash; a quarter, a month, a year &mdash; so progress can be evaluated at a checkpoint.</li>
+        </ul>
+        <p>Together, these five criteria turn a vague aspiration into a concrete, trackable target &mdash; a KPI that fails any one of them (e.g. measurable but not tied to strategy, or specific but with no deadline) is a weak KPI that won't reliably support good decision-making.</p>
+      </div>
+      <hr class="divider dashed">
+      <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+      <div class="answer-ar" dir="rtl">
+        <p>إطار <strong>SMART</strong> يحدد خمسة معايير تجعل مؤشر الأداء فعّالًا &mdash; قدرة الشركة على تتبع تقدمها نحو هدف تعتمد بقدر جودة مؤشراتها، وSMART يضمن هذه الجودة.</p>
+        <ul>
+          <li><strong>محدد (Specific):</strong> وصف تفصيلي وواضح وبسيط لما تريد تحقيقه بالضبط &mdash; لا غامضًا. مثال: "تحسين رضا العملاء" عام جدًا؛ "رفع تقييمات رضا العملاء 10% بنهاية الربع الثالث" محدد.</li>
+          <li><strong>قابل للقياس (Measurable):</strong> قابل للقياس الكمي عبر كميات أو نسب أو أرقام خام، بحيث يكون هناك تعريف دقيق للنجاح. مثال: زيارات الموقع، التدفق النقدي، نسبة الدين للأصول.</li>
+          <li><strong>قابل للتحقيق (Achievable):</strong> طموح لكن ممكن ضمن حدود معقولة &mdash; تحدٍّ كافٍ ليحفّز الناس، لكن واقعي بما يكفي حتى لا يُصابوا بالإرهاق أو تفقد المصداقية أمام أصحاب المصلحة.</li>
+          <li><strong>ذو صلة (Relevant):</strong> متوافق مع الأهداف الاستراتيجية الفعلية للمنظمة &mdash; تتبع شيء لمجرد سهولة قياسه لكنه منفصل عن الاستراتيجية غير مفيد.</li>
+          <li><strong>محدد بزمن (Time-bound):</strong> إطار زمني واقعي ومحدد يُقاس خلاله التقدم &mdash; ربع سنة، شهر، أو سنة &mdash; بحيث يمكن فعليًا تقييم التقدم عند نقطة تحقق.</li>
+        </ul>
+        <p>مجتمعةً، تحوّل هذه المعايير الخمسة طموحًا غامضًا لهدف ملموس وقابل للمتابعة &mdash; أي مؤشر يفشل بأحدها (مثلًا قابل للقياس لكن غير مرتبط بالاستراتيجية، أو محدد لكن بلا موعد نهائي) هو مؤشر ضعيف لن يدعم اتخاذ قرار جيد بشكل موثوق.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="note">
+    <p>9 consolidated questions &middot; from the doctor's practice exam models (نموذج 1 &amp; نموذج 2) &middot; no duplicates, nothing skipped</p>
+  </footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){
+    if (window.scrollY > 400) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  });
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

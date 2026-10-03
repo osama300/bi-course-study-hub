@@ -1,0 +1,131 @@
+{
+  "id": "root",
+  "en": "Data Presentation in BI/Analytics",
+  "ar": "عرض البيانات في ذكاء الأعمال والتحليلات",
+  "children": [
+    {
+      "id": "what-is",
+      "color": "#3B58A6",
+      "en": "What Is Data Presentation?",
+      "ar": "ما هو عرض البيانات؟",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "The method to summarize, organize & communicate data (raw or analyzed)", "ar": "طريقة لتلخيص البيانات وتنظيمها وتوصيلها (خام أو محللة)" },
+          { "en": "Three forms: text, tables, and/or graphs", "ar": "ثلاثة أشكال: نص، جداول، و/أو رسوم بيانية" },
+          { "en": "The choice depends on data type, analysis method, and the info sought", "ar": "الاختيار يعتمد على نوع البيانات وطريقة التحليل والمعلومة المطلوبة" }
+        ]}
+      ]
+    },
+    {
+      "id": "textual",
+      "color": "#1C7A67",
+      "en": "Textual Presentation",
+      "ar": "العرض النصي",
+      "children": [
+        { "en": "When to Use It", "ar": "متى يُستخدم", "children": [
+          { "en": "Words, sentences & paragraphs; used when data is small & easy to comprehend", "ar": "كلمات وجمل وفقرات؛ يُستخدم عندما تكون البيانات قليلة وسهلة الفهم" }
+        ]},
+        { "en": "Common Forms", "ar": "الأشكال الشائعة", "children": [
+          { "en": "Paragraph, bulleted/numbered list; used in news & story-mode reporting", "ar": "فقرة، قائمة نقطية/مرقمة؛ تُستخدم بالأخبار وأسلوب السرد بالتقارير" }
+        ]}
+      ]
+    },
+    {
+      "id": "structured",
+      "color": "#A85A22",
+      "en": "Structured Layout Presentation",
+      "ar": "عرض التخطيط المهيكل",
+      "children": [
+        { "en": "Flow List", "ar": "القائمة المتدفقة", "children": [
+          { "en": "A single column/row of items; flexible for complex local layout per item", "ar": "عمود/صف واحد من العناصر؛ مرن لتخطيط محلي معقد لكل عنصر" }
+        ]},
+        { "en": "Grid", "ar": "الشبكة", "children": [
+          { "en": "Multiple columns & rows (tiles); suits ultra-wide screens", "ar": "أعمدة وصفوف متعددة (بلاطات)؛ تناسب الشاشات العريضة جدًا" }
+        ]},
+        { "en": "Table", "ar": "الجدول", "children": [
+          { "en": "Strict rows/columns with headers; one record per row", "ar": "صفوف/أعمدة صارمة بعناوين؛ سجل واحد لكل صف" },
+          { "en": "Types: flat, pivot/matrix, complex (multi-row/col headers), transposed", "ar": "الأنواع: مسطح، محوري (Matrix)، معقد (عناوين متعددة الصفوف/الأعمدة)، مقلوب" }
+        ]},
+        { "en": "Card", "ar": "البطاقة", "children": [
+          { "en": "Groups varied data/info in a visually cohesive unit; commonly used for KPIs", "ar": "تجمع بيانات ومعلومات متنوعة بوحدة متماسكة بصريًا؛ تُستخدم شائعًا لعرض المؤشرات" }
+        ]}
+      ]
+    },
+    {
+      "id": "viz-fundamentals",
+      "color": "#7A4A93",
+      "en": "Graphical: Data Visualization Fundamentals",
+      "ar": "أساسيات التصور البصري للبيانات",
+      "children": [
+        { "en": "Definition", "ar": "التعريف", "children": [
+          { "en": "The visual representation of data for the purpose of perception & cognition", "ar": "التمثيل المرئي للبيانات بهدف الإدراك والاستيعاب" }
+        ]},
+        { "en": "Why Data Visualization Matters", "ar": "لماذا يهم التصور البصري", "children": [
+          { "en": "Aids comprehension & problem-solving; shapes attention & focus", "ar": "يساعد الفهم وحل المشكلات؛ يوجّه الانتباه والتركيز" },
+          { "en": "Enables effective storytelling; reveals patterns, trends & relationships", "ar": "يمكّن من السرد الفعال؛ يكشف الأنماط والاتجاهات والعلاقات" }
+        ]}
+      ]
+    },
+    {
+      "id": "visual-forms",
+      "color": "#2A6D91",
+      "en": "Basic Visual Forms/Styles",
+      "ar": "أشكال العرض البصري الأساسية",
+      "children": [
+        { "en": "Embedded Visual", "ar": "التصور المدمج", "children": [
+          { "en": "Embedded within text/tables — e.g. conditional formatting, inline sparklines", "ar": "مدمج ضمن النص/الجداول — مثل التنسيق الشرطي والخطوط الصغيرة المضمنة" }
+        ]},
+        { "en": "Block Visual", "ar": "التصور الكتلي", "children": [
+          { "en": "An independent visual unit with larger space — chart, map, table with embedded visuals", "ar": "وحدة بصرية مستقلة بمساحة أكبر — رسم بياني، خريطة، جدول بتصورات مدمجة" }
+        ]},
+        { "en": "Visual App", "ar": "التطبيق البصري", "children": [
+          { "en": "A standalone application: dashboard, infographic, analytical/exploratory tool, data-driven story", "ar": "تطبيق مستقل: لوحة معلومات، إنفوغرافيك، أداة تحليلية استكشافية، قصة مبنية على البيانات" }
+        ]}
+      ]
+    },
+    {
+      "id": "sparkline-chart",
+      "color": "#3D7A40",
+      "en": "Sparkline & Charts",
+      "ar": "الخط الصغير والرسوم البيانية",
+      "children": [
+        { "en": "Sparkline", "ar": "الخط الصغير (Sparkline)", "children": [
+          { "en": "A small chart embedded in words/numbers/tables, showing variation condensed", "ar": "رسم صغير مدمج بالنص/الأرقام/الجداول، يوضح التغير بشكل مكثف" }
+        ]},
+        { "en": "Chart", "ar": "الرسم البياني", "children": [
+          { "en": "A graphical representation using symbols with visual properties to show quantitative values", "ar": "تمثيل بياني برموز ذات خصائص بصرية لعرض قيم كمية" }
+        ]}
+      ]
+    },
+    {
+      "id": "maps",
+      "color": "#52607A",
+      "en": "Maps (Location-Based Visualization)",
+      "ar": "الخرائط (التصور المبني على الموقع)",
+      "children": [
+        { "en": "Location Intelligence", "ar": "الذكاء المكاني", "children": [
+          { "en": "A BI capability relating geographic context (as a dimension) to business data", "ar": "قدرة ضمن BI تربط السياق الجغرافي (كبُعد) ببيانات الأعمال" }
+        ]},
+        { "en": "Major Map Types", "ar": "أنواع الخرائط الرئيسية", "children": [
+          { "en": "Geospatial maps: points/areas/paths on real-world maps", "ar": "خرائط جغرافية مكانية: نقاط/مساحات/مسارات على خرائط العالم الحقيقي" },
+          { "en": "Abstract illustrational geo maps: conceptual, not exact locations", "ar": "خرائط جغرافية توضيحية مجردة: مفاهيمية، لا مواقع دقيقة" },
+          { "en": "Contextual maps: any space — a building, campus, or mall", "ar": "خرائط سياقية: أي مساحة — مبنى أو حرم جامعي أو مركز تسوق" }
+        ]}
+      ]
+    },
+    {
+      "id": "powerbi-visuals",
+      "color": "#9C3A5C",
+      "en": "Power BI Visuals for Presentation",
+      "ar": "تصورات Power BI للعرض",
+      "children": [
+        { "en": "Cards", "ar": "البطاقات", "children": [
+          { "en": "Multi-line card for several measures; KPI card shows value vs. target & trend", "ar": "بطاقة متعددة الأسطر لعدة مقاييس؛ بطاقة المؤشر تعرض القيمة مقابل الهدف والاتجاه" }
+        ]},
+        { "en": "Pivot Table / Matrix", "ar": "الجدول المحوري / Matrix", "children": [
+          { "en": "A two-dimension table: PivotTable (Excel), Matrix (Power BI), Cross tab (Access)", "ar": "جدول ثنائي الأبعاد: PivotTable بإكسل، Matrix بـPower BI، Cross tab بـAccess" }
+        ]}
+      ]
+    }
+  ]
+}

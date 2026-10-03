@@ -1,0 +1,153 @@
+{
+  "id": "root",
+  "en": "Data Model for Analytics",
+  "ar": "نموذج البيانات للتحليلات",
+  "children": [
+    {
+      "id": "what-why",
+      "color": "#3B58A6",
+      "en": "What & Why of Data Modeling",
+      "ar": "ما هي النمذجة ولماذا نحتاجها",
+      "children": [
+        { "en": "What Is a Data Model?", "ar": "ما هو نموذج البيانات؟", "children": [
+          { "en": "A visual/logical representation of data within a system", "ar": "تمثيل مرئي أو منطقي للبيانات ضمن نظام" },
+          { "en": "Defines data types, attributes, relationships & how data is organized, stored & used", "ar": "يحدد أنواع البيانات وسماتها وعلاقاتها وكيفية تنظيمها وتخزينها واستخدامها" }
+        ]},
+        { "en": "Why It Matters in BI", "ar": "لماذا مهمة في BI", "children": [
+          { "en": "BI relies on data that is well-structured, easy to query, and supports reports & decisions", "ar": "BI يعتمد على بيانات منظمة جيدًا وسهلة الاستعلام وتدعم التقارير والقرارات" },
+          { "en": "Without it: poor performance, inconsistent reporting, redundancy, unmanageable dashboards", "ar": "بدونها: أداء ضعيف، تقارير غير متسقة، تكرار، ولوحات يصعب إدارتها" }
+        ]}
+      ]
+    },
+    {
+      "id": "levels",
+      "color": "#1C7A67",
+      "en": "Three Levels of Data Models",
+      "ar": "المستويات الثلاثة لنماذج البيانات",
+      "children": [
+        { "en": "Conceptual", "ar": "المفاهيمي", "children": [
+          { "en": "Purpose: what the system contains, from a high-level business view", "ar": "الغرض: ماذا يحتوي النظام من منظور عمل عالي المستوى" },
+          { "en": "Audience: business stakeholders & executives", "ar": "الجمهور: أصحاب المصلحة والتنفيذيون" },
+          { "en": "Example: ER and EER data models", "ar": "مثال: نماذج ER وEER" }
+        ]},
+        { "en": "Logical", "ar": "المنطقي", "children": [
+          { "en": "Purpose: how the system is structured, independent of any specific DBMS", "ar": "الغرض: كيف يُبنى النظام هيكليًا، بمعزل عن نظام إدارة قواعد بيانات محدد" },
+          { "en": "Audience: computer specialists & BI developers", "ar": "الجمهور: متخصصو الحاسب ومطورو BI" },
+          { "en": "e.g. Customer(Customer_ID, Full_Name, Email) has a 1:N relationship with Sales_Fact", "ar": "مثال: Customer له علاقة 1:N مع Sales_Fact" }
+        ]},
+        { "en": "Physical", "ar": "الفيزيائي", "children": [
+          { "en": "Purpose: exact storage details — record formats, ordering, access paths", "ar": "الغرض: تفاصيل التخزين الدقيقة — صيغ السجلات وترتيبها ومسارات الوصول" },
+          { "en": "Audience: DBAs and Data Engineers", "ar": "الجمهور: مدراء قواعد البيانات ومهندسو البيانات" },
+          { "en": "e.g. exact types (VARCHAR(100), INT), constraints, partitioning, indexes", "ar": "مثال: أنواع دقيقة (VARCHAR(100)، INT)، قيود، تقسيم، فهارس" }
+        ]}
+      ]
+    },
+    {
+      "id": "modeling-bi",
+      "color": "#A85A22",
+      "en": "Data Modeling's Relationship to BI",
+      "ar": "علاقة النمذجة بذكاء الأعمال",
+      "children": [
+        { "en": "BI's Real Goal", "ar": "الهدف الحقيقي لـ BI", "children": [
+          { "en": "Not just storing data — analyzing it efficiently for better decisions", "ar": "ليس فقط تخزين البيانات — بل تحليلها بكفاءة لاتخاذ قرارات أفضل" }
+        ]},
+        { "en": "What BI Data Models Simplify", "ar": "ما تُسهّله نماذج BI", "children": [
+          { "en": "Filtering, aggregation, comparison, time-based analysis, KPI calculation & reporting", "ar": "التصفية، التجميع، المقارنة، التحليل الزمني، وحساب المؤشرات وتقاريرها" }
+        ]}
+      ]
+    },
+    {
+      "id": "dimensional",
+      "color": "#7A4A93",
+      "en": "Dimensional Data Model",
+      "ar": "النموذج البُعدي",
+      "children": [
+        { "en": "Core Concept", "ar": "الفكرة الأساسية", "children": [
+          { "en": "A technique designed specifically for analytical systems & data warehouses", "ar": "تقنية مصممة خصيصًا للأنظمة التحليلية ومستودعات البيانات" },
+          { "en": "Organizes data into two components: Facts and Dimensions", "ar": "تنظم البيانات ضمن عنصرين: الحقائق والأبعاد" }
+        ]}
+      ]
+    },
+    {
+      "id": "fact-dim",
+      "color": "#2A6D91",
+      "en": "Fact Tables vs. Dimension Tables",
+      "ar": "جداول الحقائق مقابل جداول الأبعاد",
+      "children": [
+        { "en": "Fact Table", "ar": "جدول الحقائق", "children": [
+          { "en": "Represents a business event or measurement; sits at the center", "ar": "يمثل حدثًا أو قياسًا في الأعمال؛ يقع في المركز" },
+          { "en": "Contains Foreign Keys (links to dimensions) and Numeric Measures", "ar": "يحتوي مفاتيح خارجية (روابط للأبعاد) وقياسات رقمية" }
+        ]},
+        { "en": "Types of Measures", "ar": "أنواع القياسات", "children": [
+          { "en": "Additive: summed across all dimensions, e.g. Sales_Amount", "ar": "جامعة: تُجمع عبر كل الأبعاد، مثل Sales_Amount" },
+          { "en": "Semi-Additive: summed across some dimensions but not time, e.g. Account_Balance", "ar": "شبه جامعة: تُجمع عبر بعض الأبعاد ما عدا الوقت، مثل Account_Balance" },
+          { "en": "Non-Additive: cannot be summed — use averages/ratios, e.g. Profit_Margin_Percentage", "ar": "غير جامعة: لا يمكن جمعها — تُستخدم متوسطات أو نسب، مثل Profit_Margin_Percentage" }
+        ]},
+        { "en": "Dimension Table", "ar": "جدول الأبعاد", "children": [
+          { "en": "Stores descriptive context: Who? What? Where? When? How?", "ar": "يخزّن السياق الوصفي: من؟ ماذا؟ أين؟ متى؟ كيف؟" },
+          { "en": "Contains a primary (often surrogate) key, descriptive attributes & hierarchies", "ar": "يحتوي مفتاحًا أساسيًا (غالبًا بديلًا) وسمات وصفية وتسلسلات هرمية" }
+        ]}
+      ]
+    },
+    {
+      "id": "schemas",
+      "color": "#3D7A40",
+      "en": "Star Schema vs. Snowflake Schema",
+      "ar": "مخطط النجمة مقابل مخطط الثلج",
+      "children": [
+        { "en": "Star Schema", "ar": "مخطط النجمة", "children": [
+          { "en": "The fact table sits in the middle; dimension tables are the points of the star", "ar": "جدول الحقائق بالمنتصف؛ جداول الأبعاد هي أطراف النجمة" },
+          { "en": "Relationships radiate from the foreign-primary keys, facts to dimensions", "ar": "العلاقات تنطلق من المفاتيح الخارجية-الأساسية، من الحقائق للأبعاد" }
+        ]},
+        { "en": "Snowflake Schema", "ar": "مخطط الثلج (Snowflake)", "children": [
+          { "en": "Provides more detail about dimensions & their attributes (more normalized)", "ar": "يوفر تفصيلًا أكبر عن الأبعاد وسماتها (أكثر تطبيعًا)" },
+          { "en": "e.g. a company with dealers across different countries & regions", "ar": "مثال: شركة لها موزّعون بدول ومناطق مختلفة" }
+        ]}
+      ]
+    },
+    {
+      "id": "steps",
+      "color": "#52607A",
+      "en": "Steps to Build a Dimensional Model",
+      "ar": "خطوات بناء النموذج البُعدي",
+      "children": [
+        { "en": "1. Identify Business Process", "ar": "١. تحديد العملية التجارية", "children": [
+          { "en": "Define the scope (e.g. sales, marketing) and KPIs", "ar": "تحديد النطاق (كالمبيعات والتسويق) والمؤشرات" }
+        ]},
+        { "en": "2. Determine Grain", "ar": "٢. تحديد الدقة التفصيلية", "children": [
+          { "en": "Decide the lowest level of detail (daily sales, hourly transactions)", "ar": "تحديد أدنى مستوى تفصيل (مبيعات يومية، معاملات بالساعة)" }
+        ]},
+        { "en": "3. Identify Facts", "ar": "٣. تحديد الحقائق", "children": [
+          { "en": "Select measurable metrics tied to that grain", "ar": "اختيار مقاييس قابلة للقياس مرتبطة بتلك الدقة" }
+        ]},
+        { "en": "4. Identify Dimensions", "ar": "٤. تحديد الأبعاد", "children": [
+          { "en": "Define descriptive entities and their attributes", "ar": "تحديد الكيانات الوصفية وسماتها" }
+        ]},
+        { "en": "5. Build Schema", "ar": "٥. بناء المخطط", "children": [
+          { "en": "Star Schema (simpler, faster queries) or Snowflake (normalized, storage-efficient)", "ar": "مخطط نجمة (أبسط وأسرع) أو مخطط ثلج (مُطبَّع وأكفأ تخزينيًا)" }
+        ]}
+      ]
+    },
+    {
+      "id": "example",
+      "color": "#9C3A5C",
+      "en": "Worked Example: Sales Star Schema in Power BI",
+      "ar": "مثال تطبيقي: مخطط نجمة مبيعات في Power BI",
+      "children": [
+        { "en": "Business Scenario", "ar": "سيناريو العمل", "children": [
+          { "en": "A retailer wants sales performance by Time, Product, Customer & Store", "ar": "متجر تجزئة يريد أداء المبيعات حسب الوقت والمنتج والعميل والمتجر" }
+        ]},
+        { "en": "Step 1: Process, KPIs, Facts & Dimensions", "ar": "الخطوة ١: العملية والمؤشرات والحقائق والأبعاد", "children": [
+          { "en": "KPIs: Total Sales, Quantity, Avg Sale/Transaction, Profit Margin", "ar": "المؤشرات: إجمالي المبيعات، الكمية، متوسط البيع للمعاملة، هامش الربح" },
+          { "en": "Facts: Sales Amount, Quantity Sold, Discount, Profit", "ar": "الحقائق: مبلغ البيع، الكمية المباعة، الخصم، الربح" }
+        ]},
+        { "en": "Step 2: Select Granularity", "ar": "الخطوة ٢: تحديد الدقة التفصيلية", "children": [
+          { "en": "One row per sales transaction line (one product, one date, one customer, one store)", "ar": "صف واحد لكل بند معاملة بيع (منتج واحد، تاريخ واحد، عميل واحد، متجر واحد)" }
+        ]},
+        { "en": "Step 3 & 4: Dimensions & Final Schema", "ar": "الخطوة ٣ و٤: الأبعاد والمخطط النهائي", "children": [
+          { "en": "DimDate, DimProduct, DimCustomer, DimStore surround FactSales", "ar": "DimDate وDimProduct وDimCustomer وDimStore تحيط بـ FactSales" }
+        ]}
+      ]
+    }
+  ]
+}

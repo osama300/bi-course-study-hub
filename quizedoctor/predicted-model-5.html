@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 5</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#7A4A93; --accent-soft: rgba(122,74,147,.10); --ar-bg: rgba(122,74,147,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#C79AE0; --accent-soft: rgba(199,154,224,.10); --ar-bg: rgba(199,154,224,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 12px; }
+  .gapnote{ font-size:13px; color:var(--ink-soft); border:1px dashed var(--line-strong); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+  .gapnote strong{ color:var(--ink); }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  /* ---- Multiple Choice ---- */
+  .mc-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .mc-top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:12px; }
+  .mc-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .mc-tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; }
+  .mc-q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; }
+  .mc-q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; direction:rtl; text-align:right; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .opt{ display:flex; align-items:flex-start; gap:10px; padding:9px 12px; border-radius:10px; border:1px solid var(--line); font-size:14px; }
+  .opt .opt-letter{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; width:20px; flex:none; color:var(--ink-soft); }
+  .opt.correct{ border-color: var(--true); background: var(--true-bg); }
+  .opt.correct .opt-letter{ color: var(--true); }
+  .opt.correct::after{ content:"✓"; margin-inline-start:auto; color:var(--true); font-weight:700; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+
+  /* ---- True/False ---- */
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; direction:rtl; text-align:right; }
+
+  /* ---- Short Answer ---- */
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(17px,2.4vw,20px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); margin:0 0 18px; direction:rtl; text-align:right; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 10px; font-size:15px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 10px; font-size:15px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card, .mc-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">Predicted 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted 4</a> &middot;
+    <span>Predicted Model 5</span> &middot;
+    <a href="predicted-model-6.html">Predicted 6 &rarr;</a>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Predicted Practice Exam &middot; Full-Spectrum Mock</p>
+    <h1>Predicted Exam — Model 5</h1>
+    <p dir="rtl">نموذج توقعي 5 — محاكاة شاملة لكل المحاضرات</p>
+    <p class="desc">A full mock exam across all ten lectures, built in the same multiple-choice-heavy format as the real archived final exam. Every question here is a fresh angle &mdash; none of it repeats wording from the real doctor's questions, the old archived exams, or Models 1&ndash;4.</p>
+    <p class="disclaimer" dir="rtl">تنبيه: أسئلة <strong>متوقعة</strong> بالكامل — مو من الدكتورة. تغطي كل المحاضرات بزوايا جديدة لم تُسأل بأي ملف سابق بالمشروع.</p>
+  </header>
+
+  <div class="part-title">Part A &mdash; Multiple Choice <span class="ar">اختيار من متعدد</span></div>
+  <div class="stat-row"><span class="stat font-mono">18 questions &middot; 4 options each</span></div>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 01</span><span class="mc-tag">L1-2 &middot; Big Data</span></div>
+    <p class="mc-q-en">Big Data is commonly characterized by which four properties?</p>
+    <p class="mc-q-ar">البيانات الضخمة توصف عادة بأي أربع خصائص؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Size, Speed, Shape, Source</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Volume, Velocity, Variety, Veracity</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Value, Visibility, Validation, Volume</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Quantity, Quality, Query, Queue</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture lists Big Data's four V's &mdash; Volume, Velocity, Variety and Veracity &mdash; as one of the core data challenges.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تذكر المحاضرة الخصائص الأربع للبيانات الضخمة — الحجم والسرعة والتنوع والمصداقية — كأحد تحديات البيانات الأساسية.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 02</span><span class="mc-tag">L1-2 &middot; ETL</span></div>
+    <p class="mc-q-en">In the ETL process, which step is responsible for cleaning and standardizing the data's format?</p>
+    <p class="mc-q-ar">في عملية ETL، أي خطوة مسؤولة عن تنظيف البيانات وتوحيد صيغتها؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Extract</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Transform</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Load</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Query</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Extract pulls data from sources; Transform cleans and standardizes its format; Load moves it into the central warehouse.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الاستخراج يسحب البيانات من المصادر؛ التحويل ينظفها ويوحد صيغتها؛ التحميل ينقلها للمستودع المركزي.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 03</span><span class="mc-tag">L1-2 &middot; MS BI Stack</span></div>
+    <p class="mc-q-en">Within the Microsoft SQL Server BI platform, which component handles analysis and OLAP?</p>
+    <p class="mc-q-ar">ضمن منصة SQL Server لـ BI من مايكروسوفت، أي مكوّن يتولى التحليل وOLAP؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>SSIS</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>SSAS</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>SSRS</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>SSDE</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>SSAS = Analysis &amp; OLAP. SSIS handles ETL processes, SSRS handles reporting, and SSDE handles storage.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>SSAS = التحليل وOLAP. SSIS تتولى عمليات ETL، SSRS التقارير، وSSDE التخزين.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 04</span><span class="mc-tag">L3 &middot; KPI Guide</span></div>
+    <p class="mc-q-en">In the practical guide to designing KPIs, what comes right after "Identify Strategic Objectives"?</p>
+    <p class="mc-q-ar">في الدليل العملي لتصميم المؤشرات، ما الذي يأتي بعد "تحديد الأهداف الاستراتيجية" مباشرة؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Outline Criteria for Success</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Build the KPI Formula</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Collect the Data</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Present Your KPIs</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The six-step order: Define Mission &amp; Vision &rarr; Identify Strategic Objectives &rarr; Outline Criteria for Success &rarr; Build the KPI Formula &rarr; Collect the Data &rarr; Present Your KPIs.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الترتيب الصحيح: تحديد الرسالة والرؤية ← تحديد الأهداف الاستراتيجية ← تحديد معايير النجاح ← بناء معادلة المؤشر ← جمع البيانات ← عرض المؤشرات.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 05</span><span class="mc-tag">L3 &middot; SMART</span></div>
+    <p class="mc-q-en">In the SMART framework, what does "Achievable" mean for a KPI target?</p>
+    <p class="mc-q-ar">في إطار SMART، ماذا يعني "قابل للتحقيق" بالنسبة لهدف المؤشر؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>It must be expressed as a currency amount</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>It has no fixed deadline</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>It is ambitious yet attainable &mdash; motivates without causing burnout</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>It must predict performance years into the future</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Achievable targets are challenging yet attainable, motivating the team without causing burnout.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الأهداف القابلة للتحقيق طموحة لكنها ممكنة، تحفّز الفريق دون إرهاقه.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 06</span><span class="mc-tag">L4 &middot; BSC Rationale</span></div>
+    <p class="mc-q-en">The Balanced Scorecard was developed partly to balance the interests of which four stakeholder groups?</p>
+    <p class="mc-q-ar">طُوّرت بطاقة الأداء المتوازن جزئيًا لموازنة مصالح أي أربع مجموعات من أصحاب المصلحة؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Shareholders, customers, employees, society</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Suppliers, regulators, competitors, media</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Developers, testers, auditors, vendors</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Banks, investors, insurers, creditors</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>BSC balances shareholders (returns), customers (value), employees (growth) and society (responsibility) &mdash; a complexity financial metrics alone can't address.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>توازن البطاقة بين المساهمين (عوائد) والعملاء (قيمة) والموظفين (تطور) والمجتمع (مسؤولية) — تعقيد لا تكفيه المقاييس المالية وحدها.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 07</span><span class="mc-tag">L4 &middot; BSC Origin</span></div>
+    <p class="mc-q-en">The Balanced Scorecard concept originates from which source?</p>
+    <p class="mc-q-ar">من أي مصدر نشأت فكرة بطاقة الأداء المتوازن؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Peter Drucker, 1954</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Kaplan &amp; Norton, Harvard Business Review, 1992</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>W. Edwards Deming, 1950</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Michael Porter, 1980</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Kaplan &amp; Norton introduced the Balanced Scorecard in the Harvard Business Review in 1992.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>كابلن ونورتون قدّما بطاقة الأداء المتوازن بمجلة Harvard Business Review عام 1992.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 08</span><span class="mc-tag">L4 &middot; KPIs by Perspective</span></div>
+    <p class="mc-q-en">Among common Customer-perspective KPIs, which is rated the most important in practice?</p>
+    <p class="mc-q-ar">ضمن مؤشرات بُعد العملاء الشائعة، أي واحد يُصنَّف الأكثر أهمية عمليًا؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Net Promoter Score (NPS)</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Market Share</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Customer Retention Rate</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Customer Acquisition Cost</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture explicitly rates Customer Retention Rate as the most important Customer KPI in practice, ahead of CSAT, NPS, Market Share and Acquisition Cost.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تصنّف المحاضرة معدل الاحتفاظ بالعملاء كالأهم عمليًا ضمن مؤشرات العملاء، متقدمًا على CSAT وNPS والحصة السوقية وتكلفة الاكتساب.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 09</span><span class="mc-tag">L6 &middot; BI Goal</span></div>
+    <p class="mc-q-en">According to the lecture, what is BI's "real goal" when it comes to data modeling?</p>
+    <p class="mc-q-ar">وفق المحاضرة، ما "الهدف الحقيقي" لـ BI فيما يتعلق بنمذجة البيانات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Simply storing as much data as possible</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Analyzing data efficiently to support better decisions</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Replacing all operational databases</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Eliminating the need for dashboards</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>BI's real goal is not just storing data but analyzing it efficiently for better decisions &mdash; good data modeling is what makes that analysis possible.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الهدف الحقيقي لـ BI ليس تخزين البيانات فقط بل تحليلها بكفاءة لاتخاذ قرارات أفضل — والنمذجة الجيدة هي ما يُمكّن هذا التحليل.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 10</span><span class="mc-tag">L6 &middot; Dimension Table</span></div>
+    <p class="mc-q-en">What kind of primary key does a Dimension table typically use?</p>
+    <p class="mc-q-ar">أي نوع مفتاح أساسي يستخدمه جدول الأبعاد عادة؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>A composite key from the Fact table</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Often a surrogate key</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>No primary key at all</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>A foreign key pointing to another dimension</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Dimension tables contain a primary key that is often surrogate, along with descriptive attributes and hierarchies.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>جداول الأبعاد تحتوي مفتاحًا أساسيًا غالبًا بديلًا (surrogate)، إضافة لسمات وصفية وتسلسلات هرمية.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 11</span><span class="mc-tag">L7 &middot; Why Storage</span></div>
+    <p class="mc-q-en">The concept of data storage providing "a single source of truth" mainly refers to:</p>
+    <p class="mc-q-ar">مفهوم أن تخزين البيانات يوفّر "مصدر حقيقة واحد" يشير أساسًا إلى:</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Quality, integrity, secured &amp; access-controlled data with a defined model, usable by multiple users &amp; apps</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Storing every copy of data redundantly across departments</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Allowing any user to edit any table directly</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Removing the need for data governance</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>A single source of truth means data quality &amp; integrity, secured &amp; access-controlled, with a defined model/structure used consistently by multiple users &amp; apps.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>مصدر الحقيقة الواحد يعني جودة وسلامة البيانات، مؤمّنة ومتحكم بالوصول إليها، بنموذج وهيكل محددين يستخدمه مستخدمون وتطبيقات متعددة بثبات.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 12</span><span class="mc-tag">L7 &middot; DW vs OLTP</span></div>
+    <p class="mc-q-en">Compared to an OLTP database, a Data Warehouse is typically:</p>
+    <p class="mc-q-ar">مقارنة بقاعدة بيانات OLTP، يكون مستودع البيانات غالبًا:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Smaller and always faster for every type of query</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Larger, due to historical data &amp; aggregation structures, with speed depending on data volume</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Identical in size and update frequency</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Designed for fast simple inserts by end users</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>OLAP/DW systems are larger due to history and aggregation structures, with speed depending on data volume &mdash; the opposite of the relatively small, very fast OLTP system.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>أنظمة OLAP/DW أكبر بسبب التاريخ وهياكل التجميع، وسرعتها تعتمد على حجم البيانات — بعكس نظام OLTP الصغير نسبيًا والسريع جدًا.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 13</span><span class="mc-tag">L7 &middot; DB Styles</span></div>
+    <p class="mc-q-en">What are the two major database styles discussed for data storage needs?</p>
+    <p class="mc-q-ar">ما نوعا قواعد البيانات الرئيسيان اللذان تمت مناقشتهما لاحتياجات تخزين البيانات؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Transactional (operational) databases and Analytical databases</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Relational databases and NoSQL databases</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Cloud databases and on-premises databases</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Public databases and private databases</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture frames storage needs around two major styles: transactional (operational) databases versus analytical databases.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تؤطر المحاضرة احتياجات التخزين حول نوعين رئيسيين: قواعد بيانات تشغيلية (معاملاتية) مقابل قواعد بيانات تحليلية.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 14</span><span class="mc-tag">L8 &middot; Why Viz Matters</span></div>
+    <p class="mc-q-en">Which of the following is NOT listed as a reason data visualization matters?</p>
+    <p class="mc-q-ar">أي من التالي لم يُذكر كسبب لأهمية التصور البصري للبيانات؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Aids comprehension &amp; problem-solving</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Enables effective storytelling</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Reveals patterns, trends &amp; relationships</span></div>
+      <div class="opt correct"><span class="opt-letter">D</span><span>Guarantees 100% data accuracy</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Visualization aids comprehension, shapes attention/focus, enables storytelling, and reveals patterns/trends &mdash; it does not guarantee data accuracy, which depends on the underlying data quality.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التصور يساعد الفهم ويوجّه الانتباه ويمكّن السرد ويكشف الأنماط — لكنه لا يضمن دقة البيانات، التي تعتمد على جودة البيانات الأصلية.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 15</span><span class="mc-tag">L8 &middot; Maps</span></div>
+    <p class="mc-q-en">A map that shows conceptual geographic relationships without exact real-world locations is called:</p>
+    <p class="mc-q-ar">خريطة تعرض علاقات جغرافية مفاهيمية دون مواقع دقيقة بالعالم الحقيقي تُسمى:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Geospatial map</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Abstract illustrational geo map</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Contextual map</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Heat map</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Abstract illustrational geo maps are conceptual, not exact locations. Geospatial maps use real-world coordinates; contextual maps cover any defined space like a building or mall.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الخرائط التوضيحية المجردة مفاهيمية لا مواقع دقيقة. الخرائط الجغرافية المكانية تستخدم إحداثيات حقيقية؛ والسياقية تغطي أي مساحة محددة كمبنى أو مركز تسوق.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 16</span><span class="mc-tag">L8 &middot; Power BI</span></div>
+    <p class="mc-q-en">What does a Power BI KPI card specifically show, beyond a regular multi-line card?</p>
+    <p class="mc-q-ar">ماذا تعرض بطاقة المؤشر (KPI card) في Power BI تحديدًا، أكثر من بطاقة متعددة الأسطر عادية؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Only a single number with no context</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>The value compared against a target, plus a trend</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>A full pivot table of all records</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>A geospatial map of the value</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>A KPI card shows the value versus its target and a trend, unlike a regular multi-line card that just lists several measures.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>بطاقة المؤشر تعرض القيمة مقابل الهدف مع الاتجاه، بعكس البطاقة متعددة الأسطر العادية التي تسرد عدة مقاييس فقط.</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 17</span><span class="mc-tag">L9-10 &middot; Report Purpose</span></div>
+    <p class="mc-q-en">Reports in BI delivery are mainly geared toward which purpose?</p>
+    <p class="mc-q-ar">التقارير ضمن توصيل BI موجّهة أساسًا لأي غرض؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Printing (styled) or exporting (raw data), for people who need the data itself</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Real-time alerting for executives only</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Replacing dashboards entirely</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Running machine learning models</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reports are geared toward people who need the data itself (not a direct interpretation of it), mainly for printing (styled) or exporting (raw data).</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التقارير موجهة لمن يحتاج البيانات نفسها (لا تفسيرًا مباشرًا لها)، غالبًا للطباعة (بتنسيق) أو للتصدير (بيانات خام).</p></div>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 18</span><span class="mc-tag">L9-10 &middot; Dashboard Anatomy</span></div>
+    <p class="mc-q-en">In a typical dashboard anatomy, which component usually serves as the main, largest visual?</p>
+    <p class="mc-q-ar">ضمن تشريح لوحة معلومات نموذجية، أي مكوّن يُعد غالبًا التصور الرئيسي الأكبر؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>The header (logo/title)</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>The Hero Chart</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>A single-value KPI card</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Embedded textual info</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The typical dashboard anatomy includes a Header, a Hero Chart (the main large visual), a single-value KPI card, embedded visuals, textual info, a table with embedded visuals, and a chart.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تشريح اللوحة النموذجي يشمل رأسًا، ورسمًا رئيسيًا (Hero Chart) هو التصور الكبير الأساسي، وبطاقة مؤشر بقيمة واحدة، وتصورات مدمجة، ومعلومات نصية، وجدولًا بتصورات مدمجة، ورسمًا بيانيًا.</p></div>
+  </section>
+
+  <div class="part-title">Part B &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">8 statements</span>
+    <span class="stat true">4 True</span>
+    <span class="stat false">4 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Big Data is commonly described by four properties: Volume, Velocity, Variety, and Veracity."</p>
+    <p class="statement-ar" dir="rtl">"تُوصف البيانات الضخمة غالبًا بأربع خصائص: الحجم والسرعة والتنوع والمصداقية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's Big Data challenge description.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع وصف المحاضرة لتحدي البيانات الضخمة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"In the ETL process, the Load step is where data is cleaned and standardized before moving to the warehouse."</p>
+    <p class="statement-ar" dir="rtl">"في عملية ETL، خطوة التحميل (Load) هي التي تنظف البيانات وتوحد صيغتها قبل نقلها للمستودع."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>That's the Transform step. Load simply moves the already-cleaned data into the central warehouse.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا وصف خطوة التحويل (Transform). التحميل فقط ينقل البيانات المنظفة مسبقًا إلى المستودع المركزي.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"A data silo, also called a spreadmart, refers to scattered data living in disconnected spreadsheets or systems."</p>
+    <p class="statement-ar" dir="rtl">"جزيرة البيانات، أو Spreadmart، تشير لبيانات متفرقة تعيش بجداول أو أنظمة غير متصلة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the lecture's "Data silos (spreadmart)" challenge directly.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق مباشرة تحدي "جزر البيانات المتفرقة (Spreadmart)" بالمحاضرة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Power users and casual users of a BI system are described in the lecture as having identical needs and access levels."</p>
+    <p class="statement-ar" dir="rtl">"يصف المحاضرة المستخدمين المتقدمين والعاديين لنظام BI بأنهم متطابقون بالاحتياجات ومستويات الوصول."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture lists Power Users, Casual Users, and Analysts &amp; Developers as distinct user categories within BI architecture, implying different needs, not identical ones.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تذكر المحاضرة مستخدمين متقدمين ومستخدمين عاديين ومحللين ومطورين كفئات مستخدمين متمايزة ضمن بنية BI، أي باحتياجات مختلفة لا متطابقة.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"Decisions in a BI context can be based on facts, simulation, intuition, or negotiation &mdash; not just hard data alone."</p>
+    <p class="statement-ar" dir="rtl">"القرارات في سياق BI يمكن أن تُبنى على حقائق أو محاكاة أو حدس أو تفاوض جماعي — لا على البيانات الصلبة فقط."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Matches the lecture's listed decision bases directly: facts, simulation, intuition, negotiation.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>يطابق مباشرة أسس القرار المذكورة بالمحاضرة: حقائق، محاكاة، حدس، تفاوض جماعي.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">06</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"According to the BSC's cause-and-effect chain, Financial Results come first and directly drive Learning &amp; Growth."</p>
+    <p class="statement-ar" dir="rtl">"وفق سلسلة السبب والنتيجة في BSC، تأتي النتائج المالية أولًا وتقود مباشرة التعلم والنمو."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed. The chain flows: Learning &amp; Growth &rarr; Internal Processes &rarr; Customer Satisfaction &rarr; Financial Results &mdash; Financial Results are the outcome, not the starting point.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة. السلسلة تسير: التعلم والنمو ← العمليات الداخلية ← رضا العملاء ← النتائج المالية — فالنتائج المالية هي المحصلة لا نقطة البداية.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">07</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"In practice, Customer Retention Rate is rated the most important Customer-perspective KPI, above Net Promoter Score or Market Share."</p>
+    <p class="statement-ar" dir="rtl">"عمليًا، يُصنَّف معدل الاحتفاظ بالعملاء كالأهم ضمن مؤشرات بُعد العملاء، متقدمًا على NPS أو الحصة السوقية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's explicit ranking of Customer KPIs.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع ترتيب المحاضرة الصريح لمؤشرات العملاء.</p></div>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">08</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"A Dimension table's primary key is always a natural key taken directly from the source system, never a surrogate key."</p>
+    <p class="statement-ar" dir="rtl">"مفتاح جدول الأبعاد الأساسي هو دائمًا مفتاح طبيعي مأخوذ مباشرة من النظام المصدر، وليس مفتاحًا بديلًا أبدًا."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The lecture states the opposite: a Dimension table's primary key is often surrogate, not a natural source-system key.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تذكر المحاضرة العكس: مفتاح جدول الأبعاد الأساسي غالبًا بديل (surrogate)، لا مفتاح طبيعي من النظام المصدر.</p></div>
+  </section>
+
+  <div class="part-title">Part C &mdash; Short Answer <span class="ar">إجابات قصيرة</span></div>
+  <div class="stat-row"><span class="stat font-mono">4 questions &middot; concise, auto-gradable style</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">SA 01</span>
+    <h2 class="q-en">Explain the five-step core BI process, from defining needs to interpreting results.</h2>
+    <p class="q-ar" dir="rtl">اشرح العملية الأساسية لـ BI المكونة من خمس خطوات، من تحديد الاحتياج إلى تفسير النتائج.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>(1) Define needs &mdash; what decision or question the data must support. (2) Collect data &mdash; from sources like DBs, ERP, CRM, IoT. (3) Clean data &mdash; remove noise &amp; inconsistencies. (4) Analyze data &mdash; apply the appropriate analytical technique. (5) Interpret results &mdash; turn the output into an actionable conclusion.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>(١) تحديد الاحتياج — أي قرار أو سؤال يجب أن تدعمه البيانات. (٢) جمع البيانات — من مصادر كقواعد البيانات وERP وCRM وIoT. (٣) تنظيف البيانات — إزالة الضجيج والتضاربات. (٤) تحليل البيانات — تطبيق تقنية التحليل المناسبة. (٥) تفسير النتائج — تحويل المخرجات إلى استنتاج قابل للتنفيذ.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 02</span>
+    <h2 class="q-en">What are the three steps of the ETL process, and what happens in each?</h2>
+    <p class="q-ar" dir="rtl">ما خطوات عملية ETL الثلاث، وماذا يحدث في كل منها؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p><strong>Extract</strong>: pull data from sources such as databases, ERP, CRM, and IoT systems. <strong>Transform</strong>: clean the data and standardize its format. <strong>Load</strong>: move the transformed data into the central data warehouse.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p><strong>الاستخراج</strong>: سحب البيانات من مصادر كقواعد البيانات وERP وCRM وIoT. <strong>التحويل</strong>: تنظيف البيانات وتوحيد صيغتها. <strong>التحميل</strong>: نقل البيانات المحوّلة إلى المستودع المركزي.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 03</span>
+    <h2 class="q-en">List the six steps in the practical guide to designing KPIs.</h2>
+    <p class="q-ar" dir="rtl">اذكر الخطوات الست بالدليل العملي لتصميم المؤشرات.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>(1) Define Mission &amp; Vision. (2) Identify Strategic Objectives. (3) Outline Criteria for Success. (4) Build the KPI Formula. (5) Collect the Data. (6) Present Your KPIs.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>(١) تحديد الرسالة والرؤية. (٢) تحديد الأهداف الاستراتيجية. (٣) تحديد معايير النجاح. (٤) بناء معادلة المؤشر. (٥) جمع البيانات. (٦) عرض المؤشرات.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 04</span>
+    <h2 class="q-en">Name the four phases of the BSC Implementation Framework, in order.</h2>
+    <p class="q-ar" dir="rtl">اذكر مراحل إطار تطبيق بطاقة الأداء المتوازن الأربع بالترتيب.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>(1) Strategic Foundation Development &mdash; review mission, vision &amp; objectives, stakeholder analysis. (2) Scorecard Design &amp; Metric Selection &mdash; translate objectives into KPIs, set targets &amp; initiatives. (3) Organizational Alignment &amp; Cascading &mdash; cascade the BSC to all organizational levels. (4) Continuous Improvement &amp; Evolution &mdash; regularly review and update measures, targets &amp; initiatives.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>(١) بناء الأساس الاستراتيجي — مراجعة الرسالة والرؤية والأهداف، وتحليل أصحاب المصلحة. (٢) تصميم البطاقة واختيار المقاييس — ترجمة الأهداف لمؤشرات، وتحديد الأهداف والمبادرات. (٣) المواءمة التنظيمية والتدرج — تدريج البطاقة لكل مستويات المنظمة. (٤) التحسين المستمر والتطور — مراجعة وتحديث المقاييس والأهداف والمبادرات بانتظام.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 5 &middot; Full-Spectrum Mock Exam &middot; 18 MC + 8 True/False + 4 Short Answer &middot; not from the doctor &mdash; fresh angles across all ten lectures</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>

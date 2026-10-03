@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ذكاء الأعمال — الفهرس</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0f1620; --card:#171F26; --card-hover:#1c2530;
+    --ink:#f2f5f4; --ink-soft: rgba(242,245,244,.62);
+    --line: rgba(255,255,255,.08); --line-strong: rgba(255,255,255,.16);
+    --accent:#E7B563; --accent-soft: rgba(231,181,99,.12);
+
+    --c1:#5C7CE0; --c2:#2FBBA0; --c3:#E08A45; --c4:#B27DD1; --c5:#4FA8D6;
+    --c6:#5FC468; --c7:#8C9BC2; --c8:#E06B93;
+    --gold:#E7B563;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); }
+  body{ font-family:'IBM Plex Sans Arabic', system-ui, sans-serif; line-height:1.7;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.04) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+  }
+  .font-display{ font-family:'El Messiri','IBM Plex Sans Arabic',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .page{ max-width: 1040px; margin:0 auto; padding: clamp(32px,6vw,72px) clamp(18px,4vw,28px) 90px; }
+
+  header.hero{ text-align:center; margin-bottom:48px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 12px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(26px,4.4vw,38px); margin:0 0 10px; }
+  header.hero p{ color:var(--ink-soft); font-size:15px; max-width:60ch; margin:0 auto; }
+
+  section.group{ margin-bottom:44px; }
+  .group-title{
+    font-family:'El Messiri',sans-serif; font-weight:700; font-size:19px; margin:0 0 4px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .group-title .en{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:400; }
+  .group-sub{ color:var(--ink-soft); font-size:13.5px; margin:0 0 18px; }
+
+  .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:16px; }
+
+  .card{
+    display:block; text-decoration:none; color:var(--ink);
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:20px 22px; position:relative; overflow:hidden;
+    transition: border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .card::before{
+    content:''; position:absolute; inset-inline-start:0; top:0; bottom:0; width:4px;
+    background: var(--card-accent, var(--accent));
+  }
+  .card:hover{ border-color:var(--line-strong); background:var(--card-hover); transform:translateY(-2px); }
+  .card .num{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--card-accent, var(--accent)); letter-spacing:.06em; margin-bottom:8px; display:block; }
+  .card h3{ font-family:'El Messiri',sans-serif; font-size:16.5px; font-weight:600; margin:0 0 4px; }
+  .card .en{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); direction:ltr; display:block; margin-bottom:10px; }
+  .card .desc{ font-size:13px; color:var(--ink-soft); margin:0; }
+  .card .arrow{ position:absolute; left:18px; bottom:16px; font-size:14px; color:var(--card-accent, var(--accent)); opacity:0; transform:translateX(-4px); transition: opacity .2s ease, transform .2s ease; }
+  html[dir="rtl"] .card .arrow{ left:auto; right:18px; transform:translateX(4px); }
+  .card:hover .arrow{ opacity:1; transform:translateX(0); }
+
+  .card.c1{ --card-accent: var(--c1); } .card.c2{ --card-accent: var(--c2); }
+  .card.c3{ --card-accent: var(--c3); } .card.c4{ --card-accent: var(--c4); }
+  .card.c5{ --card-accent: var(--c5); } .card.gold{ --card-accent: var(--gold); }
+  .card.c6{ --card-accent: var(--c6); } .card.c7{ --card-accent: var(--c7); } .card.c8{ --card-accent: var(--c8); }
+
+  .badge-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .mini-badge{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft);
+    background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:999px; padding:3px 9px;
+  }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12px; margin-top:20px; }
+  footer.note code{ font-family:'IBM Plex Mono',monospace; background:rgba(255,255,255,.06); padding:2px 6px; border-radius:5px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="hero">
+    <p class="eyebrow">مقرر ذكاء الأعمال النظري &middot; د. وفاء الغالبي</p>
+    <h1>فهرس المذاكرة</h1>
+    <p>خرائط ذهنية تفاعلية لكل محاضرة، وملفات مراجعة الاختبار — كل شي بمكان واحد.</p>
+  </header>
+
+  <section class="group">
+    <h2 class="group-title">ورقة المراجعة الشاملة <span class="en">One-Page Cheat Sheet</span></h2>
+    <p class="group-sub">كل الجداول المقارنة والتعاريف الأهم بصفحة واحدة — راجعها آخر شي قبل الاختبار</p>
+    <div class="grid">
+      <a class="card gold" href="cheatsheet.html">
+        <span class="num">مراجعة نهائية</span>
+        <h3>ورقة المراجعة الشاملة</h3>
+        <span class="en">One-Page Cheat Sheet &middot; All Lectures</span>
+        <p class="desc">جداول مقارنة (OLTP/OLAP، منظمة/شبه منظمة/غير منظمة، Star/Snowflake...) وقاموس تعاريف سريع — قابلة للطباعة</p>
+        <span class="arrow">&larr;</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2 class="group-title">الخرائط الذهنية <span class="en">Lecture Mind Maps</span></h2>
+    <p class="group-sub">اضغط أي محاضرة لفتح خريطتها التفاعلية (سحب، تكبير، فتح/طي الفروع)</p>
+    <div class="grid">
+
+      <a class="card c1" href="mindmap-1-2/index.html">
+        <span class="num">01 &ndash; 02</span>
+        <h3>ذكاء الأعمال والتحليلات</h3>
+        <span class="en">BI &amp; Analytics Overview</span>
+        <p class="desc">التعريفات الأساسية، BI مقابل Analytics، بنية أنظمة BI، منظومة Microsoft</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c2" href="mindmap-3/index.html">
+        <span class="num">03</span>
+        <h3>مؤشرات الأداء الرئيسية</h3>
+        <span class="en">Key Performance Indicators (KPI)</span>
+        <p class="desc">أنواع المؤشرات، SMART، دليل التصميم العملي، دراسة حالة FCIT</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c3" href="mindmap-4/index.html">
+        <span class="num">04</span>
+        <h3>بطاقة الأداء المتوازن</h3>
+        <span class="en">Balanced Scorecard (BSC)</span>
+        <p class="desc">الأبعاد الأربعة، إطار التطبيق، المؤشرات حسب كل بُعد، خرائط الاستراتيجية</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c4" href="mindmap-5/index.html">
+        <span class="num">05 &middot; مرجع إضافي</span>
+        <h3>نموذج البيانات (مرجع Kennesaw)</h3>
+        <span class="en">Data Model — Supplementary Reference</span>
+        <p class="desc">⚠️ مصدرها Jack Zheng مو سلايدات الدكتورة — راجع خريطة 6 للمصدر الرسمي</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c6" href="mindmap-6/index.html">
+        <span class="num">06 &middot; المصدر الرسمي</span>
+        <h3>نموذج البيانات للتحليلات</h3>
+        <span class="en">Data Model for Analytics</span>
+        <p class="desc">المستويات الثلاثة، Fact/Dimension Tables، Star مقابل Snowflake، مثال Power BI</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c7" href="mindmap-7/index.html">
+        <span class="num">07</span>
+        <h3>تخزين البيانات للتحليلات</h3>
+        <span class="en">Data Storage for Analytics Solutions</span>
+        <p class="desc">OLTP مقابل التحليلية، مستودعات البيانات، البيانات متعددة الأبعاد وOLAP، بحيرة البيانات</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c8" href="mindmap-8/index.html">
+        <span class="num">08</span>
+        <h3>عرض البيانات في BI</h3>
+        <span class="en">Data Presentation in BI/Analytics</span>
+        <p class="desc">العرض النصي والمهيكل، أساسيات التصور البصري، الخرائط، تصورات Power BI</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card c5" href="mindmap-9-10/index.html">
+        <span class="num">09 &ndash; 10</span>
+        <h3>توصيل BI: التقارير واللوحات</h3>
+        <span class="en">BI Delivery: Reports &amp; Dashboards</span>
+        <p class="desc">التقارير مقابل اللوحات، عناصر اللوحة، مستوياتها التشغيلية والتحليلية والاستراتيجية</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="group">
+    <h2 class="group-title">مراجعة الاختبار <span class="en">Exam Review</span></h2>
+    <p class="group-sub">أسئلة الدكتورة الفعلية بإجاباتها، ونموذجان توقعيان للتدريب الإضافي</p>
+    <div class="grid">
+
+      <a class="card gold" href="quizedoctor/index.html">
+        <span class="num">حقيقي &middot; مقالي</span>
+        <h3>الأسئلة المقالية</h3>
+        <span class="en">Essay Questions &amp; Answers</span>
+        <p class="desc">9 أسئلة فعلية من نماذج الدكتورة، بإجابات نموذجية كاملة</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/true-false.html">
+        <span class="num">حقيقي &middot; صح وخطأ</span>
+        <h3>صح وخطأ</h3>
+        <span class="en">True / False</span>
+        <p class="desc">13 عبارة فعلية من نماذج الدكتورة، مع التصحيح والسبب</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-1.html">
+        <span class="num">توقعي &middot; نموذج 1</span>
+        <h3>نموذج توقعي 1</h3>
+        <span class="en">Predicted Model 1</span>
+        <p class="desc">12 صح/خطأ + 5 مقالي، بأسلوبها على مواضيع ما جتها أسئلتها بعد</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-2.html">
+        <span class="num">توقعي &middot; نموذج 2</span>
+        <h3>نموذج توقعي 2</h3>
+        <span class="en">Predicted Model 2</span>
+        <p class="desc">12 صح/خطأ + 5 مقالي، يغطي مواضيع مختلفة عن النموذج الأول</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-3.html">
+        <span class="num">توقعي &middot; نموذج 3</span>
+        <h3>نموذج توقعي 3 — سد الفجوات</h3>
+        <span class="en">Predicted Model 3 &middot; Gap-Fill</span>
+        <p class="desc">12 صح/خطأ + 5 مقالي، يغطي كل ما لم تغطّه النماذج السابقة</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-4.html">
+        <span class="num">توقعي &middot; نموذج 4</span>
+        <h3>نموذج توقعي 4 — فجوات 6-10</h3>
+        <span class="en">Predicted Model 4 &middot; Gap-Fill 2</span>
+        <p class="desc">15 اختيارات + 8 صح/خطأ + 5 إجابات قصيرة — DIKW ومحاضرات 6-9/10</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-5.html">
+        <span class="num">توقعي &middot; نموذج 5</span>
+        <h3>نموذج توقعي 5 — محاكاة شاملة</h3>
+        <span class="en">Predicted Model 5 &middot; Full-Spectrum Mock</span>
+        <p class="desc">18 اختيارات + 8 صح/خطأ + 4 إجابات قصيرة — زوايا جديدة بكل المحاضرات 1-10</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+      <a class="card gold" href="quizedoctor/predicted-model-6.html">
+        <span class="num">توقعي &middot; نموذج 6 🔁</span>
+        <h3>نموذج توقعي 6 — الأكثر تكرارًا</h3>
+        <span class="en">Predicted Model 6 &middot; High-Frequency</span>
+        <p class="desc">10 اختيارات + 5 صح/خطأ + 4 إجابات قصيرة — فقط المفاهيم المتكررة بين 5 مصادر حقيقية</p>
+        <span class="arrow">&larr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="note">
+    <p>يعمل محليًا عبر <code>python3 -m http.server 8730</code> من مجلد <code>/Volumes/Work/pi</code></p>
+  </footer>
+</div>
+
+</body>
+</html>
