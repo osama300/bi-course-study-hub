@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicted Exam — Model 7 (Medium-Frequency)</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF8; --card:#FFFFFF; --ink:#16212B; --ink-soft:#4B5A63;
+    --line: rgba(22,33,43,.12); --line-strong: rgba(22,33,43,.22);
+    --accent:#2A6D91; --accent-soft: rgba(42,109,145,.10); --ar-bg: rgba(42,109,145,.045);
+    --true:#1F7A55; --true-bg: rgba(31,122,85,.12);
+    --false:#B8452F; --false-bg: rgba(184,69,47,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#10161B; --card:#171F26; --ink:#E7EAE8; --ink-soft:#9AAAB2;
+      --line: rgba(231,234,232,.14); --line-strong: rgba(231,234,232,.24);
+      --accent:#6FB6E0; --accent-soft: rgba(111,182,224,.10); --ar-bg: rgba(111,182,224,.05);
+      --true:#5FCE96; --true-bg: rgba(95,206,150,.13);
+      --false:#E58367; --false-bg: rgba(229,131,103,.13);
+    }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', system-ui, sans-serif; line-height:1.7; }
+  .font-display{ font-family:'El Messiri',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono', monospace; }
+  .page{ max-width: 800px; margin:0 auto; padding: clamp(28px,6vw,64px) clamp(18px,4vw,28px) 100px; }
+
+  .crumb{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); margin:0 0 22px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .crumb a{ color:var(--accent); text-decoration:none; } .crumb a:hover{ text-decoration:underline; }
+
+  header.hero{ margin-bottom:30px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  header.hero h1{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; text-wrap:balance; }
+  header.hero h1 + p{ font-family:'IBM Plex Sans Arabic',sans-serif; font-size:18px; color:var(--ink-soft); margin:0 0 14px; }
+  header.hero .desc{ font-size:14.5px; color:var(--ink-soft); max-width:65ch; margin:0 0 16px; }
+  .disclaimer{ font-size:13px; color:var(--ink-soft); background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:0 0 12px; }
+  .gapnote{ font-size:13px; color:var(--ink-soft); border:1px dashed var(--line-strong); border-radius:10px; padding:12px 16px; margin:0 0 20px; }
+  .gapnote strong{ color:var(--ink); }
+
+  .stat-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stat{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); }
+  .stat.true{ color:var(--true); background:var(--true-bg); border-color:transparent; }
+  .stat.false{ color:var(--false); background:var(--false-bg); border-color:transparent; }
+
+  .part-title{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:20px; margin: 44px 0 6px; display:flex; align-items:baseline; gap:10px; }
+  .part-title .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); }
+
+  /* ---- Multiple Choice ---- */
+  .mc-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .mc-top{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:12px; }
+  .mc-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .mc-tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; }
+  .mc-q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:17px; margin:0 0 4px; }
+  .mc-q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; direction:rtl; text-align:right; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+  .opt{ display:flex; align-items:flex-start; gap:10px; padding:9px 12px; border-radius:10px; border:1px solid var(--line); font-size:14px; }
+  .opt .opt-letter{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; width:20px; flex:none; color:var(--ink-soft); }
+  .opt.correct{ border-color: var(--true); background: var(--true-bg); }
+  .opt.correct .opt-letter{ color: var(--true); }
+  .opt.correct::after{ content:"✓"; margin-inline-start:auto; color:var(--true); font-weight:700; }
+  .divider{ border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .divider.dashed{ border-top:1px dashed var(--line); }
+  .why-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px; }
+  .why-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:12.5px; font-weight:600; }
+  .why-en p{ margin:0; font-size:14.5px; }
+  .why-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 8px 8px 0; padding:12px 14px; margin-top:14px; }
+  .why-ar p{ margin:0; font-size:14.5px; }
+  .freq{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:6px 10px; margin-top:12px; display:block; }
+  .freq .ar{ font-family:'IBM Plex Sans Arabic',sans-serif; color:var(--ink-soft); display:block; direction:rtl; text-align:right; margin-top:2px; font-size:11.5px; }
+
+  /* ---- True/False ---- */
+  .s-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(18px,3.4vw,26px); margin-bottom:18px; break-inside: avoid; }
+  .s-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+  .s-badge{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex:none; }
+  .verdict{ flex:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:.04em; padding:5px 13px; border-radius:999px; }
+  .verdict.true{ color:var(--true); background:var(--true-bg); }
+  .verdict.false{ color:var(--false); background:var(--false-bg); }
+  .statement{ font-family:'El Messiri',sans-serif; font-weight:600; font-size:16.5px; margin:0 0 6px; padding-inline-start:14px; border-inline-start:3px solid var(--line-strong); }
+  .statement.is-true{ border-inline-start-color: var(--true); }
+  .statement.is-false{ border-inline-start-color: var(--false); }
+  .statement-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:500; font-size:15.5px; color:var(--ink-soft); padding-inline-start:14px; border-inline-start:3px solid transparent; margin:0 0 16px; direction:rtl; text-align:right; }
+
+  /* ---- Short Answer ---- */
+  .q-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding: clamp(20px,4vw,34px); margin-bottom:28px; break-inside: avoid; }
+  .q-badge{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:14px; }
+  .q-en{ font-family:'El Messiri',sans-serif; font-weight:700; font-size:clamp(17px,2.4vw,20px); margin:0 0 6px; text-wrap:balance; }
+  .q-ar{ font-family:'IBM Plex Sans Arabic',sans-serif; font-weight:600; font-size:16px; color:var(--ink-soft); margin:0 0 18px; direction:rtl; text-align:right; }
+  .answer-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px; }
+  .answer-label.ar-label{ font-family:'IBM Plex Sans Arabic',sans-serif; letter-spacing:0; text-transform:none; font-size:13px; font-weight:600; }
+  .answer-en p{ margin:0 0 10px; font-size:15px; } .answer-en p:last-child{ margin-bottom:0; }
+  .answer-en strong, .answer-ar strong{ color:var(--ink); font-weight:600; }
+  .answer-ar{ direction:rtl; text-align:right; background:var(--ar-bg); border-inline-start:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 18px; }
+  .answer-ar p{ margin:0 0 10px; font-size:15px; } .answer-ar p:last-child{ margin-bottom:0; }
+
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:40px; }
+  #top-btn{ position:fixed; bottom:20px; right:20px; z-index:20; width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--line-strong); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; box-shadow:0 8px 20px -8px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; }
+  #top-btn.visible{ opacity:1; pointer-events:auto; } #top-btn:hover{ transform:translateY(-2px); }
+  @media print{ body{ background:#fff; } #top-btn{ display:none; } .s-card, .q-card, .mc-card{ border:1px solid #ddd; box-shadow:none; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <p class="crumb">
+    <a href="index.html">Essay Q&amp;A</a> &middot;
+    <a href="true-false.html">True/False</a> &middot;
+    <a href="predicted-model-1.html">Predicted 1</a> &middot;
+    <a href="predicted-model-2.html">Predicted 2</a> &middot;
+    <a href="predicted-model-3.html">Predicted 3</a> &middot;
+    <a href="predicted-model-4.html">Predicted 4</a> &middot;
+    <a href="predicted-model-5.html">Predicted 5</a> &middot;
+    <a href="predicted-model-6.html">Predicted 6</a> &middot;
+    <span>Predicted Model 7</span>
+  </p>
+
+  <header class="hero">
+    <p class="eyebrow">Business Intelligence Course &middot; Medium-Frequency Edition</p>
+    <h1>Predicted Exam — Model 7</h1>
+    <p dir="rtl">نموذج توقعي 7 — شيوع متوسط (درجة أقل من نموذج 6)</p>
+    <p class="desc">One tier below Model 6. Model 6 covered concepts repeated 2&ndash;5 times across multiple real sources. This model covers concepts that appeared <strong>only once or twice</strong> in the real archives (her own practice sets or the three exams from last year) &mdash; still genuinely sourced, just a lower-confidence signal than Model 6's "top hits."</p>
+    <p class="disclaimer" dir="rtl">تنبيه: هذي مفاهيم حقيقية من الأرشيف نفسه، بس تكرارها أقل من نموذج 6 (مرة أو مرتين فقط لا أكثر). درجة ثقتها بالظهور هذا العام أقل من نموذج 6، لكنها أعلى من النماذج التوقعية العادية (4 و5) لأنها مسحوبة حرفيًا من أسئلة حقيقية سابقة، لا من تحليل فجوات فقط.</p>
+    <p class="gapnote" dir="rtl">
+      <strong>طريقة البناء:</strong> نفس منهجية نموذج 6 بالضبط — بس بعد استبعاد المفاهيم الأعلى تكرارًا (المستخدمة بنموذج 6)، أخذت الطبقة التالية: أسئلة ظهرت مرة أو مرتين بـBI(2).pdf أو BI2(1).pdf أو الاختبار النهائي، لم تُستخدم بأي نموذج سابق.
+    </p>
+  </header>
+
+  <div class="part-title">Part A &mdash; Multiple Choice <span class="ar">اختيار من متعدد</span></div>
+  <div class="stat-row"><span class="stat font-mono">12 questions &middot; single/double real-source hits</span></div>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 01</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">What is the primary role of the semantic layer in a BI system?</p>
+    <p class="mc-q-ar">ما الدور الأساسي للطبقة الدلالية (Semantic Layer) بنظام BI؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Store raw metadata in a database</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Translate business terms into technical queries</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Encrypt business data for security</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Store large datasets in memory</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>The semantic layer lets non-technical users query data using plain business language, which it translates into the technical query behind the scenes.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>الطبقة الدلالية تتيح للمستخدمين غير التقنيين الاستعلام بلغة أعمال بسيطة، وتترجمها هي للاستعلام التقني بالخلفية.</p></div>
+    <span class="freq">Single hit: BI(2).pdf Q15 &mdash; not repeated elsewhere in the archives, but a real question nonetheless.<span class="ar">إصابة واحدة: BI(2) س15 — لم تتكرر بمصدر آخر، لكنها سؤال حقيقي فعلي.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 02</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">In the SMART framework, "Relevant" means a KPI should be:</p>
+    <p class="mc-q-ar">في إطار SMART، "ذو صلة" (Relevant) تعني إن المؤشر يجب أن يكون:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Easy to measure with simple tools</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Aligned with the organization's strategic objectives</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Free of any time limit</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Focused on predicting the future only</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Relevant means the KPI is aligned with the organization's strategic objectives &mdash; not about ease of measurement or time limits (those are Measurable and Time-bound).</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>"ذو صلة" يعني توافق المؤشر مع الأهداف الاستراتيجية — لا سهولة القياس أو غياب الحدود الزمنية (تلك خاصتا Measurable وTime-bound).</p></div>
+    <span class="freq">Single hit: BI(2).pdf Q12.<span class="ar">إصابة واحدة: BI(2) س12.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 03</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">Which KPI would best measure the Internal Business Process perspective?</p>
+    <p class="mc-q-ar">أي مؤشر يُقيس بُعد العمليات الداخلية بشكل أفضل؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Net Profit Margin</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Employee Retention Rate</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Cycle Time</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Customer Acquisition Cost</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Cycle Time is an Internal Process KPI (operational sub-type). Net Profit Margin is Financial, Employee Retention is Learning &amp; Growth, Customer Acquisition Cost is Customer.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>وقت الدورة (Cycle Time) مؤشر عمليات داخلية. هامش الربح مالي، والاحتفاظ بالموظفين تعلم ونمو، وتكلفة اكتساب العميل مؤشر عملاء.</p></div>
+    <span class="freq">Single hit: BI(2).pdf Q16.<span class="ar">إصابة واحدة: BI(2) س16.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 04</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">The Customer Perspective in the BSC primarily answers which question?</p>
+    <p class="mc-q-ar">بُعد العملاء في BSC يجيب أساسًا عن أي سؤال؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>How do we look to shareholders?</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Can we continue to improve and create value?</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>How do customers see us?</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>What must we excel at?</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Each BSC perspective maps to one key question: Financial = shareholders, Customer = "how do customers see us?", Internal Process = "what must we excel at?", Learning &amp; Growth = "can we keep improving?"</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>كل بُعد بـ BSC يقابله سؤال رئيسي: المالي = المساهمون، العملاء = "كيف يرانا العملاء؟"، العمليات الداخلية = "بماذا نتفوق؟"، التعلم والنمو = "هل نستمر بالتحسن؟"</p></div>
+    <span class="freq">Single hit: BI(2).pdf Q11.<span class="ar">إصابة واحدة: BI(2) س11.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 05</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">The actual meaning of "data cleaning" is:</p>
+    <p class="mc-q-ar">المعنى الفعلي لـ"تنظيف البيانات" هو:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Integration of multiple databases or files</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Normalization and aggregation</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Data visualization</span></div>
+      <div class="opt correct"><span class="opt-letter">D</span><span>Fill in missing values, smooth noisy data, remove outliers</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Data cleaning specifically means filling missing values, smoothing noisy data, and removing outliers. Option A is Data Integration, B is Data Transformation &mdash; distinct but related steps.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تنظيف البيانات يعني تحديدًا تعبئة القيم المفقودة وتنقية الضجيج وإزالة القيم الشاذة. الخيار A هو دمج البيانات، وB هو تحويل البيانات — خطوات مرتبطة لكنها مختلفة.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q17 &mdash; directly tests the distinction between cleaning, transformation &amp; integration.<span class="ar">إصابة واحدة: BI2(1) س17 — تختبر الفرق بين التنظيف والتحويل والدمج مباشرة.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 06</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">Which of the following is NOT part of data cleaning?</p>
+    <p class="mc-q-ar">أي من التالي لا يُعد جزءًا من تنظيف البيانات؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Data visualization</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Removing noise</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Handling missing values</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Resolving inconsistencies</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Data visualization belongs to the presentation stage, not cleaning. Cleaning covers noise removal, missing values, and inconsistencies.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تصور البيانات ينتمي لمرحلة العرض، لا التنظيف. التنظيف يشمل إزالة الضجيج والقيم المفقودة والتضاربات.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q2 &mdash; the mirror-image distractor of MC05, confirming she tests "what cleaning is NOT" as well as "what it is."<span class="ar">إصابة واحدة: BI2(1) س2 — نسخة معكوسة من سؤال MC05، تؤكد إنها تختبر "ما هو التنظيف" و"ما ليس به" معًا.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 07</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">Which type of data has a predefined schema?</p>
+    <p class="mc-q-ar">أي نوع بيانات له مخطط (schema) محدد مسبقًا؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Semi-structured</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Structured</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Metadata</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Unstructured</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Structured data has a fixed, predefined schema &mdash; rows and columns with set data types. Semi-structured has loose organizational tags; unstructured has none.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>المنظمة لها مخطط ثابت محدد مسبقًا — صفوف وأعمدة بأنواع بيانات محددة. شبه المنظمة لها علامات تنظيمية فقط؛ غير المنظمة لا شيء منها.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q12.<span class="ar">إصابة واحدة: BI2(1) س12.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 08</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">What is the main focus of the Learning &amp; Growth perspective?</p>
+    <p class="mc-q-ar">ما التركيز الأساسي لبُعد التعلم والنمو؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Short-term financial results</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Customer acquisition</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Employee development and organizational culture</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Regulatory compliance</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Learning &amp; Growth centers on employee capability, systems, and culture &mdash; the foundation that drives the other three perspectives upward.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التعلم والنمو يتمحور حول كفاءة الموظفين والأنظمة والثقافة — الأساس الذي يدفع الأبعاد الثلاثة الأخرى للأعلى.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q18.<span class="ar">إصابة واحدة: BI2(1) س18.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 09</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">In BSC implementation, what does "cascading" refer to?</p>
+    <p class="mc-q-ar">في تطبيق BSC، ماذا يشير مصطلح "التدرج" (Cascading)؟</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Deleting outdated KPIs</span></div>
+      <div class="opt correct"><span class="opt-letter">B</span><span>Aligning scorecards at different organizational levels</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Automating data collection</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Outsourcing performance management</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Cascading means spreading the BSC down to corporate, unit, functional, and individual levels &mdash; creating a "line-of-sight" between individual work and strategy.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التدرج يعني نشر BSC لمستوى المؤسسة والوحدات والوظائف والأفراد — يخلق ارتباطًا واضحًا بين عمل الفرد والاستراتيجية.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q20.<span class="ar">إصابة واحدة: BI2(1) س20.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 10</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">Which dashboard type displays real-time or near-real-time data processing?</p>
+    <p class="mc-q-ar">أي نوع لوحة يعرض بيانات آنية أو شبه آنية؟</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Operational dashboard</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Strategic dashboard</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Executive dashboard</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Analytical dashboard</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Operational dashboards give real/near-real-time monitoring with a few key indicators &mdash; e.g. a call center or reservation status board.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>اللوحات التشغيلية تعرض مراقبة آنية أو شبه آنية بعدد قليل من المؤشرات — كمثال مراقبة مركز اتصال أو نظام حجز.</p></div>
+    <span class="freq">Single hit: the real final exam's own Q1, its opening question.<span class="ar">إصابة واحدة: سؤال الاختبار النهائي الحقيقي الأول (س1).</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 11</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">One benefit of an analytical database compared to a transactional database is:</p>
+    <p class="mc-q-ar">من فوائد قاعدة البيانات التحليلية مقارنة بالتشغيلية:</p>
+    <div class="options">
+      <div class="opt"><span class="opt-letter">A</span><span>Greater complexity in schema design</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Focus on daily operations</span></div>
+      <div class="opt correct"><span class="opt-letter">C</span><span>Faster query performance for analysis</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>High frequency updates</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Analytical databases are built for faster analytical query performance &mdash; the opposite of a transactional database's focus on fast, frequent small updates.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>قواعد البيانات التحليلية مبنية لأداء استعلام تحليلي أسرع — بعكس تركيز القاعدة التشغيلية على تحديثات صغيرة متكررة وسريعة.</p></div>
+    <span class="freq">Single hit: the real final exam's Q3.<span class="ar">إصابة واحدة: الاختبار النهائي س3.</span></span>
+  </section>
+
+  <section class="mc-card">
+    <div class="mc-top"><span class="mc-badge">MC 12</span><span class="mc-tag">🔂 MEDIUM</span></div>
+    <p class="mc-q-en">The basic method underlying descriptive analysis is:</p>
+    <p class="mc-q-ar">الطريقة الأساسية التي يقوم عليها التحليل الوصفي هي:</p>
+    <div class="options">
+      <div class="opt correct"><span class="opt-letter">A</span><span>Aggregation</span></div>
+      <div class="opt"><span class="opt-letter">B</span><span>Machine learning</span></div>
+      <div class="opt"><span class="opt-letter">C</span><span>Regression analysis</span></div>
+      <div class="opt"><span class="opt-letter">D</span><span>Predictive modeling</span></div>
+    </div>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Descriptive analysis relies on aggregation (sums, averages, counts) to summarize what already happened. ML, regression, and predictive modeling belong to the predictive/advanced analytics side.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>التحليل الوصفي يعتمد على التجميع (مجاميع، متوسطات، عدّ) لتلخيص ما حدث. التعلم الآلي والانحدار والنمذجة التنبؤية تخص الجانب التنبؤي/المتقدم.</p></div>
+    <span class="freq">Single hit: the real final exam's Q14.<span class="ar">إصابة واحدة: الاختبار النهائي س14.</span></span>
+  </section>
+
+  <div class="part-title">Part B &mdash; True / False <span class="ar">صح وخطأ</span></div>
+  <div class="stat-row">
+    <span class="stat font-mono">5 statements</span>
+    <span class="stat true">3 True</span>
+    <span class="stat false">2 False</span>
+  </div>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">01</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"In the Balanced Scorecard, Targets represent the specific action programs and projects undertaken to achieve strategic objectives."</p>
+    <p class="statement-ar" dir="rtl">"ضمن بطاقة الأداء المتوازن، الأهداف الرقمية (Targets) تمثل برامج وإجراءات العمل المحددة المُنفَّذة لتحقيق الأهداف الاستراتيجية."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>That's the definition of <strong>Initiatives</strong>, not Targets. A Target is the challenging-yet-achievable numeric goal itself; an Initiative is the action program that closes the gap to that target.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>هذا تعريف <strong>المبادرات (Initiatives)</strong> لا الأهداف. الهدف (Target) هو الرقم الطموح الممكن تحقيقه نفسه؛ والمبادرة هي برنامج العمل الذي يُغلق الفجوة نحو ذلك الهدف.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q14 &mdash; a classic Targets/Initiatives mix-up trap.<span class="ar">إصابة واحدة: BI2(1) س14 — فخ كلاسيكي بالخلط بين Targets وInitiatives.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">02</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The Continuous Improvement phase of BSC implementation involves regularly reviewing and updating measures, targets, and initiatives."</p>
+    <p class="statement-ar" dir="rtl">"مرحلة التحسين المستمر بتطبيق BSC تتضمن مراجعة وتحديث المقاييس والأهداف والمبادرات بشكل منتظم."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with BSC implementation's fourth phase.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع المرحلة الرابعة بتطبيق BSC.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q19.<span class="ar">إصابة واحدة: BI2(1) س19.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">03</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"The data warehouse is the BI component primarily responsible for storing historical and structured data."</p>
+    <p class="statement-ar" dir="rtl">"مستودع البيانات هو مكوّن BI المسؤول أساسًا عن تخزين البيانات التاريخية والمنظمة."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the real final exam's own answer key for this question.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع مفتاح إجابة الاختبار النهائي الحقيقي لهذا السؤال.</p></div>
+    <span class="freq">Single hit: the real final exam's own Q1 (from BI 2(1).pdf's numbering).<span class="ar">إصابة واحدة: سؤال BI2(1) س1.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">04</span><span class="verdict false">&#10007; FALSE</span></div>
+    <p class="statement is-false">"Transactional data processing is mainly concerned with trend forecasting and historical analysis."</p>
+    <p class="statement-ar" dir="rtl">"معالجة البيانات التشغيلية (Transactional) تهتم أساسًا بالتنبؤ بالاتجاهات والتحليل التاريخي."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Reversed &mdash; transactional processing is mainly concerned with day-to-day operations. Trend forecasting and historical analysis belong to analytical processing.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>معكوسة — المعالجة التشغيلية تهتم بالعمليات اليومية أساسًا. التنبؤ بالاتجاهات والتحليل التاريخي يخصان المعالجة التحليلية.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q5.<span class="ar">إصابة واحدة: BI2(1) س5.</span></span>
+  </section>
+
+  <section class="s-card">
+    <div class="s-top"><span class="s-badge">05</span><span class="verdict true">&#10003; TRUE</span></div>
+    <p class="statement is-true">"One major challenge of real-world data is that it is often dirty and inconsistent, requiring significant cleanup before analysis."</p>
+    <p class="statement-ar" dir="rtl">"من أكبر تحديات البيانات الحقيقية أنها غالبًا متسخة وغير متسقة، وتحتاج تنظيفًا كبيرًا قبل التحليل."</p>
+    <hr class="divider dashed">
+    <p class="why-label">Why</p>
+    <div class="why-en"><p>Direct match with the lecture's "real-world data challenges" theme &mdash; reinforced by her own real essay Q5 on raw vs. processed data.</p></div>
+    <div class="why-ar" dir="rtl"><p class="why-label ar-label" dir="rtl">السبب</p><p>تطابق مباشر مع موضوع "تحديات البيانات الحقيقية" — ومُعزّز بمقالي الدكتورة الحقيقي س5 عن البيانات الخام والمعالجة.</p></div>
+    <span class="freq">Single hit: BI 2(1).pdf Q8, echoing her own Essay Q5.<span class="ar">إصابة واحدة: BI2(1) س8، تُردد نفس فكرة مقالي الدكتورة س5.</span></span>
+  </section>
+
+  <div class="part-title">Part C &mdash; Short Answer <span class="ar">إجابات قصيرة</span></div>
+  <div class="stat-row"><span class="stat font-mono">3 questions &middot; concise, auto-gradable style</span></div>
+
+  <section class="q-card">
+    <span class="q-badge">SA 01</span>
+    <h2 class="q-en">What is the role of the semantic layer in a BI system?</h2>
+    <p class="q-ar" dir="rtl">ما دور الطبقة الدلالية (Semantic Layer) بنظام BI؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>It translates business terms into technical queries, letting non-technical users explore data using plain business language instead of writing SQL or knowing the underlying database structure.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>تترجم مصطلحات الأعمال إلى استعلامات تقنية، فتتيح للمستخدمين غير التقنيين استكشاف البيانات بلغة أعمال بسيطة بدون كتابة SQL أو معرفة بنية قاعدة البيانات.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 02</span>
+    <h2 class="q-en">What is the main purpose of an analytical database?</h2>
+    <p class="q-ar" dir="rtl">ما الغرض الأساسي من قاعدة البيانات التحليلية؟</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>To support complex queries, multidimensional analysis, and decision-making processes &mdash; by organizing large amounts of stable, consolidated data for easy analysis and retrieval.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>دعم الاستعلامات المعقدة والتحليل متعدد الأبعاد وعمليات اتخاذ القرار — بتنظيم كم كبير من البيانات المستقرة والموحدة لتسهيل التحليل والاسترجاع.</p>
+    </div>
+  </section>
+
+  <section class="q-card">
+    <span class="q-badge">SA 03</span>
+    <h2 class="q-en">Define "cascading" in the context of BSC implementation.</h2>
+    <p class="q-ar" dir="rtl">عرّف "التدرج" (Cascading) في سياق تطبيق بطاقة الأداء المتوازن.</p>
+    <hr class="divider">
+    <p class="answer-label">Model Answer</p>
+    <div class="answer-en">
+      <p>Cascading means spreading the Balanced Scorecard down through corporate, business unit, functional, and individual levels, so each employee's work is explicitly linked ("line-of-sight") to the organization's overall strategy.</p>
+    </div>
+    <hr class="divider dashed">
+    <p class="answer-label ar-label" dir="rtl">الإجابة النموذجية</p>
+    <div class="answer-ar" dir="rtl">
+      <p>التدرج يعني نشر بطاقة الأداء المتوازن عبر مستوى المؤسسة والوحدات والوظائف والأفراد، بحيث يرتبط عمل كل موظف بشكل واضح باستراتيجية المنظمة الشاملة.</p>
+    </div>
+  </section>
+
+  <footer class="note"><p>Predicted Model 7 &middot; Medium-Frequency Edition &middot; 12 MC + 5 True/False + 3 Short Answer &middot; single/double real-source hits, one tier below Model 6</p></footer>
+</div>
+
+<button id="top-btn" aria-label="Back to top" title="Back to top">&uarr;</button>
+<script>
+  var btn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function(){ if (window.scrollY > 400) btn.classList.add('visible'); else btn.classList.remove('visible'); });
+  btn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>
